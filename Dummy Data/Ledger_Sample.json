@@ -1,0 +1,3438 @@
+{
+  "transactions": [
+    {
+      "id": "xaji0y6d",
+      "date": "2025-07-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 83907.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "ivuzzpqk",
+      "date": "2025-07-28",
+      "type": "Income",
+      "category": "Interest",
+      "description": "Savings account interest credit",
+      "amount": 11575.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "zmf8mdd4",
+      "date": "2025-07-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "30t9nt3w",
+      "date": "2025-07-28",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Water supply bill",
+      "amount": 1439.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "bikcidkw",
+      "date": "2025-07-12",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "ACT Fibernet broadband",
+      "amount": 1066.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "yzycwtiq",
+      "date": "2025-07-09",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "ACT Fibernet broadband",
+      "amount": 1632.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "32oc6uzh",
+      "date": "2025-07-16",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 2877.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "qjiujv6o",
+      "date": "2025-07-08",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 1827.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "14ffyvnv",
+      "date": "2025-07-15",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 3119.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "ye511mkf",
+      "date": "2025-07-01",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 3121.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "65kxvf1t",
+      "date": "2025-07-25",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 1537.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "a753lc58",
+      "date": "2025-07-03",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 2058.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "ertj5pht",
+      "date": "2025-07-24",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 1811.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "9xpseimv",
+      "date": "2025-07-08",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 117.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "i64ciyhe",
+      "date": "2025-07-30",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 683.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "3gdppq0y",
+      "date": "2025-07-21",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 245.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "2dgtfgq5",
+      "date": "2025-07-03",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 2039.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "xtad1ior",
+      "date": "2025-07-28",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 1644.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "n9j2qp89",
+      "date": "2025-07-18",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 448.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "c0clbr7t",
+      "date": "2025-07-02",
+      "type": "Expense",
+      "category": "Entertainment",
+      "description": "Gaming subscription top-up",
+      "amount": 476.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "c5o7uubc",
+      "date": "2025-07-22",
+      "type": "Expense",
+      "category": "Healthcare",
+      "description": "Annual health checkup",
+      "amount": 2674.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "yljexq77",
+      "date": "2025-07-01",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Decathlon sports gear",
+      "amount": 3916.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "chj755nf",
+      "date": "2025-07-27",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Myntra clothing haul",
+      "amount": 3864.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "t7d5j60f",
+      "date": "2025-07-10",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "hmy4sj6b",
+      "date": "2025-07-21",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 499,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "bme9fpzu",
+      "date": "2025-07-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "8yfbntpb",
+      "date": "2025-07-12",
+      "type": "Expense",
+      "category": "Personal Care",
+      "description": "Salon haircut",
+      "amount": 1828.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "hid25owf",
+      "date": "2025-07-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "HDFC credit card bill",
+      "amount": 22698.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "5a0l7253",
+      "date": "2025-08-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 81735.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "d54i3qk2",
+      "date": "2025-08-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "ixokc1ms",
+      "date": "2025-08-22",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Water supply bill",
+      "amount": 2091.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "5ju9bvm2",
+      "date": "2025-08-14",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "BESCOM electricity bill",
+      "amount": 1093.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "bps3y70h",
+      "date": "2025-08-14",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 3057.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "wxe6sylz",
+      "date": "2025-08-18",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 937.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "7y6wktak",
+      "date": "2025-08-14",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 1702.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "ys280xkx",
+      "date": "2025-08-20",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 661.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "yihair4c",
+      "date": "2025-08-14",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 2411.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "ofy6452h",
+      "date": "2025-08-26",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 221.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "7eeqtul1",
+      "date": "2025-08-15",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 2093.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "60rjiw1s",
+      "date": "2025-08-21",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 759.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "zim6cfnf",
+      "date": "2025-08-07",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 1096.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "tohp6vz4",
+      "date": "2025-08-25",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 1245.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "ko64t026",
+      "date": "2025-08-16",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 755.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "ny20479t",
+      "date": "2025-08-30",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 1147.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "dp5gjlqm",
+      "date": "2025-08-29",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 645.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "cat9mx2x",
+      "date": "2025-08-25",
+      "type": "Expense",
+      "category": "Entertainment",
+      "description": "PVR movie tickets",
+      "amount": 2389.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "eyuhz1gv",
+      "date": "2025-08-24",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Amazon order",
+      "amount": 4778.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "8daly8oz",
+      "date": "2025-08-03",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Flipkart electronics",
+      "amount": 1060.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "ve92mpns",
+      "date": "2025-08-11",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 199,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "43d8w3zp",
+      "date": "2025-08-24",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "j3trp0j4",
+      "date": "2025-08-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "d5iqvnb4",
+      "date": "2025-08-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "HDFC credit card bill",
+      "amount": 16288.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "jkv5usgi",
+      "date": "2025-08-14",
+      "type": "Expense",
+      "category": "Investment Purchase (Stocks/MF/etc.)",
+      "description": "Groww mutual fund SIP",
+      "amount": 9662.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "rzqakoix",
+      "date": "2025-08-12",
+      "type": "Expense",
+      "category": "Miscellaneous",
+      "description": "Misc household expense",
+      "amount": 1196.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "m9tmqliz",
+      "date": "2025-09-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 82418.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "8yg0jv1v",
+      "date": "2025-09-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "3kmkzebb",
+      "date": "2025-09-10",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "ACT Fibernet broadband",
+      "amount": 1548.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "dakrm8j5",
+      "date": "2025-09-04",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "BESCOM electricity bill",
+      "amount": 1121.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "f38diuov",
+      "date": "2025-09-20",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 2572.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "qp49kwv0",
+      "date": "2025-09-25",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 2151.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "xfgcaqvk",
+      "date": "2025-09-08",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 2379.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "cij2v2he",
+      "date": "2025-09-08",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 2280.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "cfl0ukey",
+      "date": "2025-09-23",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 2362.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "pv60vaiy",
+      "date": "2025-09-28",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 2499.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "u1gspk9p",
+      "date": "2025-09-27",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 2426.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "mly4lyk8",
+      "date": "2025-09-27",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 1192.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "je153a5q",
+      "date": "2025-09-02",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 1344.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "1ht7pze9",
+      "date": "2025-09-20",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 1336.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "ttd96qe3",
+      "date": "2025-09-16",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 1014.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "orqqfgv0",
+      "date": "2025-09-05",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 642.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "m2ja04ux",
+      "date": "2025-09-28",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 914.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "mttqlgzu",
+      "date": "2025-09-08",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 270.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "rbsv55ps",
+      "date": "2025-09-15",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Amazon order",
+      "amount": 4473.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "58c2jwoc",
+      "date": "2025-09-11",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Decathlon sports gear",
+      "amount": 5748.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "bcw790pd",
+      "date": "2025-09-21",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "5py6b2kn",
+      "date": "2025-09-05",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 199,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "u2gc5wi6",
+      "date": "2025-09-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "qjja26yf",
+      "date": "2025-09-15",
+      "type": "Expense",
+      "category": "Personal Care",
+      "description": "Skincare products",
+      "amount": 1979.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "k8yqk94d",
+      "date": "2025-09-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "ICICI credit card payment",
+      "amount": 17723.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "9k9xjuy0",
+      "date": "2025-09-02",
+      "type": "Expense",
+      "category": "Investment Purchase (Stocks/MF/etc.)",
+      "description": "Upstox investment",
+      "amount": 11942.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "61i2hgj1",
+      "date": "2025-10-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 88745.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "edwb2bne",
+      "date": "2025-10-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "loh25nsj",
+      "date": "2025-10-06",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Water supply bill",
+      "amount": 2045.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "8k52qc1i",
+      "date": "2025-10-22",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Gas cylinder refill",
+      "amount": 2141.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "dojen0jn",
+      "date": "2025-10-21",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Water supply bill",
+      "amount": 595.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "a5u6hc36",
+      "date": "2025-10-10",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 727.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "8krd5eqy",
+      "date": "2025-10-24",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 2045.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "fodro8bn",
+      "date": "2025-10-15",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 3062.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "dyt9moge",
+      "date": "2025-10-28",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 657.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "xva2ieuc",
+      "date": "2025-10-25",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 2042.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "lf6a4fej",
+      "date": "2025-10-06",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 2251.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "a2ilgb0s",
+      "date": "2025-10-24",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 1243.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "sds8b25s",
+      "date": "2025-10-15",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 246.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "4pdzp6lf",
+      "date": "2025-10-05",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Petrol - Indian Oil",
+      "amount": 1598.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "nvksp2ex",
+      "date": "2025-10-29",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 1132.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "mqodpxnf",
+      "date": "2025-10-30",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 307.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "dd03uvul",
+      "date": "2025-10-04",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 766.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "5z8vmuhx",
+      "date": "2025-10-08",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 760.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "ekipu1wy",
+      "date": "2025-10-18",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 1174.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "bj17mgfx",
+      "date": "2025-10-03",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 1386.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "tnqfll7v",
+      "date": "2025-10-29",
+      "type": "Expense",
+      "category": "Entertainment",
+      "description": "PVR movie tickets",
+      "amount": 642.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "jxrpj1ep",
+      "date": "2025-10-10",
+      "type": "Expense",
+      "category": "Insurance",
+      "description": "Health insurance renewal",
+      "amount": 11850.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "bovakhej",
+      "date": "2025-10-11",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Amazon order",
+      "amount": 543.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "gnzs43c5",
+      "date": "2025-10-02",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Decathlon sports gear",
+      "amount": 603.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "5uuzpeal",
+      "date": "2025-10-26",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Decathlon sports gear",
+      "amount": 5076.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "4ivsolml",
+      "date": "2025-10-06",
+      "type": "Expense",
+      "category": "Education",
+      "description": "Udemy course purchase",
+      "amount": 4573.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "es6m033i",
+      "date": "2025-10-05",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 499,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "hv1xg1r1",
+      "date": "2025-10-25",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "7uww5wfc",
+      "date": "2025-10-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "kjcslqc3",
+      "date": "2025-10-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "HDFC credit card bill",
+      "amount": 18959.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "vnu80b6u",
+      "date": "2025-10-07",
+      "type": "Expense",
+      "category": "Miscellaneous",
+      "description": "Misc household expense",
+      "amount": 1289.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "s8q349dx",
+      "date": "2025-11-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 78548.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "9svn7n1y",
+      "date": "2025-11-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "2xcdyk0x",
+      "date": "2025-11-30",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "ACT Fibernet broadband",
+      "amount": 1000.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "7lxxezdu",
+      "date": "2025-11-21",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Water supply bill",
+      "amount": 1864.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "sal8m1g9",
+      "date": "2025-11-05",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 1228.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "st0sx5wv",
+      "date": "2025-11-05",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 906.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "13fpoyip",
+      "date": "2025-11-10",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 1055.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "l3q4n89q",
+      "date": "2025-11-10",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 1808.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "832ejx5t",
+      "date": "2025-11-04",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 1198.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "j6fp8hqm",
+      "date": "2025-11-01",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 549.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "i9nb74x2",
+      "date": "2025-11-05",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 789.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "zezqacj4",
+      "date": "2025-11-18",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 367.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "ieixwc4r",
+      "date": "2025-11-18",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 1617.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "zkamugys",
+      "date": "2025-11-12",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 2388.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "oqw9ja2m",
+      "date": "2025-11-24",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 1952.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "bt3g2qzw",
+      "date": "2025-11-26",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 301.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "bh25llo3",
+      "date": "2025-11-16",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 259.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "k5bxj2po",
+      "date": "2025-11-15",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 742.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "r7s20cv3",
+      "date": "2025-11-18",
+      "type": "Expense",
+      "category": "Entertainment",
+      "description": "BookMyShow concert",
+      "amount": 1007.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "kqzfpq06",
+      "date": "2025-11-20",
+      "type": "Expense",
+      "category": "Healthcare",
+      "description": "Dentist consultation",
+      "amount": 1453.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "wn2y8fv2",
+      "date": "2025-11-02",
+      "type": "Expense",
+      "category": "Insurance",
+      "description": "LIC premium payment",
+      "amount": 5874.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "n8bfqnpc",
+      "date": "2025-11-05",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Myntra clothing haul",
+      "amount": 2689.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "ie0rnujj",
+      "date": "2025-11-15",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Flipkart electronics",
+      "amount": 5980.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "y9hecgz9",
+      "date": "2025-11-26",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Myntra clothing haul",
+      "amount": 4173.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "kkfzzgni",
+      "date": "2025-11-07",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 199,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "irmuq9e5",
+      "date": "2025-11-03",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 499,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "zroouelc",
+      "date": "2025-11-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "se3tv1es",
+      "date": "2025-11-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "HDFC credit card bill",
+      "amount": 22134.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "kf7i8skc",
+      "date": "2025-11-07",
+      "type": "Expense",
+      "category": "Investment Purchase (Stocks/MF/etc.)",
+      "description": "Upstox investment",
+      "amount": 14476.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "wwdxvugw",
+      "date": "2025-11-29",
+      "type": "Expense",
+      "category": "Miscellaneous",
+      "description": "Misc household expense",
+      "amount": 1717.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "u3bbxux1",
+      "date": "2025-12-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 83832.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "rwk8r2yk",
+      "date": "2025-12-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "yfoqmf5l",
+      "date": "2025-12-28",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Water supply bill",
+      "amount": 2156.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "1sdieqfb",
+      "date": "2025-12-31",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Gas cylinder refill",
+      "amount": 1955.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "8637zgf9",
+      "date": "2025-12-15",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 2861.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "a8s8hmbr",
+      "date": "2025-12-29",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 1200.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "4p501nou",
+      "date": "2025-12-07",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 1949.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "nqt3wved",
+      "date": "2025-12-12",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 1962.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "hssbelrq",
+      "date": "2025-12-20",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 887.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "f90km3tz",
+      "date": "2025-12-10",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 2058.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "ldol65wv",
+      "date": "2025-12-09",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 1831.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "gww4fyb8",
+      "date": "2025-12-04",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 145.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "fyo1750c",
+      "date": "2025-12-05",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 1097.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "slg6mm1z",
+      "date": "2025-12-21",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 1176.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "8kk791zy",
+      "date": "2025-12-16",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 968.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "kut6om1f",
+      "date": "2025-12-02",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 1729.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "mpjrht7z",
+      "date": "2025-12-05",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 1185.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "ytwbozd1",
+      "date": "2025-12-01",
+      "type": "Expense",
+      "category": "Entertainment",
+      "description": "Gaming subscription top-up",
+      "amount": 2451.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "75rh8lx6",
+      "date": "2025-12-03",
+      "type": "Expense",
+      "category": "Healthcare",
+      "description": "Annual health checkup",
+      "amount": 2711.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "6g5g79or",
+      "date": "2025-12-30",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Myntra clothing haul",
+      "amount": 5322.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "v7mqxs6e",
+      "date": "2025-12-17",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 499,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "j3l0xzam",
+      "date": "2025-12-10",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "gvwoplod",
+      "date": "2025-12-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "r7anqjlu",
+      "date": "2025-12-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "HDFC credit card bill",
+      "amount": 12446.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "iyqfy751",
+      "date": "2025-12-23",
+      "type": "Expense",
+      "category": "Investment Purchase (Stocks/MF/etc.)",
+      "description": "Zerodha stock purchase",
+      "amount": 10665.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "nh8rq9nz",
+      "date": "2026-01-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 90779.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "231yv2st",
+      "date": "2026-01-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "cuctsufl",
+      "date": "2026-01-17",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Gas cylinder refill",
+      "amount": 609.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "zr6qceou",
+      "date": "2026-01-18",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Gas cylinder refill",
+      "amount": 1611.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "0o30ubmc",
+      "date": "2026-01-02",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "BESCOM electricity bill",
+      "amount": 2175.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "kgex08n6",
+      "date": "2026-01-15",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 1452.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "85e4e9oe",
+      "date": "2026-01-08",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 2517.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "qzpniqfg",
+      "date": "2026-01-29",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 490.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "w76icvqy",
+      "date": "2026-01-28",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 687.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "oih5csk3",
+      "date": "2026-01-24",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Petrol - Indian Oil",
+      "amount": 1486.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "i59sojuv",
+      "date": "2026-01-24",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 1602.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "ubmxnszo",
+      "date": "2026-01-10",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 541.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "ii4fqcoo",
+      "date": "2026-01-17",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 1032.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "hx74d0gj",
+      "date": "2026-01-22",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 2197.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "0ur5l8a7",
+      "date": "2026-01-31",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 1395.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "6zzoilkq",
+      "date": "2026-01-21",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 693.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "srd9q46n",
+      "date": "2026-01-14",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 1100.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "0atvzkhi",
+      "date": "2026-01-19",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 999.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "j38xrg2g",
+      "date": "2026-01-24",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 494.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "s4c3baew",
+      "date": "2026-01-03",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 215.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "wywrrata",
+      "date": "2026-01-17",
+      "type": "Expense",
+      "category": "Entertainment",
+      "description": "Gaming subscription top-up",
+      "amount": 904.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "3y36ddfg",
+      "date": "2026-01-17",
+      "type": "Expense",
+      "category": "Healthcare",
+      "description": "Dentist consultation",
+      "amount": 3724.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "nou9iy4x",
+      "date": "2026-01-28",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Amazon order",
+      "amount": 1014.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "rwzc4xl9",
+      "date": "2026-01-04",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "7i6yuj7y",
+      "date": "2026-01-09",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "b7l8v1zo",
+      "date": "2026-01-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "fi4o6l1f",
+      "date": "2026-01-23",
+      "type": "Expense",
+      "category": "Personal Care",
+      "description": "Salon haircut",
+      "amount": 1151.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "9bp4m18o",
+      "date": "2026-01-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "ICICI credit card payment",
+      "amount": 8504.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "9rm7pyxd",
+      "date": "2026-01-20",
+      "type": "Expense",
+      "category": "Investment Purchase (Stocks/MF/etc.)",
+      "description": "Groww mutual fund SIP",
+      "amount": 12577.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "cfzw0lda",
+      "date": "2026-02-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 82316.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "ddpusddt",
+      "date": "2026-02-20",
+      "type": "Income",
+      "category": "Dividend",
+      "description": "Stock dividend payout",
+      "amount": 13065.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "knd669ug",
+      "date": "2026-02-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "gjjfgjk2",
+      "date": "2026-02-12",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Water supply bill",
+      "amount": 2100.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "vhdk8lw2",
+      "date": "2026-02-11",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Gas cylinder refill",
+      "amount": 1003.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "kvzrgol0",
+      "date": "2026-02-21",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Gas cylinder refill",
+      "amount": 2142.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "n3oeuvty",
+      "date": "2026-02-18",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 3068.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "7h23c42y",
+      "date": "2026-02-05",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 1078.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "fpnqvut7",
+      "date": "2026-02-28",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 1922.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "z3v6dixf",
+      "date": "2026-02-20",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 1977.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "yo18pajs",
+      "date": "2026-02-17",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 1648.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "1vsmado8",
+      "date": "2026-02-04",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 936.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "qhrrpzlk",
+      "date": "2026-02-26",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 154.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "xyf9igfu",
+      "date": "2026-02-15",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 2015.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "gxo05qpa",
+      "date": "2026-02-07",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 768.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "u2tnheyr",
+      "date": "2026-02-21",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Petrol - Indian Oil",
+      "amount": 1533.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "vm4w3zkw",
+      "date": "2026-02-03",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 852.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "enfnvupr",
+      "date": "2026-02-18",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 1088.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "kg4w58rh",
+      "date": "2026-02-13",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 855.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "o4rcb1kj",
+      "date": "2026-02-18",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 469.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "u1rsujt9",
+      "date": "2026-02-18",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 1416.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "9d31k9qm",
+      "date": "2026-02-27",
+      "type": "Expense",
+      "category": "Entertainment",
+      "description": "PVR movie tickets",
+      "amount": 1266.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "4vpw232u",
+      "date": "2026-02-18",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Myntra clothing haul",
+      "amount": 3783.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "lzkj49yd",
+      "date": "2026-02-25",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Decathlon sports gear",
+      "amount": 5553.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "5e5iz31y",
+      "date": "2026-02-16",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Flipkart electronics",
+      "amount": 3676.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "nc21o0z5",
+      "date": "2026-02-15",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 499,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "la100qxm",
+      "date": "2026-02-03",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "83rlkte4",
+      "date": "2026-02-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "61bw4a7f",
+      "date": "2026-02-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "ICICI credit card payment",
+      "amount": 8011.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "yexf7jxj",
+      "date": "2026-02-12",
+      "type": "Expense",
+      "category": "Miscellaneous",
+      "description": "ATM cash withdrawal",
+      "amount": 293.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "w01pddhc",
+      "date": "2026-03-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 86312.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "qame4yri",
+      "date": "2026-03-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "0dl5e11e",
+      "date": "2026-03-22",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "ACT Fibernet broadband",
+      "amount": 523.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "vfmh07wp",
+      "date": "2026-03-07",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "BESCOM electricity bill",
+      "amount": 2014.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "vn8lfjdt",
+      "date": "2026-03-20",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 2581.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "a45hvgox",
+      "date": "2026-03-26",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 1786.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "iwc5amln",
+      "date": "2026-03-27",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 1423.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "181acjbc",
+      "date": "2026-03-26",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 1316.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "poxtfdc7",
+      "date": "2026-03-26",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 1387.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "v1xxlp8i",
+      "date": "2026-03-08",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 2319.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "qvl00ezz",
+      "date": "2026-03-06",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 2387.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "n050e6mp",
+      "date": "2026-03-17",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 621.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "rsb4gf16",
+      "date": "2026-03-22",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 565.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "b5iqnf74",
+      "date": "2026-03-18",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 559.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "zjcns6g2",
+      "date": "2026-03-02",
+      "type": "Expense",
+      "category": "Entertainment",
+      "description": "BookMyShow concert",
+      "amount": 452.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "ltahukwq",
+      "date": "2026-03-19",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Decathlon sports gear",
+      "amount": 5988.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "0t2f7atw",
+      "date": "2026-03-23",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Amazon order",
+      "amount": 5730.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "1n0lh9p8",
+      "date": "2026-03-05",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Myntra clothing haul",
+      "amount": 1012.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "szn9dde3",
+      "date": "2026-03-03",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "up8ijl2z",
+      "date": "2026-03-24",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 499,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "jch2vffq",
+      "date": "2026-03-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "t8hljefy",
+      "date": "2026-03-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "HDFC credit card bill",
+      "amount": 11655.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "z8obk3g8",
+      "date": "2026-03-28",
+      "type": "Expense",
+      "category": "Miscellaneous",
+      "description": "Misc household expense",
+      "amount": 1201.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "tdd2ec2i",
+      "date": "2026-04-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 80774.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "y7dv7c9h",
+      "date": "2026-04-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "3d43e7b7",
+      "date": "2026-04-14",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Gas cylinder refill",
+      "amount": 1293.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "yghgk5bw",
+      "date": "2026-04-08",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Water supply bill",
+      "amount": 1298.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "ckeh5sw2",
+      "date": "2026-04-26",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "BESCOM electricity bill",
+      "amount": 2181.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "tr6snglh",
+      "date": "2026-04-29",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 564.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "t199dxj3",
+      "date": "2026-04-30",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 2539.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "u9n79gil",
+      "date": "2026-04-24",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 2959.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "zmuf8438",
+      "date": "2026-04-18",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 892.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "dihsa7he",
+      "date": "2026-04-23",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 2973.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "cfzfdsnc",
+      "date": "2026-04-23",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 2041.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "l90pxrlz",
+      "date": "2026-04-18",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Petrol - Indian Oil",
+      "amount": 636.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "n0kgazu4",
+      "date": "2026-04-25",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 537.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "78hu7f0i",
+      "date": "2026-04-11",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 1627.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "3y0mahym",
+      "date": "2026-04-26",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 1829.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "n085rntd",
+      "date": "2026-04-16",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 490.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "kl8cgn0t",
+      "date": "2026-04-29",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 741.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "zpxvpbl9",
+      "date": "2026-04-14",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 1257.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "bu4fmpkx",
+      "date": "2026-04-20",
+      "type": "Expense",
+      "category": "Entertainment",
+      "description": "BookMyShow concert",
+      "amount": 739.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "w9re2q6j",
+      "date": "2026-04-21",
+      "type": "Expense",
+      "category": "Healthcare",
+      "description": "Annual health checkup",
+      "amount": 1928.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "5nqjqijc",
+      "date": "2026-04-25",
+      "type": "Expense",
+      "category": "Insurance",
+      "description": "LIC premium payment",
+      "amount": 6114.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "3o1icns8",
+      "date": "2026-04-22",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Decathlon sports gear",
+      "amount": 3650.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "rc6zs62y",
+      "date": "2026-04-20",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Flipkart electronics",
+      "amount": 1162.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "g983ep9p",
+      "date": "2026-04-27",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Flipkart electronics",
+      "amount": 5088.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "03dut4s7",
+      "date": "2026-04-01",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "wspofv17",
+      "date": "2026-04-30",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 199,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "dktmonrv",
+      "date": "2026-04-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "jfvyb6li",
+      "date": "2026-04-24",
+      "type": "Expense",
+      "category": "Personal Care",
+      "description": "Skincare products",
+      "amount": 1865.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "6a3kkrzd",
+      "date": "2026-04-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "HDFC credit card bill",
+      "amount": 10285.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "3jpxgh30",
+      "date": "2026-05-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 88633.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "3sflse45",
+      "date": "2026-05-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "g5hcbbmh",
+      "date": "2026-05-12",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Gas cylinder refill",
+      "amount": 1309.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "yirq8rtm",
+      "date": "2026-05-27",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Water supply bill",
+      "amount": 1748.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "ab42hhih",
+      "date": "2026-05-21",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 1837.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "a6xvaj2k",
+      "date": "2026-05-31",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 1587.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "4qhkswva",
+      "date": "2026-05-22",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 1972.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "vkdc9x5j",
+      "date": "2026-05-23",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 927.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "1622vxyz",
+      "date": "2026-05-21",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "More Supermarket",
+      "amount": 3193.0,
+      "payment": "Debit Card"
+    },
+    {
+      "id": "o0u93mzy",
+      "date": "2026-05-21",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 2276.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "s445gdej",
+      "date": "2026-05-26",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Ola airport drop",
+      "amount": 2373.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "xii5p5nv",
+      "date": "2026-05-15",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 1229.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "qheyto5f",
+      "date": "2026-05-07",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Petrol - Indian Oil",
+      "amount": 1082.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "f5gcl9lc",
+      "date": "2026-05-15",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Petrol - Indian Oil",
+      "amount": 603.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "uf22eppp",
+      "date": "2026-05-16",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 111.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "861taa0i",
+      "date": "2026-05-29",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 699.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "nvg3kk0v",
+      "date": "2026-05-11",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 1621.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "m6mg87oi",
+      "date": "2026-05-24",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 538.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "vgnxb5jt",
+      "date": "2026-05-02",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 1259.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "epejzhya",
+      "date": "2026-05-14",
+      "type": "Expense",
+      "category": "Entertainment",
+      "description": "Gaming subscription top-up",
+      "amount": 522.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "3dzeedhh",
+      "date": "2026-05-09",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Flipkart electronics",
+      "amount": 2469.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "kbrh7lay",
+      "date": "2026-05-30",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Amazon order",
+      "amount": 5094.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "fds0dji9",
+      "date": "2026-05-10",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Myntra clothing haul",
+      "amount": 3054.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "354mype4",
+      "date": "2026-05-29",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Amazon order",
+      "amount": 553.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "gmpw5d3g",
+      "date": "2026-05-13",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 499,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "8jn42x2e",
+      "date": "2026-05-23",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "7fov2ygn",
+      "date": "2026-05-12",
+      "type": "Expense",
+      "category": "Travel",
+      "description": "Goa weekend trip hotel",
+      "amount": 2375.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "y49e7eob",
+      "date": "2026-05-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "lzy1uu9y",
+      "date": "2026-05-11",
+      "type": "Expense",
+      "category": "Personal Care",
+      "description": "Salon haircut",
+      "amount": 1036.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "0rxxf36w",
+      "date": "2026-05-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "HDFC credit card bill",
+      "amount": 18938.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "445cri8b",
+      "date": "2026-05-08",
+      "type": "Expense",
+      "category": "Investment Purchase (Stocks/MF/etc.)",
+      "description": "Upstox investment",
+      "amount": 10720.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "iq2q4qer",
+      "date": "2026-06-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 87147.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "bt328w6u",
+      "date": "2026-06-21",
+      "type": "Income",
+      "category": "Reimbursement/Refund",
+      "description": "Amazon return refund",
+      "amount": 14295.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "334l1vzn",
+      "date": "2026-06-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "e1hm38ks",
+      "date": "2026-06-23",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "BESCOM electricity bill",
+      "amount": 482.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "r30ojhe4",
+      "date": "2026-06-07",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Gas cylinder refill",
+      "amount": 1884.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "zdo74v1q",
+      "date": "2026-06-22",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "ACT Fibernet broadband",
+      "amount": 2135.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "tpv726yg",
+      "date": "2026-06-27",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 690.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "v5sn961j",
+      "date": "2026-06-11",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "Local vegetable vendor",
+      "amount": 1668.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "ev5s4tl0",
+      "date": "2026-06-18",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "DMart weekly shopping",
+      "amount": 962.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "y7ez9gtw",
+      "date": "2026-06-23",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 1926.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "u7zy6t5p",
+      "date": "2026-06-01",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Uber to office",
+      "amount": 161.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "bcj29yfc",
+      "date": "2026-06-26",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Petrol - Indian Oil",
+      "amount": 590.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "mqwyuixn",
+      "date": "2026-06-17",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Petrol - Indian Oil",
+      "amount": 1763.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "7n89ltaj",
+      "date": "2026-06-20",
+      "type": "Expense",
+      "category": "Transportation",
+      "description": "Metro card recharge",
+      "amount": 2092.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "tv18kgyg",
+      "date": "2026-06-06",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 804.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "kjf4aq7b",
+      "date": "2026-06-30",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 1155.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "rum2lhgc",
+      "date": "2026-06-17",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 865.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "dhhlmh1t",
+      "date": "2026-06-18",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 384.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "q6ww8yl6",
+      "date": "2026-06-04",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 611.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "as1ssrkx",
+      "date": "2026-06-11",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Swiggy dinner order",
+      "amount": 1717.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "hwhy4h35",
+      "date": "2026-06-24",
+      "type": "Expense",
+      "category": "Shopping",
+      "description": "Decathlon sports gear",
+      "amount": 4056.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "fqldb2uu",
+      "date": "2026-06-08",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Netflix subscription",
+      "amount": 499,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "oqoloeaz",
+      "date": "2026-06-03",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 649,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "zc7d2kd1",
+      "date": "2026-06-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "oxrteo2t",
+      "date": "2026-06-20",
+      "type": "Expense",
+      "category": "Credit Card Bill Payment",
+      "description": "HDFC credit card bill",
+      "amount": 13067.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "5x8a5fbu",
+      "date": "2026-07-01",
+      "type": "Income",
+      "category": "Salary",
+      "description": "Monthly salary credit - Infosys",
+      "amount": 83517.0,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "dh00h64f",
+      "date": "2026-07-03",
+      "type": "Expense",
+      "category": "Housing/Rent",
+      "description": "Monthly rent - Koramangala flat",
+      "amount": 24000,
+      "payment": "Net Banking"
+    },
+    {
+      "id": "kcd0rlex",
+      "date": "2026-07-04",
+      "type": "Expense",
+      "category": "Utilities",
+      "description": "Water supply bill",
+      "amount": 1515.0,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "rlxyfu38",
+      "date": "2026-07-06",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 1277.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "gv44ftj5",
+      "date": "2026-07-03",
+      "type": "Expense",
+      "category": "Groceries",
+      "description": "BigBasket grocery order",
+      "amount": 2898.0,
+      "payment": "Cash"
+    },
+    {
+      "id": "fcxhgnze",
+      "date": "2026-07-08",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Coffee with friends",
+      "amount": 1498.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "rrhf4abu",
+      "date": "2026-07-06",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Zomato lunch",
+      "amount": 1207.0,
+      "payment": "UPI"
+    },
+    {
+      "id": "q95g3v23",
+      "date": "2026-07-06",
+      "type": "Expense",
+      "category": "Dining Out",
+      "description": "Weekend brunch cafe",
+      "amount": 468.0,
+      "payment": "Credit Card"
+    },
+    {
+      "id": "eaxylnfx",
+      "date": "2026-07-09",
+      "type": "Expense",
+      "category": "Subscriptions",
+      "description": "Spotify Premium",
+      "amount": 499,
+      "payment": "Auto-Debit"
+    },
+    {
+      "id": "pnjy1o2r",
+      "date": "2026-07-05",
+      "type": "Expense",
+      "category": "EMI/Loan",
+      "description": "Car loan EMI",
+      "amount": 9800,
+      "payment": "Auto-Debit"
+    }
+  ],
+  "recurring": [
+    {
+      "id": "3qvdjnv0",
+      "name": "Netflix",
+      "category": "Subscriptions",
+      "amount": 649,
+      "frequency": "Monthly",
+      "status": "Active",
+      "lastPostedMonth": "2026-06"
+    },
+    {
+      "id": "7oxk8c1g",
+      "name": "Spotify Premium",
+      "category": "Subscriptions",
+      "amount": 119,
+      "frequency": "Monthly",
+      "status": "Active",
+      "lastPostedMonth": null
+    },
+    {
+      "id": "ra47sh2s",
+      "name": "Home Loan EMI",
+      "category": "EMI/Loan",
+      "amount": 24500,
+      "frequency": "Monthly",
+      "status": "Active",
+      "lastPostedMonth": "2026-06"
+    },
+    {
+      "id": "zwymx9dj",
+      "name": "Car Loan EMI",
+      "category": "EMI/Loan",
+      "amount": 9800,
+      "frequency": "Monthly",
+      "status": "Active",
+      "lastPostedMonth": null
+    },
+    {
+      "id": "oyohaz7t",
+      "name": "Health Insurance",
+      "category": "Insurance",
+      "amount": 14500,
+      "frequency": "Yearly",
+      "status": "Active",
+      "lastPostedMonth": null
+    },
+    {
+      "id": "0uum3i8q",
+      "name": "Gym Membership",
+      "category": "Personal Care",
+      "amount": 1800,
+      "frequency": "Quarterly",
+      "status": "Paused",
+      "lastPostedMonth": null
+    },
+    {
+      "id": "oagsusme",
+      "name": "ACT Fibernet Broadband",
+      "category": "Utilities",
+      "amount": 999,
+      "frequency": "Monthly",
+      "status": "Active",
+      "lastPostedMonth": null
+    }
+  ],
+  "investments": [
+    {
+      "id": "sjt2jpnr",
+      "name": "HDFC Bank",
+      "type": "Stock",
+      "qty": 25,
+      "buy": 1480,
+      "current": 1620,
+      "lastUpdated": "2026-07-05T10:00:00.000Z"
+    },
+    {
+      "id": "im1y65rj",
+      "name": "Infosys",
+      "type": "Stock",
+      "qty": 15,
+      "buy": 1420,
+      "current": 1510,
+      "lastUpdated": "2026-07-05T10:00:00.000Z"
+    },
+    {
+      "id": "n2hz2omt",
+      "name": "Tata Motors",
+      "type": "MTF",
+      "qty": 40,
+      "buy": 720,
+      "current": 690,
+      "lastUpdated": "2026-06-28T10:00:00.000Z"
+    },
+    {
+      "id": "zjko0mtg",
+      "name": "Reliance Industries",
+      "type": "Stock",
+      "qty": 10,
+      "buy": 2450,
+      "current": 2610,
+      "lastUpdated": "2026-07-01T10:00:00.000Z"
+    },
+    {
+      "id": "lhug07g0",
+      "name": "Axis Bluechip Fund",
+      "type": "Mutual Fund",
+      "qty": 320.5,
+      "buy": 48.2,
+      "current": 52.7,
+      "lastUpdated": "2026-07-08T10:00:00.000Z"
+    },
+    {
+      "id": "iiji44m2",
+      "name": "Parag Parikh Flexi Cap",
+      "type": "Mutual Fund",
+      "qty": 210.3,
+      "buy": 62.1,
+      "current": 68.4,
+      "lastUpdated": "2026-07-08T10:00:00.000Z"
+    },
+    {
+      "id": "ec8ra484",
+      "name": "SBI FD - 2 yr",
+      "type": "Fixed Deposit",
+      "qty": 1,
+      "buy": 150000,
+      "current": 163500,
+      "lastUpdated": "2026-05-15T10:00:00.000Z"
+    },
+    {
+      "id": "nl65ujg1",
+      "name": "EPF Balance",
+      "type": "PPF/EPF",
+      "qty": 1,
+      "buy": 320000,
+      "current": 345000,
+      "lastUpdated": "2026-04-01T10:00:00.000Z"
+    },
+    {
+      "id": "so1esp7b",
+      "name": "Digital Gold",
+      "type": "Gold",
+      "qty": 8.5,
+      "buy": 5600,
+      "current": 6300,
+      "lastUpdated": "2026-07-10T10:00:00.000Z"
+    },
+    {
+      "id": "m41qesla",
+      "name": "Bitcoin",
+      "type": "Crypto",
+      "qty": 0.015,
+      "buy": 4800000,
+      "current": 5250000,
+      "lastUpdated": "2026-07-09T10:00:00.000Z"
+    }
+  ],
+  "categories": {
+    "Income": [
+      "Salary",
+      "Freelance",
+      "Business",
+      "Interest",
+      "Dividend",
+      "Rental Income",
+      "Gift",
+      "Reimbursement/Refund",
+      "Other Income"
+    ],
+    "Expense": [
+      "Housing/Rent",
+      "Utilities",
+      "Groceries",
+      "Transportation",
+      "Dining Out",
+      "Entertainment",
+      "Healthcare",
+      "Insurance",
+      "Shopping",
+      "Education",
+      "Subscriptions",
+      "Travel",
+      "EMI/Loan",
+      "Personal Care",
+      "Credit Card Bill Payment",
+      "Investment Purchase (Stocks/MF/etc.)",
+      "Lent to Someone",
+      "Miscellaneous"
+    ]
+  },
+  "investmentTypes": [
+    "Stock",
+    "MTF",
+    "Mutual Fund",
+    "Fixed Deposit",
+    "PPF/EPF",
+    "Gold",
+    "Crypto",
+    "Bonds",
+    "Other"
+  ],
+  "budgets": {
+    "Groceries": 12000,
+    "Dining Out": 6000,
+    "Transportation": 5000,
+    "Entertainment": 3000,
+    "Shopping": 8000,
+    "Subscriptions": 1500
+  },
+  "rules": [
+    {
+      "kw": "salary",
+      "cat": "Salary"
+    },
+    {
+      "kw": "swiggy",
+      "cat": "Dining Out"
+    },
+    {
+      "kw": "zomato",
+      "cat": "Dining Out"
+    },
+    {
+      "kw": "uber",
+      "cat": "Transportation"
+    },
+    {
+      "kw": "ola",
+      "cat": "Transportation"
+    },
+    {
+      "kw": "amazon",
+      "cat": "Shopping"
+    },
+    {
+      "kw": "flipkart",
+      "cat": "Shopping"
+    },
+    {
+      "kw": "netflix",
+      "cat": "Subscriptions"
+    },
+    {
+      "kw": "spotify",
+      "cat": "Subscriptions"
+    },
+    {
+      "kw": "rent",
+      "cat": "Housing/Rent"
+    },
+    {
+      "kw": "electricity",
+      "cat": "Utilities"
+    },
+    {
+      "kw": "bescom",
+      "cat": "Utilities"
+    },
+    {
+      "kw": "wifi",
+      "cat": "Utilities"
+    },
+    {
+      "kw": "broadband",
+      "cat": "Utilities"
+    },
+    {
+      "kw": "emi",
+      "cat": "EMI/Loan"
+    },
+    {
+      "kw": "insurance",
+      "cat": "Insurance"
+    },
+    {
+      "kw": "hospital",
+      "cat": "Healthcare"
+    },
+    {
+      "kw": "pharmacy",
+      "cat": "Healthcare"
+    },
+    {
+      "kw": "grocery",
+      "cat": "Groceries"
+    },
+    {
+      "kw": "bigbasket",
+      "cat": "Groceries"
+    },
+    {
+      "kw": "dmart",
+      "cat": "Groceries"
+    },
+    {
+      "kw": "fuel",
+      "cat": "Transportation"
+    },
+    {
+      "kw": "petrol",
+      "cat": "Transportation"
+    },
+    {
+      "kw": "tuition",
+      "cat": "Education"
+    },
+    {
+      "kw": "dividend",
+      "cat": "Dividend"
+    },
+    {
+      "kw": "interest",
+      "cat": "Interest"
+    },
+    {
+      "kw": "credit card",
+      "cat": "Credit Card Bill Payment"
+    },
+    {
+      "kw": "cc payment",
+      "cat": "Credit Card Bill Payment"
+    },
+    {
+      "kw": "zerodha",
+      "cat": "Investment Purchase (Stocks/MF/etc.)"
+    },
+    {
+      "kw": "groww",
+      "cat": "Investment Purchase (Stocks/MF/etc.)"
+    },
+    {
+      "kw": "upstox",
+      "cat": "Investment Purchase (Stocks/MF/etc.)"
+    },
+    {
+      "kw": "mutual fund",
+      "cat": "Investment Purchase (Stocks/MF/etc.)"
+    },
+    {
+      "kw": "reimb",
+      "cat": "Reimbursement/Refund"
+    },
+    {
+      "kw": "refund",
+      "cat": "Reimbursement/Refund"
+    }
+  ]
+}

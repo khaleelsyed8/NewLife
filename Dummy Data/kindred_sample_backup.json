@@ -1,0 +1,389 @@
+{
+  "people": [
+    {
+      "id": "f1242c7f",
+      "name": "Ananya Rao",
+      "relation": "Partner",
+      "birthday": "1994-03-12",
+      "anniversary": "2021-11-08",
+      "contactCadenceDays": 3,
+      "tags": [
+        "home",
+        "adventure"
+      ],
+      "notes": "Loves early morning walks and terrible puns. Always knows when I'm stressed before I say anything.",
+      "closeness": 82,
+      "lastContact": "2026-07-04",
+      "color": "#D9718A"
+    },
+    {
+      "id": "50767e52",
+      "name": "Rohit Sharma",
+      "relation": "Friend",
+      "birthday": "1993-07-22",
+      "anniversary": "",
+      "contactCadenceDays": 14,
+      "tags": [
+        "college friend",
+        "cricket"
+      ],
+      "notes": "Known him since engineering. Terrible at replying to texts but always shows up when it matters.",
+      "closeness": 68,
+      "lastContact": "2026-06-15",
+      "color": "#E8A93D"
+    },
+    {
+      "id": "7f618614",
+      "name": "Meera Nair",
+      "relation": "Family",
+      "birthday": "1965-01-30",
+      "anniversary": "",
+      "contactCadenceDays": 10,
+      "tags": [
+        "mom"
+      ],
+      "notes": "Calls on Sundays. Worries too much, loves harder.",
+      "closeness": 75,
+      "lastContact": "2026-07-02",
+      "color": "#7FA8D9"
+    },
+    {
+      "id": "94a86649",
+      "name": "Arjun Iyer",
+      "relation": "Friend",
+      "birthday": "1995-09-02",
+      "anniversary": "",
+      "contactCadenceDays": 21,
+      "tags": [
+        "book club",
+        "gym buddy"
+      ],
+      "notes": "We started the book club together. He always picks the longest novels.",
+      "closeness": 55,
+      "lastContact": "2026-06-10",
+      "color": "#C77DA0"
+    },
+    {
+      "id": "a6c4c9b1",
+      "name": "Priya Menon",
+      "relation": "Colleague",
+      "birthday": "1990-05-18",
+      "anniversary": "",
+      "contactCadenceDays": 30,
+      "tags": [
+        "work",
+        "mentor"
+      ],
+      "notes": "Great sounding board for career stuff. Should catch up outside work more.",
+      "closeness": 40,
+      "lastContact": "2026-05-26",
+      "color": "#5B8FC9"
+    },
+    {
+      "id": "3c9e008b",
+      "name": "Karthik Das",
+      "relation": "Family",
+      "birthday": "1998-12-25",
+      "anniversary": "",
+      "contactCadenceDays": 20,
+      "tags": [
+        "brother"
+      ],
+      "notes": "Younger brother, in his final year of college. Texts only in memes.",
+      "closeness": 60,
+      "lastContact": "2026-06-30",
+      "color": "#F2B265"
+    },
+    {
+      "id": "a9bacb5b",
+      "name": "Divya Krishnan",
+      "relation": "Mentor",
+      "birthday": "1978-04-09",
+      "anniversary": "",
+      "contactCadenceDays": 45,
+      "tags": [
+        "career",
+        "ex-manager"
+      ],
+      "notes": "Gave me my first real break. Occasional coffee catch-ups, always insightful.",
+      "closeness": 50,
+      "lastContact": "2026-05-06",
+      "color": "#7FBF8F"
+    },
+    {
+      "id": "d2b46b62",
+      "name": "Sana Sheikh",
+      "relation": "Friend",
+      "birthday": "1994-11-14",
+      "anniversary": "",
+      "contactCadenceDays": 14,
+      "tags": [
+        "school friend",
+        "travel buddy"
+      ],
+      "notes": "Been planning a trip together for two years. Need to actually book it.",
+      "closeness": 30,
+      "lastContact": "2026-06-17",
+      "color": "#C98BD9"
+    },
+    {
+      "id": "7d247d94",
+      "name": "Vikram Chawla",
+      "relation": "Other",
+      "birthday": "1991-08-30",
+      "anniversary": "",
+      "contactCadenceDays": 30,
+      "tags": [
+        "neighbor"
+      ],
+      "notes": "New neighbor, seems nice. Haven't really connected yet.",
+      "closeness": 15,
+      "lastContact": null,
+      "color": "#D9718A"
+    }
+  ],
+  "journal": [
+    {
+      "id": "2ac57417",
+      "date": "2026-07-03",
+      "title": "A quiet Saturday",
+      "html": "<p>Slept in, made coffee slowly, sat on the balcony for an hour doing nothing. It felt like the first real pause in weeks.</p>",
+      "mood": "good",
+      "createdAt": 2026070300000
+    },
+    {
+      "id": "7344f69a",
+      "date": "2026-07-01",
+      "title": "Rough day at work",
+      "html": "<p>Missed a deadline and felt awful about it all evening. Rohit called right when I needed it and just let me vent.</p>",
+      "mood": "low",
+      "createdAt": 2026070100000
+    },
+    {
+      "id": "56525232",
+      "date": "2026-06-29",
+      "title": "",
+      "html": "<p>Went for a run this morning, first one in three weeks. Legs are angry but head is clear.</p>",
+      "mood": "okay",
+      "createdAt": 2026062900000
+    },
+    {
+      "id": "1ff15c77",
+      "date": "2026-06-26",
+      "title": "Dinner with Ananya",
+      "html": "<p>We tried that new Malayali place downtown. Talked for two hours about nothing important and it was perfect.</p>",
+      "mood": "great",
+      "createdAt": 2026062600000
+    },
+    {
+      "id": "200547c7",
+      "date": "2026-06-23",
+      "title": "Overthinking again",
+      "html": "<p>Spent way too long replaying a conversation from last week. Writing it down to let it go.</p>",
+      "mood": "rough",
+      "createdAt": 2026062300000
+    },
+    {
+      "id": "fe70ac1c",
+      "date": "2026-06-20",
+      "title": "Small win",
+      "html": "<p>Finally finished the book club novel \u2014 640 pages. Arjun owes me a celebratory chai.</p>",
+      "mood": "good",
+      "createdAt": 2026062000000
+    },
+    {
+      "id": "f5fc1b6b",
+      "date": "2026-06-16",
+      "title": "Mom's call",
+      "html": "<p>Amma called worried about my sleep schedule again. She's not wrong, but I appreciate that she still checks.</p>",
+      "mood": "okay",
+      "createdAt": 2026061600000
+    },
+    {
+      "id": "cdf31f0c",
+      "date": "2026-06-12",
+      "title": "",
+      "html": "<p>Long walk after work, no headphones, just noise of the city. Needed the silence more than I realized.</p>",
+      "mood": "good",
+      "createdAt": 2026061200000
+    },
+    {
+      "id": "502d4d33",
+      "date": "2026-06-08",
+      "title": "A hard conversation",
+      "html": "<p>Had an honest talk with Priya about where I want my career to go. Uncomfortable but necessary.</p>",
+      "mood": "low",
+      "createdAt": 2026060800000
+    },
+    {
+      "id": "7dd0e0cd",
+      "date": "2026-06-05",
+      "title": "First entry",
+      "html": "<p>Starting this journal properly. Not sure what I'll use it for yet, but here goes.</p>",
+      "mood": "",
+      "createdAt": 2026060500000
+    }
+  ],
+  "habits": [
+    {
+      "id": "28ce0a31",
+      "name": "Morning meditation",
+      "color": "#D9718A",
+      "goalPerWeek": 5,
+      "bestStreak": 7,
+      "log": {
+        "2026-07-05": true,
+        "2026-07-02": true,
+        "2026-07-01": true,
+        "2026-06-30": true,
+        "2026-06-27": true,
+        "2026-06-26": true,
+        "2026-06-24": true,
+        "2026-06-22": true,
+        "2026-06-21": true,
+        "2026-06-19": true,
+        "2026-06-16": true,
+        "2026-06-15": true,
+        "2026-06-14": true,
+        "2026-06-12": true,
+        "2026-06-11": true,
+        "2026-06-10": true,
+        "2026-06-09": true,
+        "2026-06-08": true,
+        "2026-06-07": true,
+        "2026-06-06": true
+      }
+    },
+    {
+      "id": "f8ee0ad6",
+      "name": "Exercise",
+      "color": "#7FA8D9",
+      "goalPerWeek": 4,
+      "bestStreak": 4,
+      "log": {
+        "2026-07-03": true,
+        "2026-07-02": true,
+        "2026-06-28": true,
+        "2026-06-24": true,
+        "2026-06-23": true,
+        "2026-06-22": true,
+        "2026-06-17": true,
+        "2026-06-16": true,
+        "2026-06-15": true,
+        "2026-06-14": true,
+        "2026-06-12": true,
+        "2026-06-11": true,
+        "2026-06-07": true,
+        "2026-06-06": true
+      }
+    },
+    {
+      "id": "b18a4488",
+      "name": "Read before bed",
+      "color": "#5B8FC9",
+      "goalPerWeek": 6,
+      "bestStreak": 7,
+      "log": {
+        "2026-07-05": true,
+        "2026-07-04": true,
+        "2026-07-03": true,
+        "2026-07-02": true,
+        "2026-07-01": true,
+        "2026-06-30": true,
+        "2026-06-29": true,
+        "2026-06-27": true,
+        "2026-06-26": true,
+        "2026-06-24": true,
+        "2026-06-22": true,
+        "2026-06-21": true,
+        "2026-06-20": true,
+        "2026-06-19": true,
+        "2026-06-17": true,
+        "2026-06-15": true,
+        "2026-06-14": true,
+        "2026-06-12": true,
+        "2026-06-11": true,
+        "2026-06-10": true,
+        "2026-06-08": true
+      }
+    },
+    {
+      "id": "f4adb834",
+      "name": "No phone after 10pm",
+      "color": "#7FBF8F",
+      "goalPerWeek": 7,
+      "bestStreak": 4,
+      "log": {
+        "2026-07-05": true,
+        "2026-07-04": true,
+        "2026-07-02": true,
+        "2026-07-01": true,
+        "2026-06-26": true,
+        "2026-06-24": true,
+        "2026-06-23": true,
+        "2026-06-22": true,
+        "2026-06-21": true,
+        "2026-06-16": true,
+        "2026-06-15": true,
+        "2026-06-10": true,
+        "2026-06-06": true
+      }
+    }
+  ],
+  "moods": {
+    "2026-07-04": 53,
+    "2026-07-03": 43,
+    "2026-07-02": 34,
+    "2026-06-30": 17,
+    "2026-06-29": 18,
+    "2026-06-28": 13,
+    "2026-06-27": 14,
+    "2026-06-26": 20,
+    "2026-06-25": 15,
+    "2026-06-23": 27,
+    "2026-06-21": 5,
+    "2026-06-20": 5,
+    "2026-06-19": 5,
+    "2026-06-18": 11,
+    "2026-06-17": 20,
+    "2026-06-16": 26,
+    "2026-06-15": 20,
+    "2026-06-14": 25,
+    "2026-06-13": 31,
+    "2026-06-12": 25,
+    "2026-06-11": 30
+  },
+  "events": [
+    {
+      "id": "a285a936",
+      "title": "Parents' wedding anniversary",
+      "date": "1990-02-14",
+      "recurring": true
+    },
+    {
+      "id": "f841c375",
+      "title": "Started new job",
+      "date": "2023-08-01",
+      "recurring": true
+    },
+    {
+      "id": "3fb238c7",
+      "title": "Trip to Coorg with Sana",
+      "date": "2026-07-23",
+      "recurring": false
+    },
+    {
+      "id": "d3e9c2ea",
+      "title": "Therapy check-in",
+      "date": "2026-07-09",
+      "recurring": false
+    }
+  ],
+  "settings": {
+    "quoteMode": "daily",
+    "quoteOverrideDate": null,
+    "quoteOverrideIndex": null,
+    "theme": "light",
+    "quoteCategory": ""
+  }
+}
