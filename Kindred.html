@@ -10,233 +10,200 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/quill/1.3.6/quill.min.js"></script>
 <style>
 :root{
-  --cream:#FFFBF5;
-  --blush:#FCE4DD;
-  --gold:#FBE8C6;
-  --sky:#E3ECFB;
-  --rose:#D9718A;
-  --rose-dark:#B14F68;
-  --sun:#E8A93D;
-  --blue:#7FA8D9;
-  --plum:#4A2F3C;
-  --plum-soft:#8A6D7A;
-  --glass:rgba(255,255,255,0.58);
-  --glass-strong:rgba(255,255,255,0.78);
-  --glass-border:rgba(255,255,255,0.75);
-  --surface:rgba(255,255,255,0.5);
-  --surface-strong:rgba(255,255,255,0.7);
-  --track:rgba(74,47,60,0.08);
-  --shadow: 0 10px 34px rgba(74,47,60,0.10);
-  --shadow-soft: 0 4px 16px rgba(74,47,60,0.07);
-  --r-lg:26px;
-  --r-md:18px;
-  --r-sm:12px;
-}
-body[data-theme="dark"]{
-  --cream:#221923;
-  --blush:#3A2530;
-  --gold:#392F1E;
-  --sky:#1E2734;
+  --ink:#141019;
+  --glass:rgba(28,23,33,0.46);
+  --glass-strong:rgba(28,23,33,0.68);
+  --glass-border:rgba(255,255,255,0.14);
+  --track:rgba(255,255,255,0.12);
+  --text:#F7F1F5;
+  --text-soft:rgba(247,241,245,0.68);
   --rose:#E38BA1;
   --rose-dark:#F0AEBE;
-  --sun:#E8B255;
+  --gold:#E8B255;
   --blue:#8FB6E6;
-  --plum:#F5ECF0;
-  --plum-soft:#C9AEBC;
-  --glass:rgba(45,34,42,0.55);
-  --glass-strong:rgba(55,42,51,0.78);
-  --glass-border:rgba(255,255,255,0.10);
-  --surface:rgba(255,255,255,0.06);
-  --surface-strong:rgba(255,255,255,0.10);
-  --track:rgba(255,255,255,0.08);
-  --shadow: 0 10px 34px rgba(0,0,0,0.35);
-  --shadow-soft: 0 4px 16px rgba(0,0,0,0.25);
+  --shadow: 0 12px 40px rgba(0,0,0,0.45);
+  --shadow-soft: 0 6px 20px rgba(0,0,0,0.3);
+  --r-lg:24px;
+  --r-md:18px;
+  --r-sm:12px;
+  --r-pill:999px;
 }
 *{box-sizing:border-box;}
 html,body{margin:0;min-height:100vh;}
 body{
   font-family:'Quicksand',sans-serif;
-  color:var(--plum);
-  background:var(--cream);
+  color:var(--text);
+  background:var(--ink);
   position:relative;
-  overflow-x:hidden;
-  transition:background .2s ease, color .2s ease;
+  min-height:100vh;
 }
-.blobs{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.55;}
-.blob.b1{width:480px;height:480px;background:var(--blush);top:-140px;left:-100px;animation:drift1 26s ease-in-out infinite;}
-.blob.b2{width:420px;height:420px;background:var(--sky);top:10%;right:-160px;animation:drift2 32s ease-in-out infinite;}
-.blob.b3{width:380px;height:380px;background:var(--gold);bottom:-140px;left:20%;animation:drift3 28s ease-in-out infinite;}
-@keyframes drift1{0%,100%{transform:translate(0,0);}50%{transform:translate(40px,60px);}}
-@keyframes drift2{0%,100%{transform:translate(0,0);}50%{transform:translate(-50px,40px);}}
-@keyframes drift3{0%,100%{transform:translate(0,0);}50%{transform:translate(30px,-50px);}}
-@media (prefers-reduced-motion: reduce){ .blob{animation:none;} }
 
-.app-shell{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:28px 20px 60px;}
-
-.glass{
-  background:var(--glass);
-  backdrop-filter:blur(22px) saturate(160%);
-  -webkit-backdrop-filter:blur(22px) saturate(160%);
-  border:1px solid var(--glass-border);
-  border-radius:var(--r-lg);
-  box-shadow:var(--shadow);
-}
+/* Wallpaper layer */
+.wallpaper-bg{position:fixed;inset:0;z-index:0;background:
+    radial-gradient(circle at 20% 20%, rgba(227,139,161,0.25), transparent 55%),
+    radial-gradient(circle at 80% 75%, rgba(143,182,230,0.22), transparent 55%),
+    linear-gradient(160deg,#1c1420,#100c14 70%);
+  background-size:cover;background-position:center;transition:background-image .4s ease;}
+.wallpaper-scrim{position:fixed;inset:0;z-index:0;background:linear-gradient(180deg, rgba(10,8,13,0.32), rgba(10,8,13,0.58));pointer-events:none;}
 
 /* Loading overlay */
-.loading-overlay{position:fixed;inset:0;background:var(--cream);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;transition:opacity .3s ease;}
+.loading-overlay{position:fixed;inset:0;background:var(--ink);z-index:999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;transition:opacity .3s ease;}
 .loading-overlay.hidden{opacity:0;pointer-events:none;}
 .loading-spin{width:34px;height:34px;border-radius:50%;border:3px solid var(--track);border-top-color:var(--rose);animation:spin 0.8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.loading-text{font-size:13px;color:var(--plum-soft);}
+.loading-text{font-size:13px;color:var(--text-soft);}
 
 /* Toasts */
-.toast-stack{position:fixed;bottom:20px;right:20px;z-index:200;display:flex;flex-direction:column;gap:8px;max-width:320px;}
-.toast{background:var(--plum);color:var(--cream);font-size:13px;padding:11px 16px;border-radius:12px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:all .25s ease;}
+.toast-stack{position:fixed;bottom:90px;right:20px;z-index:300;display:flex;flex-direction:column;gap:8px;max-width:320px;}
+.toast{background:rgba(20,16,24,0.92);color:var(--text);font-size:13px;padding:11px 16px;border-radius:14px;box-shadow:var(--shadow);opacity:0;transform:translateY(8px);transition:all .25s ease;border:1px solid var(--glass-border);}
 .toast.show{opacity:1;transform:translateY(0);}
-.toast.error{background:var(--rose-dark);}
+.toast.error{border-color:rgba(240,174,190,0.5);}
+
+.app-shell{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:110px 20px 130px;}
+
+.glass{
+  background:var(--glass);
+  backdrop-filter:blur(24px) saturate(150%);
+  -webkit-backdrop-filter:blur(24px) saturate(150%);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--shadow);
+}
 
 /* Hero */
-.hero{
-  padding:44px 40px;
-  text-align:center;
-  margin-bottom:18px;
-}
+.hero{border-radius:var(--r-lg);padding:38px 36px;text-align:center;margin-bottom:18px;}
 .hero .eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--rose-dark);font-weight:600;}
-.hero blockquote{
-  font-family:'Lora',serif;
-  font-style:italic;
-  font-weight:400;
-  font-size:clamp(20px,3vw,30px);
-  line-height:1.5;
-  color:var(--plum);
-  margin:16px auto 10px;
-  max-width:760px;
-}
-.hero .quote-cat{font-size:12px;color:var(--plum-soft);text-transform:capitalize;margin-bottom:18px;}
+.hero blockquote{font-family:'Lora',serif;font-style:italic;font-weight:400;font-size:clamp(19px,3vw,28px);line-height:1.5;color:var(--text);margin:14px auto 8px;max-width:720px;}
+.hero .quote-cat{font-size:12px;color:var(--text-soft);text-transform:capitalize;margin-bottom:16px;}
 .hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 
 /* Buttons */
-.btn{
-  font-family:'Quicksand',sans-serif;
-  font-weight:600;
-  font-size:13px;
-  padding:10px 18px;
-  border-radius:20px;
-  border:1px solid rgba(74,47,60,0.15);
-  background:var(--glass-strong);
-  color:var(--plum);
-  cursor:pointer;
-  transition:transform .12s ease, box-shadow .12s ease;
-}
+.btn{font-family:'Quicksand',sans-serif;font-weight:600;font-size:13px;padding:10px 18px;border-radius:var(--r-pill);
+  border:1px solid var(--glass-border);background:var(--glass-strong);color:var(--text);cursor:pointer;
+  transition:transform .12s ease, box-shadow .12s ease, background .15s ease;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);}
 .btn:hover{box-shadow:var(--shadow-soft);transform:translateY(-1px);}
 .btn:focus-visible{outline:2px solid var(--rose-dark);outline-offset:2px;}
-.btn.primary{background:var(--rose);border-color:var(--rose);color:#fff;}
-.btn.primary:hover{background:var(--rose-dark);}
-.btn.subtle{background:transparent;border-color:rgba(74,47,60,0.12);}
+.btn.primary{background:linear-gradient(135deg,var(--rose),var(--rose-dark));border-color:transparent;color:#241420;font-weight:700;}
+.btn.subtle{background:rgba(255,255,255,0.06);}
 .btn.small{padding:6px 12px;font-size:12px;}
-.btn.danger{background:transparent;border-color:rgba(179,79,104,0.4);color:var(--rose-dark);}
+.btn.danger{background:rgba(240,174,190,0.1);border-color:rgba(240,174,190,0.4);color:var(--rose-dark);}
 .btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
-.icon-toggle{width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;padding:0;font-size:16px;}
+.btn.active{background:var(--rose);color:#241420;border-color:var(--rose);}
+.icon-btn{width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;padding:0;font-size:15px;}
 
-/* Tab nav */
-.tabbar{
-  position:sticky;top:14px;z-index:10;
-  display:flex;gap:6px;justify-content:center;flex-wrap:wrap;
-  padding:8px;margin:0 auto 26px;
-  width:fit-content;
-  border-radius:30px;
-}
-.tab-btn{
-  font-family:'Quicksand',sans-serif;font-weight:600;font-size:13px;
-  padding:10px 18px;border-radius:22px;border:none;background:transparent;
-  color:var(--plum-soft);cursor:pointer;white-space:nowrap;
-}
-.tab-btn.active{background:var(--rose);color:#fff;}
+/* Pill navbar */
+.navbar-wrap{position:fixed;top:16px;left:0;right:0;z-index:40;display:flex;justify-content:center;padding:0 12px;}
+.navbar{display:flex;align-items:center;gap:4px;padding:8px;border-radius:var(--r-pill);max-width:100%;overflow-x:auto;}
+.navbar::-webkit-scrollbar{display:none;}
+.nav-brand{font-family:'Lora',serif;font-weight:600;font-size:14px;padding:0 12px 0 8px;white-space:nowrap;color:var(--rose-dark);}
+.tab-btn{font-family:'Quicksand',sans-serif;font-weight:600;font-size:12.5px;padding:9px 15px;border-radius:var(--r-pill);
+  border:none;background:transparent;color:var(--text-soft);cursor:pointer;white-space:nowrap;}
+.tab-btn.active{background:var(--rose);color:#241420;}
 .tab-btn:focus-visible{outline:2px solid var(--rose-dark);outline-offset:2px;}
+.nav-divider{width:1px;height:22px;background:var(--glass-border);margin:0 4px;flex-shrink:0;}
+
+/* Pill footer */
+.footer-wrap{position:fixed;bottom:16px;left:0;right:0;z-index:30;display:flex;justify-content:center;pointer-events:none;padding:0 12px;}
+.footer-pill{display:flex;align-items:center;gap:10px;padding:8px 18px;border-radius:var(--r-pill);font-size:11.5px;color:var(--text-soft);pointer-events:auto;}
+.footer-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.footer-dot.artifact{background:#8FE6B0;}
+.footer-dot.local{background:var(--gold);}
+.footer-dot.memory{background:var(--rose-dark);}
+
+/* Rearrange floating cluster */
+.rearrange-cluster{position:fixed;bottom:16px;right:16px;z-index:35;display:flex;gap:8px;}
+@media(max-width:600px){.rearrange-cluster{bottom:78px;right:10px;}}
 
 /* Pages */
 .page{display:none;}
-.page.active{display:block;animation:fade .25s ease;}
-@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+.page.active{display:block;}
+.card{position:relative;border-radius:var(--r-md);padding:22px 24px;margin-bottom:16px;}
+.card h2{font-family:'Lora',serif;font-weight:500;font-size:18px;margin:0 0 4px;}
+.card .sub{font-size:12.5px;color:var(--text-soft);margin:0 0 14px;}
 
-.card{padding:24px 26px;margin-bottom:18px;}
-.card h2{font-family:'Lora',serif;font-weight:500;font-size:19px;margin:0 0 4px;}
-.card .sub{font-size:12.5px;color:var(--plum-soft);margin:0 0 16px;}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+/* Draggable card affordance */
+.drag-handle{position:absolute;top:12px;right:12px;width:22px;height:22px;display:none;cursor:grab;color:var(--text-soft);z-index:5;touch-action:none;}
+.drag-handle::before{content:'';position:absolute;top:6px;left:6px;width:3px;height:3px;background:currentColor;border-radius:50%;
+  box-shadow:7px 0 currentColor, 0 5px currentColor, 7px 5px currentColor, 0 10px currentColor, 7px 10px currentColor;}
+.card.draggable-active{outline:1.5px dashed var(--glass-border);outline-offset:3px;}
+.card.draggable-active .drag-handle{display:block;}
+.card.dragging{cursor:grabbing;box-shadow:0 24px 60px rgba(0,0,0,0.55);z-index:50;}
 
 /* Form basics */
-label{display:block;font-size:11.5px;font-weight:600;color:var(--plum-soft);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.4px;}
+label{display:block;font-size:11px;font-weight:600;color:var(--text-soft);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.4px;}
 input[type=text],input[type=date],input[type=number],select,textarea{
-  font-family:'Quicksand',sans-serif;font-size:13.5px;padding:9px 12px;
-  border-radius:12px;border:1px solid rgba(74,47,60,0.15);
-  background:var(--surface-strong);color:var(--plum);width:100%;
-}
+  font-family:'Quicksand',sans-serif;font-size:13.5px;padding:10px 12px;border-radius:var(--r-sm);
+  border:1px solid var(--glass-border);background:rgba(255,255,255,0.06);color:var(--text);width:100%;}
+input::placeholder,textarea::placeholder{color:rgba(247,241,245,0.4);}
+select{appearance:none;-webkit-appearance:none;padding-right:34px;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23C9AEBC' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;background-size:14px;}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--rose);box-shadow:0 0 0 3px rgba(227,139,161,0.2);}
+select option{background:#211A26;color:var(--text);}
 input[type=range]{width:100%;accent-color:var(--rose);}
 .field{margin-bottom:12px;}
 .form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;align-items:end;}
-.hint{font-size:11px;color:var(--plum-soft);margin-top:4px;}
 
 /* Today page */
 .mood-track-wrap{margin:14px 0 6px;}
-.mood-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--plum-soft);margin-top:4px;}
-.mood-slider{
-  -webkit-appearance:none;appearance:none;height:10px;border-radius:10px;
-  background:linear-gradient(90deg,var(--blue),var(--gold),var(--rose));outline:none;
-}
+.mood-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text-soft);margin-top:4px;}
+.mood-slider{-webkit-appearance:none;appearance:none;height:10px;border-radius:10px;background:linear-gradient(90deg,var(--blue),var(--gold),var(--rose));outline:none;}
 .mood-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--rose);cursor:pointer;box-shadow:var(--shadow-soft);}
 .mood-slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--rose);cursor:pointer;}
-.mood-value{font-family:'Lora',serif;font-size:22px;text-align:center;margin-top:8px;}
+.mood-value{font-family:'Lora',serif;font-size:20px;text-align:center;margin-top:8px;}
 
-.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;}
-.stat-tile{background:var(--surface);border-radius:var(--r-sm);padding:14px 16px;}
-.stat-tile .num{font-family:'Lora',serif;font-size:24px;}
-.stat-tile .lbl{font-size:11.5px;color:var(--plum-soft);text-transform:uppercase;letter-spacing:0.4px;}
+.stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;}
+.stat-tile{background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:var(--r-sm);padding:12px 14px;}
+.stat-tile .num{font-family:'Lora',serif;font-size:22px;}
+.stat-tile .lbl{font-size:11px;color:var(--text-soft);text-transform:uppercase;letter-spacing:0.4px;}
 
-.nudge-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed rgba(74,47,60,0.12);gap:10px;}
+.nudge-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed var(--glass-border);gap:10px;}
 .nudge-item:last-child{border-bottom:none;}
 .nudge-name{font-weight:600;font-size:13.5px;}
-.nudge-meta{font-size:11.5px;color:var(--plum-soft);}
+.nudge-meta{font-size:11.5px;color:var(--text-soft);}
 
-/* Journal */
-#quillEditorWrap{background:var(--surface-strong);border-radius:0 0 var(--r-sm) var(--r-sm);}
-#quillEditor{min-height:180px;}
-.ql-toolbar.ql-snow{border-radius:var(--r-sm) var(--r-sm) 0 0;background:var(--surface);border-color:rgba(74,47,60,0.15) !important;}
-.ql-container.ql-snow{border-color:rgba(74,47,60,0.15) !important;}
-.ql-editor.ql-blank::before{color:var(--plum-soft) !important;}
-.word-count{font-size:11px;color:var(--plum-soft);text-align:right;margin-top:6px;}
+/* Journal / Quill dark override */
+#quillEditorWrap{background:rgba(255,255,255,0.05);border-radius:0 0 var(--r-sm) var(--r-sm);}
+#quillEditor{min-height:170px;color:var(--text);}
+.ql-toolbar.ql-snow{border-radius:var(--r-sm) var(--r-sm) 0 0;background:rgba(255,255,255,0.06);border-color:var(--glass-border) !important;}
+.ql-container.ql-snow{border-color:var(--glass-border) !important;}
+.ql-snow .ql-stroke{stroke:var(--text-soft) !important;}
+.ql-snow .ql-fill{fill:var(--text-soft) !important;}
+.ql-snow .ql-picker{color:var(--text-soft) !important;}
+.ql-snow .ql-picker-options{background:#211A26 !important;border-color:var(--glass-border) !important;}
+.ql-snow .ql-tooltip{background:#211A26 !important;color:var(--text) !important;border-color:var(--glass-border) !important;box-shadow:var(--shadow-soft) !important;}
+.ql-snow .ql-tooltip input{background:rgba(255,255,255,0.08);color:var(--text);}
+.ql-editor.ql-blank::before{color:rgba(247,241,245,0.4) !important;}
+.word-count{font-size:11px;color:var(--text-soft);text-align:right;margin-top:6px;}
 .journal-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
 .journal-toolbar input,.journal-toolbar select{width:auto;flex:1;min-width:140px;}
-.journal-entry{background:var(--surface);border-radius:var(--r-sm);padding:16px 18px;margin-bottom:12px;}
+.journal-entry{background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:var(--r-sm);padding:16px 18px;margin-bottom:12px;}
 .journal-entry .je-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;flex-wrap:wrap;gap:4px;}
-.journal-entry .je-date{font-size:11.5px;color:var(--plum-soft);}
+.journal-entry .je-date{font-size:11.5px;color:var(--text-soft);}
 .journal-entry .je-title{font-weight:600;font-size:14.5px;}
-.journal-entry .je-body{font-size:13.5px;line-height:1.6;max-height:120px;overflow:hidden;position:relative;}
+.journal-entry .je-body{font-size:13.5px;line-height:1.6;max-height:120px;overflow:hidden;position:relative;color:var(--text);}
 .journal-entry .je-body.expanded{max-height:none;}
 .journal-entry .je-body img{max-width:100%;border-radius:8px;}
-.journal-entry .je-fade{position:absolute;left:0;right:0;bottom:0;height:36px;background:linear-gradient(to bottom, transparent, var(--cream) 92%);display:none;}
-body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bottom, transparent, var(--cream) 92%);}
+.journal-entry .je-fade{position:absolute;left:0;right:0;bottom:0;height:36px;background:linear-gradient(to bottom, transparent, #201a24 90%);display:none;}
 .journal-entry .je-fade.show{display:block;}
 .journal-entry .je-actions{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;}
 
 /* Habits */
-.habit-card{background:var(--surface);border-radius:var(--r-sm);padding:14px 16px;margin-bottom:12px;}
+.habit-card{background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:var(--r-sm);padding:14px 16px;margin-bottom:12px;}
 .habit-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;}
 .habit-name{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;}
 .habit-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
-.habit-streak{font-size:12px;color:var(--plum-soft);}
+.habit-streak{font-size:12px;color:var(--text-soft);}
 .habit-grid{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
-.day-box{width:26px;height:26px;border-radius:7px;background:var(--track);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--plum-soft);border:none;}
-.day-box.done{color:#fff;}
-.day-box.today{box-shadow:0 0 0 2px var(--plum) inset;}
-.habit-progress-row{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--plum-soft);}
+.day-box{width:26px;height:26px;border-radius:7px;background:var(--track);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:9.5px;color:var(--text-soft);border:none;}
+.day-box.done{color:#1a1420;}
+.day-box.today{box-shadow:0 0 0 2px var(--text) inset;}
+.habit-progress-row{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--text-soft);}
 .progress-bar{flex:1;height:8px;border-radius:8px;background:var(--track);overflow:hidden;}
 .progress-fill{height:100%;border-radius:8px;transition:width .3s ease;}
-.habit-note{font-size:11.5px;color:var(--plum-soft);font-style:italic;margin-top:8px;}
 .color-swatches{display:flex;gap:8px;flex-wrap:wrap;}
 .color-swatch{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;}
-.color-swatch.selected{border-color:var(--plum);}
+.color-swatch.selected{border-color:var(--text);}
 
 /* People */
 .people-toolbar{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
@@ -245,88 +212,94 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
 .people-scroll::-webkit-scrollbar{height:8px;}
 .people-scroll::-webkit-scrollbar-thumb{background:var(--rose);border-radius:10px;}
 .people-scroll::-webkit-scrollbar-track{background:var(--track);border-radius:10px;}
-.person-card{
-  flex:0 0 250px;scroll-snap-align:start;background:var(--surface);
-  border-radius:var(--r-md);padding:18px;position:relative;
-}
+.person-card{flex:0 0 250px;scroll-snap-align:start;background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:var(--r-md);padding:18px;position:relative;}
 .person-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
-.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:15px;flex-shrink:0;}
+.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#241420;font-size:15px;flex-shrink:0;}
 .person-name{font-weight:700;font-size:14.5px;}
-.person-relation{font-size:11.5px;color:var(--plum-soft);}
+.person-relation{font-size:11.5px;color:var(--text-soft);}
 .closeness-slider{-webkit-appearance:none;appearance:none;height:8px;border-radius:8px;background:linear-gradient(90deg,var(--blue),var(--rose));outline:none;width:100%;}
 .closeness-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--rose-dark);cursor:pointer;}
-.closeness-label{font-size:11px;text-align:center;margin-top:4px;color:var(--plum-soft);}
-.person-meta{font-size:11.5px;color:var(--plum-soft);margin-top:10px;line-height:1.6;}
+.closeness-label{font-size:11px;text-align:center;margin-top:4px;color:var(--text-soft);}
+.person-meta{font-size:11.5px;color:var(--text-soft);margin-top:10px;line-height:1.6;}
 .person-badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:12px;margin-top:6px;margin-right:4px;}
-.badge-soon{background:var(--gold);color:#7A5A0E;}
-.badge-overdue{background:var(--blush);color:var(--rose-dark);}
-.tag-chip{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--sky);color:var(--plum);margin:4px 4px 0 0;}
+.badge-soon{background:rgba(232,178,85,0.25);color:var(--gold);}
+.badge-overdue{background:rgba(240,174,190,0.2);color:var(--rose-dark);}
+.tag-chip{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;background:rgba(143,182,230,0.2);color:var(--blue);margin:4px 4px 0 0;}
 .person-actions{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap;}
-.notes-preview{font-size:11.5px;color:var(--plum-soft);margin-top:8px;font-style:italic;max-height:40px;overflow:hidden;}
+.notes-preview{font-size:11.5px;color:var(--text-soft);margin-top:8px;font-style:italic;max-height:40px;overflow:hidden;}
 
 /* Calendar */
 .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px;flex-wrap:wrap;}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;}
-.cal-dow{font-size:11px;text-align:center;color:var(--plum-soft);font-weight:600;padding-bottom:4px;}
-.cal-cell{min-height:78px;border-radius:12px;background:var(--surface);padding:6px;cursor:pointer;position:relative;}
+.cal-dow{font-size:11px;text-align:center;color:var(--text-soft);font-weight:600;padding-bottom:4px;}
+.cal-cell{min-height:74px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid transparent;padding:6px;cursor:pointer;position:relative;}
 .cal-cell.empty{background:transparent;cursor:default;}
-.cal-cell.today{box-shadow:0 0 0 2px var(--rose) inset;}
+.cal-cell.today{border-color:var(--rose);}
 .cal-cell:focus-visible{outline:2px solid var(--rose-dark);}
 .cal-daynum{font-size:11.5px;font-weight:600;}
 .cal-dots{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px;}
 .cal-dot{width:7px;height:7px;border-radius:50%;}
-.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--plum-soft);margin-top:14px;}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--text-soft);margin-top:14px;}
 .legend span{display:inline-flex;align-items:center;gap:5px;}
 .legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
-.day-detail{background:var(--surface);border-radius:var(--r-sm);padding:16px 18px;margin-top:16px;}
-.day-detail .dd-item{font-size:13px;padding:6px 0;border-bottom:1px dashed rgba(74,47,60,0.1);}
+.day-detail{background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:var(--r-sm);padding:16px 18px;margin-top:16px;}
+.day-detail .dd-item{font-size:13px;padding:6px 0;border-bottom:1px dashed var(--glass-border);}
 .day-detail .dd-item:last-child{border-bottom:none;}
 
-/* Insights */
-.sparkline-card{padding:14px 16px;background:var(--surface);border-radius:var(--r-sm);}
-.heat-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.heat-label{width:110px;font-size:12.5px;font-weight:600;flex-shrink:0;}
-.heat-cells{display:flex;gap:3px;flex:1;flex-wrap:wrap;}
-.heat-cell{width:14px;height:14px;border-radius:3px;background:var(--track);}
+.empty-state{text-align:center;padding:26px 16px;color:var(--text-soft);font-size:13.5px;}
 
-.empty-state{text-align:center;padding:30px 16px;color:var(--plum-soft);font-size:13.5px;}
-
-/* Storage status */
-.storage-banner{display:none;align-items:center;gap:10px;padding:12px 18px;border-radius:var(--r-md);margin-bottom:18px;font-size:13px;background:var(--blush);color:var(--rose-dark);}
-.storage-banner.show{display:flex;}
-.storage-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:4px 10px;border-radius:12px;}
-.storage-pill.artifact{background:var(--sky);color:#2E4A6B;}
-.storage-pill.local{background:var(--gold);color:#7A5A0E;}
-.storage-pill.memory{background:var(--blush);color:var(--rose-dark);}
-.storage-dot{width:7px;height:7px;border-radius:50%;background:currentColor;}
+/* Wallpaper gallery */
+.wallpaper-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;}
+.wallpaper-thumb{position:relative;border-radius:var(--r-sm);overflow:hidden;height:88px;cursor:pointer;border:2px solid transparent;background-size:cover;background-position:center;}
+.wallpaper-thumb.selected{border-color:var(--rose);}
+.wallpaper-thumb .wt-label{position:absolute;left:0;right:0;bottom:0;padding:5px 8px;font-size:10px;font-weight:600;background:linear-gradient(to top, rgba(0,0,0,0.7), transparent);color:#fff;}
+.wallpaper-thumb.none-option{display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.06);font-size:11px;color:var(--text-soft);}
 
 /* Modal */
-.modal-overlay{position:fixed;inset:0;background:rgba(74,47,60,0.28);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(8,6,10,0.55);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;}
 .modal-overlay.open{display:flex;}
-.modal{background:var(--cream);border-radius:var(--r-lg);padding:26px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow);}
+.modal{background:#1b151f;border:1px solid var(--glass-border);border-radius:var(--r-lg);padding:26px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:var(--shadow);}
 .modal h3{font-family:'Lora',serif;font-weight:500;margin:0 0 16px;}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;}
 .modal p{font-size:13.5px;line-height:1.6;}
 
 @media(max-width:760px){
-  .grid-2,.grid-3{grid-template-columns:1fr;}
-  .hero{padding:30px 20px;}
-  .app-shell{padding:16px 12px 40px;}
-  .tabbar{width:100%;overflow-x:auto;justify-content:flex-start;}
+  .app-shell{padding:96px 14px 150px;}
+  .hero{padding:26px 20px;}
 }
 </style>
 </head>
 <body>
+<div class="wallpaper-bg" id="wallpaperBg"></div>
+<div class="wallpaper-scrim"></div>
 <div class="loading-overlay" id="loadingOverlay"><div class="loading-spin"></div><div class="loading-text">Opening Kindred…</div></div>
-<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
 <div class="toast-stack" id="toastStack"></div>
 
-<div class="app-shell">
+<div class="navbar-wrap">
+  <nav class="navbar glass">
+    <span class="nav-brand">Kindred</span>
+    <button class="tab-btn active" data-page="today">Today</button>
+    <button class="tab-btn" data-page="journal">Journal</button>
+    <button class="tab-btn" data-page="habits">Habits</button>
+    <button class="tab-btn" data-page="people">People</button>
+    <button class="tab-btn" data-page="calendar">Calendar</button>
+    <button class="tab-btn" data-page="settings">Settings</button>
+  </nav>
+</div>
 
-  <div class="storage-banner glass" id="storageBanner">
-    <span>⚠️</span>
-    <span>This browser isn't letting Kindred save anything — your changes will disappear on refresh. Export a backup often (Settings → Your data), or open this file in a different browser.</span>
+<div class="rearrange-cluster">
+  <button class="btn subtle icon-btn" id="rearrangeBtn" onclick="toggleRearrange()" title="Rearrange cards" aria-label="Toggle rearrange mode">⠿</button>
+  <button class="btn subtle small" id="resetLayoutBtn" onclick="resetLayoutForCurrentPage()" style="display:none;">↺ Reset layout</button>
+</div>
+
+<div class="footer-wrap">
+  <div class="footer-pill glass">
+    <span class="footer-dot" id="footerDot"></span>
+    <span id="footerText">Kindred · checking storage…</span>
   </div>
+</div>
+
+<div class="app-shell">
 
   <div class="hero glass">
     <div class="eyebrow">Today's quote</div>
@@ -335,23 +308,13 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
     <div class="hero-actions">
       <button class="btn primary" onclick="shuffleQuote()">New quote</button>
       <span class="btn subtle" id="heroDate" style="cursor:default;"></span>
-      <button class="btn subtle icon-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
     </div>
   </div>
 
-  <nav class="tabbar glass">
-    <button class="tab-btn active" data-page="today">Today</button>
-    <button class="tab-btn" data-page="journal">Journal</button>
-    <button class="tab-btn" data-page="habits">Habits</button>
-    <button class="tab-btn" data-page="people">People</button>
-    <button class="tab-btn" data-page="calendar">Calendar</button>
-    <button class="tab-btn" data-page="insights">Insights</button>
-    <button class="tab-btn" data-page="settings">Settings</button>
-  </nav>
-
   <!-- TODAY -->
   <div class="page active" id="page-today">
-    <div class="card glass">
+    <div class="card glass" data-card-id="mood">
+      <span class="drag-handle" title="Drag to move"></span>
       <h2>How are you, right now?</h2>
       <p class="sub">A quick daily check-in. This is just for you.</p>
       <div class="mood-track-wrap">
@@ -361,20 +324,22 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
       <div class="mood-value" id="moodValueLabel">Okay</div>
     </div>
 
-    <div class="grid-2">
-      <div class="card glass">
-        <h2>At a glance</h2>
-        <p class="sub">Your quiet momentum, in numbers.</p>
-        <div class="stat-row" id="todayStats"></div>
-      </div>
-      <div class="card glass">
-        <h2>People to reach out to</h2>
-        <p class="sub">Based on each person's own check-in rhythm.</p>
-        <div id="nudgeList"></div>
-      </div>
+    <div class="card glass" data-card-id="glance">
+      <span class="drag-handle" title="Drag to move"></span>
+      <h2>At a glance</h2>
+      <p class="sub">Your quiet momentum, in numbers.</p>
+      <div class="stat-row" id="todayStats"></div>
     </div>
 
-    <div class="card glass">
+    <div class="card glass" data-card-id="nudges">
+      <span class="drag-handle" title="Drag to move"></span>
+      <h2>People to reach out to</h2>
+      <p class="sub">Based on each person's own check-in rhythm.</p>
+      <div id="nudgeList"></div>
+    </div>
+
+    <div class="card glass" data-card-id="upcoming">
+      <span class="drag-handle" title="Drag to move"></span>
       <h2>Coming up</h2>
       <p class="sub">Birthdays, anniversaries and moments worth remembering, next 30 days.</p>
       <div id="upcomingList"></div>
@@ -383,7 +348,8 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
 
   <!-- JOURNAL -->
   <div class="page" id="page-journal">
-    <div class="card glass">
+    <div class="card glass" data-card-id="write">
+      <span class="drag-handle" title="Drag to move"></span>
       <h2 id="journalFormTitle">Write something</h2>
       <p class="sub">Whatever's true today. No one else sees this.</p>
       <div class="field"><label>Date</label><input type="date" id="journalDate" style="max-width:200px;"></div>
@@ -410,7 +376,8 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
       </div>
     </div>
 
-    <div class="card glass">
+    <div class="card glass" data-card-id="entries">
+      <span class="drag-handle" title="Drag to move"></span>
       <h2>Past entries</h2>
       <p class="sub" id="journalCount"></p>
       <div class="journal-toolbar">
@@ -430,7 +397,8 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
 
   <!-- HABITS -->
   <div class="page" id="page-habits">
-    <div class="card glass">
+    <div class="card glass" data-card-id="add-habit">
+      <span class="drag-handle" title="Drag to move"></span>
       <h2>Add a habit</h2>
       <p class="sub">Small, repeatable, kind to your future self.</p>
       <div class="form-row">
@@ -443,7 +411,8 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
         <div class="color-swatches" id="habitColorSwatches"></div>
       </div>
     </div>
-    <div class="card glass">
+    <div class="card glass" data-card-id="habit-list">
+      <span class="drag-handle" title="Drag to move"></span>
       <h2>Your habits</h2>
       <p class="sub">Tap a day to mark it done. Last 14 days shown.</p>
       <div id="habitList"></div>
@@ -452,7 +421,8 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
 
   <!-- PEOPLE -->
   <div class="page" id="page-people">
-    <div class="card glass">
+    <div class="card glass" data-card-id="people-list">
+      <span class="drag-handle" title="Drag to move"></span>
       <div class="people-toolbar">
         <h2 style="margin:0;">Your people</h2>
         <span style="flex:1;min-width:8px;"></span>
@@ -472,7 +442,8 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
 
   <!-- CALENDAR -->
   <div class="page" id="page-calendar">
-    <div class="card glass">
+    <div class="card glass" data-card-id="cal-main">
+      <span class="drag-handle" title="Drag to move"></span>
       <div class="cal-head">
         <button class="btn subtle small" onclick="shiftMonth(-1)">← Prev</button>
         <h2 id="calTitle" style="margin:0;"></h2>
@@ -485,14 +456,15 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
       <div class="cal-grid" id="calGrid" style="margin-top:6px;"></div>
       <div class="legend">
         <span><span class="dot" style="background:var(--rose);"></span>Journal</span>
-        <span><span class="dot" style="background:var(--sun);"></span>Habit done</span>
+        <span><span class="dot" style="background:var(--gold);"></span>Habit done</span>
         <span><span class="dot" style="background:var(--blue);"></span>Mood logged</span>
-        <span><span class="dot" style="background:var(--plum);"></span>Event</span>
+        <span><span class="dot" style="background:var(--text);"></span>Event</span>
       </div>
       <div id="dayDetail" style="display:none;"></div>
     </div>
 
-    <div class="card glass">
+    <div class="card glass" data-card-id="cal-add-event">
+      <span class="drag-handle" title="Drag to move"></span>
       <h2>Add a special occasion</h2>
       <p class="sub">Anything worth marking — a date, a recovery anniversary, a retirement, anything.</p>
       <div class="form-row">
@@ -505,70 +477,18 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
     </div>
   </div>
 
-  <!-- INSIGHTS -->
-  <div class="page" id="page-insights">
-    <div class="card glass">
-      <h2>Mood, last 14 days</h2>
-      <p class="sub">A quick look at the shape of your recent check-ins.</p>
-      <div class="sparkline-card" id="moodSparkline"></div>
-    </div>
-    <div class="card glass">
-      <h2>Habit consistency</h2>
-      <p class="sub">Share of the last 30 days each habit was completed.</p>
-      <div id="habitHeat"></div>
-    </div>
-    <div class="grid-2">
-      <div class="card glass">
-        <h2>Journaling</h2>
-        <p class="sub">Your writing, totaled up.</p>
-        <div class="stat-row" id="journalInsightStats"></div>
-      </div>
-      <div class="card glass">
-        <h2>Relationships</h2>
-        <p class="sub">A snapshot of how things stand.</p>
-        <div class="stat-row" id="peopleInsightStats"></div>
-      </div>
-    </div>
-  </div>
-
   <!-- SETTINGS -->
   <div class="page" id="page-settings">
-    <div class="card glass">
-      <h2>Appearance</h2>
-      <p class="sub">Make it feel like yours.</p>
-      <div class="form-row" style="max-width:420px;">
-        <div class="field">
-          <label>Theme</label>
-          <select id="themeSelect" onchange="setTheme(this.value)">
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-          </select>
-        </div>
-      </div>
+    <div class="card glass" data-card-id="wallpaper">
+      <span class="drag-handle" title="Drag to move"></span>
+      <h2>Wallpaper</h2>
+      <p class="sub">A curated set of high-res photos. Pick one, or go with the default gradient.</p>
+      <div class="wallpaper-grid" id="wallpaperGrid"></div>
     </div>
-    <div class="card glass">
-      <h2>Quote of the day</h2>
-      <p class="sub">Choose how your daily quote refreshes.</p>
-      <div class="form-row" style="max-width:420px;">
-        <div class="field">
-          <label>Rotation</label>
-          <select id="quoteModeSelect" onchange="setQuoteMode(this.value)">
-            <option value="daily">Change automatically every day</option>
-            <option value="manual">Only change when I pick "New quote"</option>
-          </select>
-        </div>
-        <div class="field">
-          <label>Category</label>
-          <select id="quoteCategorySelect" onchange="setQuoteCategory(this.value)">
-            <option value="">All categories</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    <div class="card glass">
+    <div class="card glass" data-card-id="data">
+      <span class="drag-handle" title="Drag to move"></span>
       <h2>Your data</h2>
-      <div style="margin-bottom:10px;"><span class="storage-pill" id="storagePill"><span class="storage-dot"></span><span id="storagePillText">Checking…</span></span></div>
-      <p class="sub" id="storageStats">Saved to your account's private storage for this app — not shared with anyone.</p>
+      <p class="sub" id="storageStats">Checking where your data is saved…</p>
       <div class="hero-actions" style="justify-content:flex-start;">
         <button class="btn subtle" onclick="exportBackup()">⭳ Export backup (.json)</button>
         <button class="btn subtle" onclick="document.getElementById('restoreFile').click()">⭱ Restore backup</button>
@@ -632,14 +552,8 @@ body[data-theme="dark"] .journal-entry .je-fade{background:linear-gradient(to bo
 <script>
 /* =========================================================================
    KINDRED — personal mind & relationships tracker
-   Storage strategy (checked at load, shown live in Settings):
-     1. Claude.ai artifact storage (window.storage) — private, persists across
-        sessions/devices when this runs inside a Claude.ai artifact.
-     2. localStorage — used automatically if this file is opened standalone
-        (downloaded and opened directly in a normal browser tab).
-     3. In-memory only, as a last resort — data is lost on refresh; the app
-        shows a visible warning banner in this case so it's never silent.
-   Nothing here is ever sent anywhere or shared with anyone.
+   Storage: Claude.ai artifact storage -> localStorage -> memory (auto-detected,
+   status shown live in the footer pill). Nothing here is ever shared.
    ========================================================================= */
 
 /* ---------------- Quotes ---------------- */
@@ -649,195 +563,118 @@ const QUOTES = [
 {"t":"To be truly known and still loved — that's the whole point.","c":"love"},
 {"t":"Real love doesn't need grand gestures, just consistent ones.","c":"love"},
 {"t":"Some people make your whole world softer just by being in it.","c":"love"},
-{"t":"Love grows in the small moments no one else sees.","c":"love"},
 {"t":"The right person makes your peace feel possible, not conditional.","c":"love"},
-{"t":"Loving someone well means learning their whole language of care.","c":"love"},
-{"t":"A gentle love outlasts a passionate one that forgot to be kind.","c":"love"},
-{"t":"You know it's love when silence with them feels like enough.","c":"love"},
-{"t":"Love is patient with the parts of us still healing.","c":"love"},
-{"t":"The safest place in the world is being fully yourself with someone.","c":"love"},
 {"t":"A true friend remembers what you said before you forgot it yourself.","c":"friendship"},
 {"t":"Good friends don't finish your sentences, they just let you have them.","c":"friendship"},
-{"t":"Some friendships pick up exactly where they left off, no matter the years.","c":"friendship"},
 {"t":"The friends who stay are the ones who saw you at your worst.","c":"friendship"},
-{"t":"Laughing until it hurts with the right people is its own therapy.","c":"friendship"},
-{"t":"A friend who checks in for no reason is a rare kind of gift.","c":"friendship"},
 {"t":"You can measure a friendship by how safe silence feels between you.","c":"friendship"},
-{"t":"Real friends celebrate your wins like they're their own.","c":"friendship"},
-{"t":"Distance doesn't end a friendship built on actually caring.","c":"friendship"},
-{"t":"The best friendships ask nothing and give everything.","c":"friendship"},
 {"t":"Chosen family is still family.","c":"friendship"},
-{"t":"A friend who tells you the truth kindly is worth keeping forever.","c":"friendship"},
 {"t":"Family isn't about perfect, it's about showing up anyway.","c":"family"},
-{"t":"The people who raised you live on in the way you love others.","c":"family"},
 {"t":"Home is wherever the people who know your whole story are.","c":"family"},
-{"t":"Every family has its own quiet language, learned over years.","c":"family"},
 {"t":"The dinner table remembers more love than we give it credit for.","c":"family"},
-{"t":"Some of the deepest comfort comes from people who've known you longest.","c":"family"},
 {"t":"Family isn't who shares your blood, it's who shares your burdens.","c":"family"},
-{"t":"The people who watched you grow up still see the best in you.","c":"family"},
-{"t":"A phone call home is sometimes the whole day's medicine.","c":"family"},
 {"t":"Roots don't hold you back, they hold you up.","c":"family"},
-{"t":"The people who raised us gave us more than they knew.","c":"family"},
 {"t":"You're allowed to be a work in progress and still be worthy.","c":"self"},
 {"t":"Be as kind to yourself as you are to the people you love.","c":"self"},
 {"t":"Rest is not something you have to earn.","c":"self"},
-{"t":"You don't have to have it all figured out to be enough.","c":"self"},
-{"t":"The voice in your head deserves the same kindness you give strangers.","c":"self"},
 {"t":"Healing isn't linear, and that's alright.","c":"self"},
-{"t":"You are allowed to outgrow versions of yourself without apology.","c":"self"},
 {"t":"Give yourself the grace you'd give a friend in your shoes.","c":"self"},
-{"t":"Progress, even slow, is still progress.","c":"self"},
 {"t":"You are not behind. You are exactly where your life is.","c":"self"},
-{"t":"Some days, just getting through is the whole win.","c":"self"},
-{"t":"Be gentle with the parts of yourself still catching up.","c":"self"},
 {"t":"Gratitude turns an ordinary Tuesday into something worth remembering.","c":"gratitude"},
 {"t":"Notice the small good things, they add up to a good life.","c":"gratitude"},
-{"t":"The people who show up for you deserve to be told so.","c":"gratitude"},
 {"t":"There is always something, however small, worth being thankful for today.","c":"gratitude"},
-{"t":"Gratitude is a quiet kind of joy that doesn't need an occasion.","c":"gratitude"},
-{"t":"Say thank you before you need to say sorry for not saying it sooner.","c":"gratitude"},
-{"t":"The ordinary moments are the ones we miss the most later.","c":"gratitude"},
-{"t":"A grateful heart notices what a busy one overlooks.","c":"gratitude"},
-{"t":"Appreciate the people who make hard days softer.","c":"gratitude"},
+{"t":"The people who show up for you deserve to be told so.","c":"gratitude"},
 {"t":"Some blessings only look like blessings in hindsight.","c":"gratitude"},
-{"t":"The best things rarely announce themselves loudly.","c":"gratitude"},
 {"t":"Every version of you did the best it could with what it knew.","c":"growth"},
 {"t":"Growth is quiet, it rarely happens the day you notice it.","c":"growth"},
-{"t":"You're not starting over, you're starting from experience.","c":"growth"},
-{"t":"The discomfort of growing is proof you're still becoming.","c":"growth"},
 {"t":"Small steady steps beat big inconsistent leaps.","c":"growth"},
-{"t":"You are allowed to change your mind as you learn more.","c":"growth"},
 {"t":"The version of you a year from now is built today.","c":"growth"},
-{"t":"Not every lesson needs to hurt to count.","c":"growth"},
-{"t":"Discipline is just self-respect in action.","c":"growth"},
 {"t":"You grow the most in the seasons you'd never choose.","c":"growth"},
-{"t":"Becoming who you're meant to be takes longer than you'd like, and that's fine.","c":"growth"},
-{"t":"The habit you keep quietly today becomes the life you live loudly later.","c":"growth"},
 {"t":"This breath, this moment, is the only one you actually have.","c":"mindfulness"},
 {"t":"Slow down enough to notice the good that's already here.","c":"mindfulness"},
 {"t":"Peace is often just permission to stop rushing.","c":"mindfulness"},
-{"t":"The present moment is the only one asking for your attention.","c":"mindfulness"},
 {"t":"You can't pour from an empty cup, so fill yours first.","c":"mindfulness"},
-{"t":"Stillness isn't empty, it's where clarity lives.","c":"mindfulness"},
-{"t":"Notice one good thing before you notice everything that's wrong.","c":"mindfulness"},
-{"t":"A quiet mind hears things a busy one misses.","c":"mindfulness"},
 {"t":"You don't have to solve everything today.","c":"mindfulness"},
-{"t":"Presence is the simplest gift you can give someone.","c":"mindfulness"},
-{"t":"Sometimes the most productive thing is to just breathe.","c":"mindfulness"},
-{"t":"The mind settles when you stop asking it to run.","c":"mindfulness"},
 {"t":"It's okay to not be okay, as long as you're honest about it.","c":"comfort"},
-{"t":"Healing looks like showing up for yourself on the hard days.","c":"comfort"},
 {"t":"You survived every hard day so far, that counts for something.","c":"comfort"},
-{"t":"Some wounds need time more than they need answers.","c":"comfort"},
-{"t":"You are allowed to grieve what you thought your life would look like.","c":"comfort"},
 {"t":"The storm passes, even when it doesn't feel like it will.","c":"comfort"},
-{"t":"It's alright to lean on someone until you can stand again.","c":"comfort"},
 {"t":"Tears are just love with nowhere else to go.","c":"comfort"},
 {"t":"You don't have to carry it all today.","c":"comfort"},
-{"t":"Comfort isn't found, it's built, one small kindness at a time.","c":"comfort"},
-{"t":"The hardest seasons often grow the deepest roots.","c":"comfort"},
-{"t":"Better days don't erase hard ones, they just add to the story.","c":"comfort"},
-{"t":"The people who matter will make the time, no matter how busy life gets.","c":"friendship"},
-{"t":"You are someone's favorite person, even if you forget it sometimes.","c":"love"},
-{"t":"Kindness costs nothing and changes everything.","c":"self"},
-{"t":"The best conversations happen when no one's checking the time.","c":"friendship"},
-{"t":"Being truly listened to is one of the rarest gifts.","c":"friendship"},
-{"t":"You are allowed to take up space in your own life.","c":"self"}
+{"t":"Better days don't erase hard ones, they just add to the story.","c":"comfort"}
 ];
 
+/* ---------------- Wallpapers (verified Unsplash CDN photos) ---------------- */
+const WALLPAPERS = [
+  {id:'palm-beach', label:'Tropical Palm Beach', base:'https://images.unsplash.com/photo-1672841828271-54340a6fbcd3'},
+  {id:'aerial-waves', label:'Aerial Turquoise Waves', base:'https://images.unsplash.com/photo-1744648617182-519c4bf39e30'},
+  {id:'mountain-sunrise', label:'Alpine Sunrise', base:'https://images.unsplash.com/photo-1752503650851-cbc3f8b00679'},
+  {id:'green-valley', label:'Green Mountain Valley', base:'https://images.unsplash.com/photo-1754206352604-0a4f13ca2a22'},
+  {id:'golden-sunset', label:'Golden Sunset', base:'https://images.unsplash.com/photo-1779979728057-7cfb791c3b97'},
+  {id:'misty-forest', label:'Misty Forest', base:'https://images.unsplash.com/photo-1764111812995-b73ff58fc7d7'},
+  {id:'milkyway-lake', label:'Milky Way Reflection', base:'https://images.unsplash.com/photo-1781099999671-08a6de4f36df'}
+];
+function wallpaperUrl(base, w, q){ return base + '?auto=format&fit=crop&w=' + w + '&q=' + q; }
+
 /* ---------------- State & storage ---------------- */
-const STORAGE_KEY = "kindred-state";
+const STORAGE_KEY = "kindred-state-v2";
 const DEFAULT_STATE = {
-  people: [],
-  journal: [],
-  habits: [],
-  moods: {},
-  events: [],
-  settings: { quoteMode: "daily", quoteOverrideDate: null, quoteOverrideIndex: null, theme: "light", quoteCategory: "" }
+  people: [], journal: [], habits: [], moods: {}, events: [], layout: {},
+  settings: { quoteMode: "daily", quoteOverrideDate: null, quoteOverrideIndex: null, wallpaper: "" }
 };
-const HABIT_COLORS = ["#D9718A","#E8A93D","#7FA8D9","#C77DA0","#5B8FC9","#F2B265","#7FBF8F","#C98BD9"];
+const HABIT_COLORS = ["#E38BA1","#E8B255","#8FB6E6","#C98BD9","#7FBF8F","#F2B265"];
 
 let state = null;
-// storageMode reflects where data actually lives, detected at load time:
-//  'artifact' — Claude.ai's persistent artifact storage (works across devices/sessions)
-//  'local'    — this browser's localStorage (used when the file is opened standalone,
-//               e.g. downloaded and opened directly, where window.storage doesn't exist)
-//  'memory'   — nothing persists; storage is blocked or unavailable entirely
-let storageMode = "memory";
+let storageMode = "memory"; // 'artifact' | 'local' | 'memory'
 
 function hasArtifactStorage(){
-  return typeof window.storage !== "undefined"
-    && typeof window.storage.get === "function"
-    && typeof window.storage.set === "function";
+  return typeof window.storage !== "undefined" && typeof window.storage.get === "function" && typeof window.storage.set === "function";
 }
 function hasLocalStorage(){
-  try{
-    const testKey = "__kindred_probe__";
-    localStorage.setItem(testKey, "1");
-    localStorage.removeItem(testKey);
-    return true;
-  }catch(e){ return false; }
+  try{ localStorage.setItem("__kindred_probe__","1"); localStorage.removeItem("__kindred_probe__"); return true; }
+  catch(e){ return false; }
 }
-
 async function loadState(){
   if(hasArtifactStorage()){
     storageMode = "artifact";
     try{
       const result = await window.storage.get(STORAGE_KEY, false);
       if(result && result.value) return JSON.parse(result.value);
-    }catch(e){
-      // Throws on first run (key doesn't exist yet) — that's expected, not a failure.
-    }
+    }catch(e){ /* first run — expected */ }
     return JSON.parse(JSON.stringify(DEFAULT_STATE));
   }
   if(hasLocalStorage()){
     storageMode = "local";
-    try{
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if(raw) return JSON.parse(raw);
-    }catch(e){
-      showToast("Couldn't read saved data from this browser — starting fresh.", true);
-    }
+    try{ const raw = localStorage.getItem(STORAGE_KEY); if(raw) return JSON.parse(raw); }
+    catch(e){ showToast("Couldn't read saved data — starting fresh.", true); }
     return JSON.parse(JSON.stringify(DEFAULT_STATE));
   }
   storageMode = "memory";
   return JSON.parse(JSON.stringify(DEFAULT_STATE));
 }
-
-let saveInFlight = false;
 async function saveState(){
-  saveInFlight = true;
   try{
     if(storageMode === "artifact"){
       const result = await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
-      if(!result) throw new Error("Storage returned no result");
-      updateStorageIndicator();
-      return;
+      if(!result) throw new Error("no result");
+      updateFooterStatus(); return;
     }
     if(storageMode === "local"){
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      updateStorageIndicator();
-      return;
+      updateFooterStatus(); return;
     }
-    // memory mode: nothing to write anywhere — surface this clearly rather than pretend it saved.
-    updateStorageIndicator();
+    updateFooterStatus();
   }catch(e){
-    // Primary storage failed — try localStorage as a safety net before giving up.
     try{
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       storageMode = "local";
       showToast("Switched to this browser's local storage after a save error.", true);
     }catch(e2){
       storageMode = "memory";
-      showToast("Couldn't save — your changes will be lost on refresh. Export a backup from Settings.", true);
+      showToast("Couldn't save — changes will be lost on refresh. Export a backup.", true);
     }
-    updateStorageIndicator();
-  }finally{
-    saveInFlight = false;
+    updateFooterStatus();
   }
 }
-
 function migrateState(){
   let changed=false;
   if(!Array.isArray(state.people)){ state.people=[]; changed=true; }
@@ -845,9 +682,9 @@ function migrateState(){
   if(!Array.isArray(state.habits)){ state.habits=[]; changed=true; }
   if(!state.moods || typeof state.moods!=="object"){ state.moods={}; changed=true; }
   if(!Array.isArray(state.events)){ state.events=[]; changed=true; }
+  if(!state.layout || typeof state.layout!=="object"){ state.layout={}; changed=true; }
   if(!state.settings){ state.settings=JSON.parse(JSON.stringify(DEFAULT_STATE.settings)); changed=true; }
-  if(state.settings.theme===undefined){ state.settings.theme="light"; changed=true; }
-  if(state.settings.quoteCategory===undefined){ state.settings.quoteCategory=""; changed=true; }
+  if(state.settings.wallpaper===undefined){ state.settings.wallpaper=""; changed=true; }
   state.people.forEach(p=>{
     if(p.contactCadenceDays===undefined){ p.contactCadenceDays=14; changed=true; }
     if(!Array.isArray(p.tags)){ p.tags=[]; changed=true; }
@@ -860,12 +697,9 @@ function migrateState(){
   });
   if(changed) saveState();
 }
-
 function isValidStateShape(obj){
-  return obj && typeof obj==="object" &&
-    Array.isArray(obj.people) && Array.isArray(obj.journal) &&
-    Array.isArray(obj.habits) && Array.isArray(obj.events) &&
-    typeof obj.moods==="object";
+  return obj && typeof obj==="object" && Array.isArray(obj.people) && Array.isArray(obj.journal) &&
+    Array.isArray(obj.habits) && Array.isArray(obj.events) && typeof obj.moods==="object";
 }
 
 /* ---------------- Utils ---------------- */
@@ -873,22 +707,8 @@ const uid = () => Math.random().toString(36).slice(2,10);
 function todayKey(){ return new Date().toISOString().slice(0,10); }
 function fmtDate(dstr){ if(!dstr) return ""; const d=new Date(dstr+"T00:00:00"); return d.toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"}); }
 function daysBetween(a,b){ const ms = new Date(b)-new Date(a); return Math.round(ms/86400000); }
-function closenessLabel(v){
-  v=+v;
-  if(v<=20) return "Distant";
-  if(v<=40) return "Reconnecting";
-  if(v<=60) return "Steady";
-  if(v<=80) return "Close";
-  return "Very close";
-}
-function moodLabel(v){
-  v=+v;
-  if(v<=20) return "Rough";
-  if(v<=40) return "Low";
-  if(v<=60) return "Okay";
-  if(v<=80) return "Good";
-  return "Great";
-}
+function closenessLabel(v){ v=+v; if(v<=20) return "Distant"; if(v<=40) return "Reconnecting"; if(v<=60) return "Steady"; if(v<=80) return "Close"; return "Very close"; }
+function moodLabel(v){ v=+v; if(v<=20) return "Rough"; if(v<=40) return "Low"; if(v<=60) return "Okay"; if(v<=80) return "Good"; return "Great"; }
 function esc(str){
   if(str===null || str===undefined) return "";
   return String(str).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -900,16 +720,14 @@ function sanitizeHtml(html){
     doc.querySelectorAll("*").forEach(el=>{
       [...el.attributes].forEach(attr=>{
         const n = attr.name.toLowerCase();
-        if(n.startsWith("on") || ((n==="href"||n==="src") && /^\s*javascript:/i.test(attr.value))){
-          el.removeAttribute(attr.name);
-        }
+        if(n.startsWith("on") || ((n==="href"||n==="src") && /^\s*javascript:/i.test(attr.value))) el.removeAttribute(attr.name);
       });
     });
     return doc.body.innerHTML;
   }catch(e){ return ""; }
 }
 
-/* ---------------- Toasts / confirm / alert (sandbox-safe replacements) ---------------- */
+/* ---------------- Toasts / confirm / alert ---------------- */
 function showToast(msg, isError){
   const stack = document.getElementById("toastStack");
   const t = document.createElement("div");
@@ -924,11 +742,9 @@ function showConfirm(message){
     const overlay = document.getElementById("confirmOverlay");
     document.getElementById("confirmMessage").textContent = message;
     overlay.classList.add("open");
-    const yes = document.getElementById("confirmYes");
-    const no = document.getElementById("confirmNo");
+    const yes = document.getElementById("confirmYes"), no = document.getElementById("confirmNo");
     const cleanup = (result)=>{ overlay.classList.remove("open"); yes.onclick=null; no.onclick=null; resolve(result); };
-    yes.onclick = ()=>cleanup(true);
-    no.onclick = ()=>cleanup(false);
+    yes.onclick = ()=>cleanup(true); no.onclick = ()=>cleanup(false);
   });
 }
 function showAlert(message){
@@ -937,20 +753,33 @@ function showAlert(message){
     document.getElementById("alertMessage").textContent = message;
     overlay.classList.add("open");
     const ok = document.getElementById("alertOk");
-    const cleanup = ()=>{ overlay.classList.remove("open"); ok.onclick=null; resolve(); };
-    ok.onclick = cleanup;
+    ok.onclick = ()=>{ overlay.classList.remove("open"); ok.onclick=null; resolve(); };
   });
 }
 
-/* ---------------- Theme ---------------- */
-function setTheme(theme){
-  state.settings.theme = theme;
-  document.body.setAttribute("data-theme", theme);
-  document.getElementById("themeToggle").textContent = theme==="dark" ? "☀️" : "🌙";
-  document.getElementById("themeSelect").value = theme;
-  saveState();
+/* ---------------- Wallpaper ---------------- */
+function applyWallpaper(){
+  const bg = document.getElementById("wallpaperBg");
+  const chosen = WALLPAPERS.find(w=>w.id===state.settings.wallpaper);
+  if(chosen){
+    bg.style.backgroundImage = `url("${wallpaperUrl(chosen.base, 2400, 75)}")`;
+  } else {
+    bg.style.backgroundImage = "";
+  }
 }
-function toggleTheme(){ setTheme(state.settings.theme==="dark" ? "light" : "dark"); }
+function setWallpaper(id){
+  state.settings.wallpaper = id || "";
+  saveState();
+  applyWallpaper();
+  renderWallpaperGrid();
+}
+function renderWallpaperGrid(){
+  const grid = document.getElementById("wallpaperGrid");
+  const current = state.settings.wallpaper || "";
+  let html = `<div class="wallpaper-thumb none-option ${current===''?'selected':''}" onclick="setWallpaper('')">Default gradient</div>`;
+  html += WALLPAPERS.map(w=>`<div class="wallpaper-thumb ${current===w.id?'selected':''}" style="background-image:url('${wallpaperUrl(w.base,300,55)}')" onclick="setWallpaper('${w.id}')"><span class="wt-label">${esc(w.label)}</span></div>`).join("");
+  grid.innerHTML = html;
+}
 
 /* ---------------- Nav ---------------- */
 document.querySelectorAll(".tab-btn").forEach(btn=>{
@@ -964,66 +793,140 @@ document.querySelectorAll(".tab-btn").forEach(btn=>{
     if(btn.dataset.page==="habits") renderHabits();
     if(btn.dataset.page==="people") renderPeople();
     if(btn.dataset.page==="calendar") renderCalendar();
-    if(btn.dataset.page==="insights") renderInsights();
+    if(btn.dataset.page==="settings"){ renderWallpaperGrid(); updateStorageStats(); }
+    if(rearrangeMode) enterRearrange(btn.dataset.page);
   });
 });
 
+/* ---------------- Rearrange / free-drag cards ---------------- */
+let rearrangeMode = false;
+function currentPageKey(){ return document.querySelector(".tab-btn.active").dataset.page; }
+function toggleRearrange(){
+  rearrangeMode = !rearrangeMode;
+  document.getElementById("rearrangeBtn").classList.toggle("active", rearrangeMode);
+  document.getElementById("resetLayoutBtn").style.display = rearrangeMode ? "inline-flex" : "none";
+  if(rearrangeMode){
+    enterRearrange(currentPageKey());
+    showToast("Drag any card by its grip handle. Toggle off to lock things back in place.");
+  } else {
+    exitRearrangeAll();
+  }
+}
+function enterRearrange(pageKey){
+  const page = document.getElementById("page-"+pageKey);
+  if(!page) return;
+  page.style.position = "relative";
+  const pageRect = page.getBoundingClientRect();
+  const cards = [...page.querySelectorAll(":scope > .card[data-card-id]")];
+  let maxBottom = 0;
+  cards.forEach(card=>{
+    const cardId = card.dataset.cardId;
+    const saved = (state.layout[pageKey]||{})[cardId];
+    const rect = card.getBoundingClientRect();
+    const naturalLeft = rect.left - pageRect.left;
+    const naturalTop = rect.top - pageRect.top;
+    const left = saved ? saved.x : naturalLeft;
+    const top = saved ? saved.y : naturalTop;
+    card.style.width = rect.width + "px";
+    card.style.position = "absolute";
+    card.style.left = left + "px";
+    card.style.top = top + "px";
+    card.classList.add("draggable-active");
+    maxBottom = Math.max(maxBottom, top + rect.height);
+    attachDragHandlers(card, pageKey, cardId);
+  });
+  page.style.minHeight = (maxBottom + 40) + "px";
+}
+function exitRearrangeAll(){
+  document.querySelectorAll(".card[data-card-id]").forEach(card=>{
+    card.style.position=""; card.style.left=""; card.style.top=""; card.style.width="";
+    card.classList.remove("draggable-active","dragging");
+  });
+  document.querySelectorAll(".page").forEach(p=>{ p.style.position=""; p.style.minHeight=""; });
+}
+function refreshRearrangeBounds(){
+  if(!rearrangeMode) return;
+  const page = document.querySelector(".page.active");
+  if(!page || page.style.position!=="relative") return;
+  let maxBottom = 0;
+  page.querySelectorAll(":scope > .card[data-card-id]").forEach(c=>{
+    maxBottom = Math.max(maxBottom, (parseFloat(c.style.top)||0) + c.offsetHeight);
+  });
+  page.style.minHeight = (maxBottom + 40) + "px";
+}
+function attachDragHandlers(card, pageKey, cardId){
+  const handle = card.querySelector(".drag-handle");
+  if(!handle) return;
+  let dragging=false, startX=0, startY=0, origLeft=0, origTop=0;
+  handle.onpointerdown = (e)=>{
+    e.preventDefault();
+    dragging = true;
+    startX = e.clientX; startY = e.clientY;
+    origLeft = parseFloat(card.style.left)||0;
+    origTop = parseFloat(card.style.top)||0;
+    card.classList.add("dragging");
+    try{ handle.setPointerCapture(e.pointerId); }catch(err){}
+  };
+  handle.onpointermove = (e)=>{
+    if(!dragging) return;
+    const page = card.parentElement;
+    const dx = e.clientX-startX, dy = e.clientY-startY;
+    let newLeft = origLeft+dx, newTop = origTop+dy;
+    newLeft = Math.max(0, Math.min(newLeft, page.clientWidth - card.offsetWidth));
+    newTop = Math.max(0, newTop);
+    card.style.left = newLeft + "px";
+    card.style.top = newTop + "px";
+  };
+  const finishDrag = ()=>{
+    if(!dragging) return;
+    dragging = false;
+    card.classList.remove("dragging");
+    if(!state.layout[pageKey]) state.layout[pageKey] = {};
+    state.layout[pageKey][cardId] = { x: parseFloat(card.style.left), y: parseFloat(card.style.top) };
+    saveState();
+    refreshRearrangeBounds();
+  };
+  handle.onpointerup = finishDrag;
+  handle.onpointercancel = finishDrag;
+}
+function resetLayoutForCurrentPage(){
+  const key = currentPageKey();
+  delete state.layout[key];
+  saveState();
+  if(rearrangeMode){ exitRearrangeAll(); enterRearrange(key); }
+  showToast("Layout reset for this page.");
+}
+window.addEventListener("resize", ()=>{
+  if(!rearrangeMode) return;
+  const page = document.querySelector(".page.active");
+  if(!page) return;
+  page.querySelectorAll(":scope > .card[data-card-id]").forEach(c=>{
+    const maxLeft = Math.max(0, page.clientWidth - c.offsetWidth);
+    if(parseFloat(c.style.left) > maxLeft) c.style.left = maxLeft + "px";
+  });
+  refreshRearrangeBounds();
+});
+
 /* ---------------- Quote rotation ---------------- */
-function getFilteredQuotes(){
-  const cat = state.settings.quoteCategory;
-  const list = cat ? QUOTES.filter(q=>q.c===cat) : QUOTES;
-  return list.length ? list : QUOTES;
-}
-function dailyQuoteIndex(dateKey, listLength){
-  let hash=0;
-  for(let i=0;i<dateKey.length;i++){ hash=(hash*31+dateKey.charCodeAt(i))>>>0; }
-  return hash % listLength;
-}
+function dailyQuoteIndex(dateKey, len){ let hash=0; for(let i=0;i<dateKey.length;i++){ hash=(hash*31+dateKey.charCodeAt(i))>>>0; } return hash % len; }
 function getCurrentQuoteIndex(){
   const tk = todayKey();
-  const list = getFilteredQuotes();
-  if(state.settings.quoteOverrideDate===tk && state.settings.quoteOverrideIndex!=null && state.settings.quoteOverrideIndex < list.length){
-    return state.settings.quoteOverrideIndex;
-  }
-  return dailyQuoteIndex(tk, list.length);
+  if(state.settings.quoteOverrideDate===tk && state.settings.quoteOverrideIndex!=null && state.settings.quoteOverrideIndex < QUOTES.length) return state.settings.quoteOverrideIndex;
+  return dailyQuoteIndex(tk, QUOTES.length);
 }
 function renderHero(){
-  const list = getFilteredQuotes();
-  const idx = getCurrentQuoteIndex();
-  const q = list[idx] || list[0];
+  const q = QUOTES[getCurrentQuoteIndex()] || QUOTES[0];
   document.getElementById("quoteText").textContent = "\u201C" + q.t + "\u201D";
   document.getElementById("quoteCat").textContent = q.c;
   document.getElementById("heroDate").textContent = new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"});
 }
 function shuffleQuote(){
   const tk = todayKey();
-  const list = getFilteredQuotes();
-  let idx;
-  const current = getCurrentQuoteIndex();
-  do{ idx = Math.floor(Math.random()*list.length); } while(idx===current && list.length>1);
+  let idx; const current = getCurrentQuoteIndex();
+  do{ idx = Math.floor(Math.random()*QUOTES.length); } while(idx===current && QUOTES.length>1);
   state.settings.quoteOverrideDate = tk;
   state.settings.quoteOverrideIndex = idx;
-  saveState();
-  renderHero();
-}
-function setQuoteMode(mode){
-  state.settings.quoteMode = mode;
-  if(mode==="daily"){ state.settings.quoteOverrideDate=null; state.settings.quoteOverrideIndex=null; }
-  saveState();
-  renderHero();
-}
-function setQuoteCategory(cat){
-  state.settings.quoteCategory = cat;
-  state.settings.quoteOverrideDate = null;
-  state.settings.quoteOverrideIndex = null;
-  saveState();
-  renderHero();
-}
-function fillQuoteCategorySelect(){
-  const cats = [...new Set(QUOTES.map(q=>q.c))].sort();
-  const sel = document.getElementById("quoteCategorySelect");
-  sel.innerHTML = `<option value="">All categories</option>` + cats.map(c=>`<option value="${esc(c)}">${esc(c[0].toUpperCase()+c.slice(1))}</option>`).join("");
-  sel.value = state.settings.quoteCategory || "";
+  saveState(); renderHero();
 }
 
 /* ---------------- Today page ---------------- */
@@ -1032,52 +935,21 @@ function saveMood(v){ state.moods[todayKey()] = +v; saveState(); renderToday(); 
 function journalStreak(){
   let streak=0; let d = new Date();
   const dates = new Set(state.journal.map(j=>j.date));
-  while(true){
-    const key = d.toISOString().slice(0,10);
-    if(dates.has(key)){ streak++; d.setDate(d.getDate()-1); } else break;
-  }
+  while(true){ const key = d.toISOString().slice(0,10); if(dates.has(key)){ streak++; d.setDate(d.getDate()-1); } else break; }
   return streak;
 }
-function longestJournalStreakEver(){
-  const dates = [...new Set(state.journal.map(j=>j.date))].sort();
-  if(!dates.length) return 0;
-  let best=1, cur=1;
-  for(let i=1;i<dates.length;i++){
-    if(daysBetween(dates[i-1], dates[i])===1){ cur++; } else { cur=1; }
-    best = Math.max(best, cur);
-  }
-  return best;
-}
 function longestHabitStreak(){
-  let best=0;
-  state.habits.forEach(h=>{ best = Math.max(best, habitCurrentStreak(h), h.bestStreak||0); });
-  return best;
+  let best=0; state.habits.forEach(h=>{ best = Math.max(best, habitCurrentStreak(h), h.bestStreak||0); }); return best;
 }
 function habitCurrentStreak(h){
   let streak=0; let d=new Date();
-  while(true){
-    const key = d.toISOString().slice(0,10);
-    if(h.log && h.log[key]){ streak++; d.setDate(d.getDate()-1); } else break;
-  }
+  while(true){ const key = d.toISOString().slice(0,10); if(h.log && h.log[key]){ streak++; d.setDate(d.getDate()-1); } else break; }
   return streak;
 }
 function habitWeekProgress(h){
   let count=0; let d=new Date();
-  for(let i=0;i<7;i++){
-    const key = d.toISOString().slice(0,10);
-    if(h.log && h.log[key]) count++;
-    d.setDate(d.getDate()-1);
-  }
+  for(let i=0;i<7;i++){ const key = d.toISOString().slice(0,10); if(h.log && h.log[key]) count++; d.setDate(d.getDate()-1); }
   return count;
-}
-function habitCompletionRate30(h){
-  let count=0; let d=new Date();
-  for(let i=0;i<30;i++){
-    const key = d.toISOString().slice(0,10);
-    if(h.log && h.log[key]) count++;
-    d.setDate(d.getDate()-1);
-  }
-  return Math.round((count/30)*100);
 }
 function getNextOccurrence(dateStr){
   if(!dateStr) return null;
@@ -1088,29 +960,14 @@ function getNextOccurrence(dateStr){
   return next;
 }
 function getUpcomingSpecialDates(withinDays){
-  const items = [];
-  const now0 = new Date(); now0.setHours(0,0,0,0);
+  const items = []; const now0 = new Date(); now0.setHours(0,0,0,0);
   state.people.forEach(p=>{
-    if(p.birthday){
-      const next = getNextOccurrence(p.birthday);
-      const days = daysBetween(now0, next);
-      if(days<=withinDays) items.push({title:esc(p.name)+"'s birthday", days, date:next});
-    }
-    if(p.anniversary){
-      const next = getNextOccurrence(p.anniversary);
-      const days = daysBetween(now0, next);
-      if(days<=withinDays) items.push({title:esc(p.name)+"'s anniversary", days, date:next});
-    }
+    if(p.birthday){ const next = getNextOccurrence(p.birthday); const days = daysBetween(now0, next); if(days<=withinDays) items.push({title:esc(p.name)+"'s birthday", days, date:next}); }
+    if(p.anniversary){ const next = getNextOccurrence(p.anniversary); const days = daysBetween(now0, next); if(days<=withinDays) items.push({title:esc(p.name)+"'s anniversary", days, date:next}); }
   });
   state.events.forEach(e=>{
-    if(e.recurring){
-      const next = getNextOccurrence(e.date);
-      const days = daysBetween(now0, next);
-      if(days<=withinDays) items.push({title:esc(e.title), days, date:next});
-    } else {
-      const days = daysBetween(now0, new Date(e.date+"T00:00:00"));
-      if(days>=0 && days<=withinDays) items.push({title:esc(e.title), days, date:new Date(e.date+"T00:00:00")});
-    }
+    if(e.recurring){ const next = getNextOccurrence(e.date); const days = daysBetween(now0, next); if(days<=withinDays) items.push({title:esc(e.title), days, date:next}); }
+    else { const days = daysBetween(now0, new Date(e.date+"T00:00:00")); if(days>=0 && days<=withinDays) items.push({title:esc(e.title), days, date:new Date(e.date+"T00:00:00")}); }
   });
   return items.sort((a,b)=>a.days-b.days);
 }
@@ -1119,14 +976,12 @@ function renderToday(){
   const moodVal = state.moods[tk]!==undefined ? state.moods[tk] : 50;
   document.getElementById("moodSlider").value = moodVal;
   document.getElementById("moodValueLabel").textContent = moodLabel(moodVal);
-
   document.getElementById("todayStats").innerHTML = `
     ${statTile(journalStreak(), "Day journal streak")}
     ${statTile(longestHabitStreak(), "Best habit streak")}
     ${statTile(state.people.length, "People you're tracking")}
     ${statTile(getUpcomingSpecialDates(30).length, "Occasions in 30 days")}
   `;
-
   const withContact = state.people.filter(p=>p.lastContact);
   const withoutContact = state.people.filter(p=>!p.lastContact);
   const nudges = [...withContact.sort((a,b)=> new Date(a.lastContact)-new Date(b.lastContact)), ...withoutContact]
@@ -1139,21 +994,18 @@ function renderToday(){
       <button class="btn small subtle" onclick="logContactToday('${p.id}')">Mark contacted</button>
     </div>`;
   }).join("") : `<div class="empty-state">You're all caught up — nice.</div>`;
-
   const upcoming = getUpcomingSpecialDates(30);
   document.getElementById("upcomingList").innerHTML = upcoming.length ? upcoming.map(u=>`
     <div class="nudge-item">
       <div><div class="nudge-name">${u.title}</div><div class="nudge-meta">${fmtDate(u.date.toISOString().slice(0,10))}</div></div>
       <span class="person-badge ${u.days<=7?'badge-overdue':'badge-soon'}">${u.days===0?"Today":u.days+" days"}</span>
     </div>`).join("") : `<div class="empty-state">Nothing coming up in the next 30 days.</div>`;
+  refreshRearrangeBounds();
 }
 function statTile(num,label){ return `<div class="stat-tile"><div class="num">${num}</div><div class="lbl">${esc(label)}</div></div>`; }
 function logContactToday(id){
-  const p = state.people.find(x=>x.id===id);
-  if(!p) return;
-  p.lastContact = todayKey();
-  saveState();
-  renderToday();
+  const p = state.people.find(x=>x.id===id); if(!p) return;
+  p.lastContact = todayKey(); saveState(); renderToday();
   if(document.getElementById("page-people").classList.contains("active")) renderPeople();
 }
 
@@ -1162,39 +1014,22 @@ let quill;
 function initQuill(){
   quill = new Quill('#quillEditor', {
     theme: 'snow',
-    modules: {
-      toolbar: [
-        [{header:[1,2,3,false]}],
-        ['bold','italic','underline','strike'],
-        [{color:[]},{background:[]}],
-        [{align:[]}],
-        ['blockquote'],
-        [{list:'ordered'},{list:'bullet'}],
-        ['link','image'],
-        ['clean']
-      ]
-    }
+    modules: { toolbar: [ [{header:[1,2,3,false]}], ['bold','italic','underline','strike'], [{color:[]},{background:[]}], [{align:[]}], ['blockquote'], [{list:'ordered'},{list:'bullet'}], ['link','image'], ['clean'] ] }
   });
   quill.on('text-change', updateWordCount);
-  // Override the default image handler: resize/compress before embedding so
-  // journal entries with photos don't balloon past the storage size limit.
   quill.getModule('toolbar').addHandler('image', () => {
     const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
+    input.type = 'file'; input.accept = 'image/*';
     input.onchange = () => {
-      const file = input.files[0];
-      if(!file) return;
+      const file = input.files[0]; if(!file) return;
       if(file.size > 10*1024*1024){ showAlert("That image is larger than 10MB — try a smaller one."); return; }
       const reader = new FileReader();
       reader.onload = (ev) => {
         const img = new Image();
         img.onload = () => {
-          const maxW = 900;
-          const scale = Math.min(1, maxW/img.width);
+          const maxW = 900; const scale = Math.min(1, maxW/img.width);
           const canvas = document.createElement('canvas');
-          canvas.width = Math.round(img.width*scale);
-          canvas.height = Math.round(img.height*scale);
+          canvas.width = Math.round(img.width*scale); canvas.height = Math.round(img.height*scale);
           canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
           const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
           const range = quill.getSelection(true) || { index: quill.getLength() };
@@ -1238,8 +1073,7 @@ async function saveJournalEntry(){
   showToast("Entry saved.");
 }
 function editJournalEntry(id){
-  const e = state.journal.find(x=>x.id===id);
-  if(!e) return;
+  const e = state.journal.find(x=>x.id===id); if(!e) return;
   editingJournalId = id;
   document.getElementById("journalDate").value = e.date;
   document.getElementById("journalTitle").value = e.title || "";
@@ -1250,42 +1084,30 @@ function editJournalEntry(id){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 function cancelJournalEdit(){
-  editingJournalId = null;
-  quill.setContents([]);
-  document.getElementById("journalTitle").value="";
-  document.getElementById("journalMood").value="";
+  editingJournalId = null; quill.setContents([]);
+  document.getElementById("journalTitle").value=""; document.getElementById("journalMood").value="";
   document.getElementById("journalDate").value = todayKey();
   document.getElementById("journalCancelBtn").style.display="none";
   document.getElementById("journalFormTitle").textContent = "Write something";
 }
 async function deleteJournalEntry(id){
-  const ok = await showConfirm("Delete this entry? This can't be undone.");
-  if(!ok) return;
+  const ok = await showConfirm("Delete this entry? This can't be undone."); if(!ok) return;
   state.journal = state.journal.filter(x=>x.id!==id);
-  saveState(); renderJournalList();
-  showToast("Entry deleted.");
+  saveState(); renderJournalList(); showToast("Entry deleted.");
 }
 function toggleJournalExpand(id){
-  const body = document.getElementById("je-body-"+id);
-  const fade = document.getElementById("je-fade-"+id);
-  const btn = document.getElementById("je-toggle-"+id);
+  const body = document.getElementById("je-body-"+id), fade = document.getElementById("je-fade-"+id), btn = document.getElementById("je-toggle-"+id);
   const expanded = body.classList.toggle("expanded");
   fade.classList.toggle("show", !expanded);
   btn.textContent = expanded ? "Show less" : "Read more";
 }
 function renderJournalList(){
-  const searchEl = document.getElementById("journalSearch");
-  const moodFilterEl = document.getElementById("journalMoodFilter");
+  const searchEl = document.getElementById("journalSearch"), moodFilterEl = document.getElementById("journalMoodFilter");
   const search = (searchEl ? searchEl.value : "").trim().toLowerCase();
   const moodFilter = moodFilterEl ? moodFilterEl.value : "";
   let rows = [...state.journal].sort((a,b)=> new Date(b.date)-new Date(a.date));
   if(moodFilter) rows = rows.filter(e=>e.mood===moodFilter);
-  if(search){
-    rows = rows.filter(e=>{
-      const text = (e.title||"") + " " + (e.html||"").replace(/<[^>]+>/g," ");
-      return text.toLowerCase().includes(search);
-    });
-  }
+  if(search){ rows = rows.filter(e=>{ const text = (e.title||"") + " " + (e.html||"").replace(/<[^>]+>/g," "); return text.toLowerCase().includes(search); }); }
   document.getElementById("journalCount").textContent = rows.length + " of " + state.journal.length + " entries";
   document.getElementById("journalList").innerHTML = rows.map(e=>`
     <div class="journal-entry">
@@ -1298,48 +1120,35 @@ function renderJournalList(){
         <button class="btn small danger" onclick="deleteJournalEntry('${e.id}')">Delete</button>
       </div>
     </div>`).join("") || `<div class="empty-state">${state.journal.length ? "No entries match your search." : "Nothing written yet. Your first entry can be one line."}</div>`;
-
-  // Hide "read more" and fade for entries short enough to not need it.
   rows.forEach(e=>{
-    const body = document.getElementById("je-body-"+e.id);
-    const toggle = document.getElementById("je-toggle-"+e.id);
-    const fade = document.getElementById("je-fade-"+e.id);
-    if(body && body.scrollHeight <= body.clientHeight + 4){
-      if(toggle) toggle.style.display = "none";
-    } else if(fade){
-      fade.classList.add("show");
-    }
+    const body = document.getElementById("je-body-"+e.id), toggle = document.getElementById("je-toggle-"+e.id), fade = document.getElementById("je-fade-"+e.id);
+    if(body && body.scrollHeight <= body.clientHeight + 4){ if(toggle) toggle.style.display = "none"; }
+    else if(fade){ fade.classList.add("show"); }
   });
+  refreshRearrangeBounds();
 }
 
 /* ---------------- Habits ---------------- */
 let selectedHabitColor = HABIT_COLORS[0];
 function fillHabitColorSwatches(){
-  const wrap = document.getElementById("habitColorSwatches");
-  wrap.innerHTML = HABIT_COLORS.map(c=>`<button type="button" class="color-swatch ${c===selectedHabitColor?'selected':''}" style="background:${c};" onclick="pickHabitColor('${c}')" aria-label="Choose color ${c}"></button>`).join("");
+  document.getElementById("habitColorSwatches").innerHTML = HABIT_COLORS.map(c=>`<button type="button" class="color-swatch ${c===selectedHabitColor?'selected':''}" style="background:${c};" onclick="pickHabitColor('${c}')" aria-label="Choose color ${c}"></button>`).join("");
 }
 function pickHabitColor(c){ selectedHabitColor = c; fillHabitColorSwatches(); }
 async function addHabit(){
   const name = document.getElementById("habitName").value.trim();
-  const goalRaw = +document.getElementById("habitGoal").value;
-  const goalPerWeek = Math.min(7, Math.max(1, goalRaw || 7));
+  const goalPerWeek = Math.min(7, Math.max(1, (+document.getElementById("habitGoal").value) || 7));
   if(!name){ await showAlert("Give the habit a name."); return; }
   state.habits.push({id:uid(), name, color:selectedHabitColor, goalPerWeek, bestStreak:0, log:{}});
   saveState();
-  document.getElementById("habitName").value="";
-  document.getElementById("habitGoal").value=7;
-  renderHabits();
-  showToast("Habit added.");
+  document.getElementById("habitName").value=""; document.getElementById("habitGoal").value=7;
+  renderHabits(); showToast("Habit added.");
 }
 async function deleteHabit(id){
-  const ok = await showConfirm("Delete this habit and its history?");
-  if(!ok) return;
-  state.habits = state.habits.filter(h=>h.id!==id);
-  saveState(); renderHabits();
+  const ok = await showConfirm("Delete this habit and its history?"); if(!ok) return;
+  state.habits = state.habits.filter(h=>h.id!==id); saveState(); renderHabits();
 }
 function toggleHabitDay(habitId, dateKey){
-  const h = state.habits.find(x=>x.id===habitId);
-  if(!h) return;
+  const h = state.habits.find(x=>x.id===habitId); if(!h) return;
   if(!h.log) h.log = {};
   h.log[dateKey] = !h.log[dateKey];
   const streak = habitCurrentStreak(h);
@@ -1349,8 +1158,7 @@ function toggleHabitDay(habitId, dateKey){
 function renderHabits(){
   fillHabitColorSwatches();
   const tk = todayKey();
-  const days = [];
-  for(let i=13;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); days.push(d.toISOString().slice(0,10)); }
+  const days = []; for(let i=13;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); days.push(d.toISOString().slice(0,10)); }
   document.getElementById("habitList").innerHTML = state.habits.map(h=>{
     const streak = habitCurrentStreak(h);
     const weekCount = habitWeekProgress(h);
@@ -1376,6 +1184,7 @@ function renderHabits(){
       </div>
     </div>`;
   }).join("") || `<div class="empty-state">No habits yet. Add one small thing you'd like to keep doing.</div>`;
+  refreshRearrangeBounds();
 }
 
 /* ---------------- People ---------------- */
@@ -1395,15 +1204,10 @@ function openPersonModal(id){
     document.getElementById("pCloseness").value = p.closeness;
     document.getElementById("pClosenessLabel").textContent = closenessLabel(p.closeness);
   } else {
-    document.getElementById("pName").value="";
-    document.getElementById("pRelation").value="Friend";
-    document.getElementById("pBirthday").value="";
-    document.getElementById("pAnniversary").value="";
-    document.getElementById("pCadence").value=14;
-    document.getElementById("pTags").value="";
-    document.getElementById("pNotes").value="";
-    document.getElementById("pCloseness").value=50;
-    document.getElementById("pClosenessLabel").textContent="Steady";
+    document.getElementById("pName").value=""; document.getElementById("pRelation").value="Friend";
+    document.getElementById("pBirthday").value=""; document.getElementById("pAnniversary").value="";
+    document.getElementById("pCadence").value=14; document.getElementById("pTags").value=""; document.getElementById("pNotes").value="";
+    document.getElementById("pCloseness").value=50; document.getElementById("pClosenessLabel").textContent="Steady";
   }
   document.getElementById("personModalOverlay").classList.add("open");
 }
@@ -1414,36 +1218,19 @@ async function savePerson(){
   const cadence = Math.min(365, Math.max(1, +document.getElementById("pCadence").value || 14));
   const tags = document.getElementById("pTags").value.split(",").map(t=>t.trim()).filter(Boolean).slice(0,10);
   const data = {
-    name,
-    relation: document.getElementById("pRelation").value,
-    birthday: document.getElementById("pBirthday").value,
-    anniversary: document.getElementById("pAnniversary").value,
-    contactCadenceDays: cadence,
-    tags,
-    notes: document.getElementById("pNotes").value,
-    closeness: +document.getElementById("pCloseness").value
+    name, relation: document.getElementById("pRelation").value,
+    birthday: document.getElementById("pBirthday").value, anniversary: document.getElementById("pAnniversary").value,
+    contactCadenceDays: cadence, tags, notes: document.getElementById("pNotes").value, closeness: +document.getElementById("pCloseness").value
   };
-  if(editingPersonId){
-    const p = state.people.find(x=>x.id===editingPersonId);
-    Object.assign(p, data);
-  } else {
-    state.people.push({id:uid(), ...data, lastContact:null, color: HABIT_COLORS[state.people.length % HABIT_COLORS.length]});
-  }
-  saveState();
-  closePersonModal();
-  renderPeople();
-  showToast("Saved.");
+  if(editingPersonId){ Object.assign(state.people.find(x=>x.id===editingPersonId), data); }
+  else{ state.people.push({id:uid(), ...data, lastContact:null, color: HABIT_COLORS[state.people.length % HABIT_COLORS.length]}); }
+  saveState(); closePersonModal(); renderPeople(); showToast("Saved.");
 }
 async function deletePerson(id){
-  const ok = await showConfirm("Remove this person? Their history will be deleted too.");
-  if(!ok) return;
-  state.people = state.people.filter(p=>p.id!==id);
-  saveState(); renderPeople();
+  const ok = await showConfirm("Remove this person? Their history will be deleted too."); if(!ok) return;
+  state.people = state.people.filter(p=>p.id!==id); saveState(); renderPeople();
 }
-function updateCloseness(id, val){
-  const p = state.people.find(x=>x.id===id);
-  if(p){ p.closeness = +val; saveState(); }
-}
+function updateCloseness(id, val){ const p = state.people.find(x=>x.id===id); if(p){ p.closeness = +val; saveState(); } }
 function initials(name){ return name.split(" ").filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join(""); }
 function renderPeople(){
   const filterSel = document.getElementById("peopleFilter");
@@ -1453,18 +1240,12 @@ function renderPeople(){
   filterSel.value = relations.includes(prevFilter) ? prevFilter : "";
   filterSel.onchange = renderPeople;
   document.getElementById("peopleSort").onchange = renderPeople;
-  const filter = filterSel.value;
-  const sortBy = document.getElementById("peopleSort").value;
+  const filter = filterSel.value, sortBy = document.getElementById("peopleSort").value;
   const search = document.getElementById("peopleSearch").value.trim().toLowerCase();
   const tk = todayKey();
   let people = [...state.people];
   if(filter) people = people.filter(p=>p.relation===filter);
-  if(search){
-    people = people.filter(p=>{
-      const hay = (p.name+" "+p.notes+" "+(p.tags||[]).join(" ")).toLowerCase();
-      return hay.includes(search);
-    });
-  }
+  if(search){ people = people.filter(p=>(p.name+" "+p.notes+" "+(p.tags||[]).join(" ")).toLowerCase().includes(search)); }
   const daysSince = p => p.lastContact ? daysBetween(p.lastContact, tk) : Infinity;
   if(sortBy==="name") people.sort((a,b)=>a.name.localeCompare(b.name));
   else if(sortBy==="closeness") people.sort((a,b)=>b.closeness-a.closeness);
@@ -1496,6 +1277,7 @@ function renderPeople(){
       </div>
     </div>`;
   }).join("") || `<div class="empty-state">${state.people.length ? "No one matches your filters." : "No one added yet. Start with the people closest to you."}</div>`;
+  refreshRearrangeBounds();
 }
 
 /* ---------------- Events (custom) ---------------- */
@@ -1506,16 +1288,10 @@ async function addEvent(){
   if(!title || !date){ await showAlert("Add a title and date."); return; }
   state.events.push({id:uid(), title, date, recurring});
   saveState();
-  document.getElementById("eventTitle").value="";
-  document.getElementById("eventDate").value="";
-  renderEventList();
-  renderCalendar();
-  showToast("Occasion added.");
+  document.getElementById("eventTitle").value=""; document.getElementById("eventDate").value="";
+  renderEventList(); renderCalendar(); showToast("Occasion added.");
 }
-function deleteEvent(id){
-  state.events = state.events.filter(e=>e.id!==id);
-  saveState(); renderEventList(); renderCalendar();
-}
+function deleteEvent(id){ state.events = state.events.filter(e=>e.id!==id); saveState(); renderEventList(); renderCalendar(); }
 function renderEventList(){
   document.getElementById("eventList").innerHTML = state.events.map(e=>`
     <div class="nudge-item">
@@ -1534,19 +1310,13 @@ function shiftMonth(delta){
   document.getElementById("dayDetail").style.display = "none";
   renderCalendar();
 }
-function jumpToToday(){
-  calYear = new Date().getFullYear();
-  calMonth = new Date().getMonth();
-  renderCalendar();
-  showDayDetail(todayKey());
-}
+function jumpToToday(){ calYear = new Date().getFullYear(); calMonth = new Date().getMonth(); renderCalendar(); showDayDetail(todayKey()); }
 function dayItemsFor(dateKey){
   const items = { journal:false, habits:[], mood:false, events:[] };
   items.journal = state.journal.some(j=>j.date===dateKey);
   items.mood = state.moods[dateKey]!==undefined;
   state.habits.forEach(h=>{ if(h.log && h.log[dateKey]) items.habits.push(h); });
-  const d = new Date(dateKey+"T00:00:00");
-  const mo = d.getMonth(), da = d.getDate();
+  const d = new Date(dateKey+"T00:00:00"); const mo = d.getMonth(), da = d.getDate();
   state.people.forEach(p=>{
     if(p.birthday){ const bd=new Date(p.birthday+"T00:00:00"); if(bd.getMonth()===mo && bd.getDate()===da) items.events.push(p.name+"'s birthday"); }
     if(p.anniversary){ const ad=new Date(p.anniversary+"T00:00:00"); if(ad.getMonth()===mo && ad.getDate()===da) items.events.push(p.name+"'s anniversary"); }
@@ -1561,13 +1331,11 @@ function dayItemsFor(dateKey){
 function renderCalendar(){
   const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   document.getElementById("calTitle").textContent = MONTH_NAMES[calMonth] + " " + calYear;
-  const dow = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-  document.getElementById("calDow").innerHTML = dow.map(d=>`<div class="cal-dow">${d}</div>`).join("");
+  document.getElementById("calDow").innerHTML = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d=>`<div class="cal-dow">${d}</div>`).join("");
   const firstDay = new Date(calYear, calMonth, 1).getDay();
   const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
   const tk = todayKey();
-  let html = "";
-  for(let i=0;i<firstDay;i++) html += `<div class="cal-cell empty"></div>`;
+  let html = ""; for(let i=0;i<firstDay;i++) html += `<div class="cal-cell empty"></div>`;
   for(let d=1; d<=daysInMonth; d++){
     const dateKey = calYear+"-"+String(calMonth+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
     const items = dayItemsFor(dateKey);
@@ -1575,14 +1343,14 @@ function renderCalendar(){
     if(items.journal) dots += `<span class="cal-dot" style="background:var(--rose);"></span>`;
     items.habits.slice(0,3).forEach(h=>{ dots += `<span class="cal-dot" style="background:${h.color};"></span>`; });
     if(items.mood) dots += `<span class="cal-dot" style="background:var(--blue);"></span>`;
-    if(items.events.length) dots += `<span class="cal-dot" style="background:var(--plum);"></span>`;
+    if(items.events.length) dots += `<span class="cal-dot" style="background:var(--text);"></span>`;
     html += `<div class="cal-cell ${dateKey===tk?'today':''}" tabindex="0" onclick="showDayDetail('${dateKey}')" onkeydown="if(event.key==='Enter')showDayDetail('${dateKey}')">
-      <div class="cal-daynum">${d}</div>
-      <div class="cal-dots">${dots}</div>
+      <div class="cal-daynum">${d}</div><div class="cal-dots">${dots}</div>
     </div>`;
   }
   document.getElementById("calGrid").innerHTML = html;
   renderEventList();
+  refreshRearrangeBounds();
 }
 function prefillEventDate(dateKey){
   document.getElementById("eventDate").value = dateKey;
@@ -1602,76 +1370,15 @@ function showDayDetail(dateKey){
   if(!any) html += `<div class="dd-item">Nothing logged this day.</div>`;
   html += `<div class="dd-item"><button class="btn small subtle" onclick="prefillEventDate('${dateKey}')">+ Add occasion on this day</button></div>`;
   const box = document.getElementById("dayDetail");
-  box.className = "day-detail";
-  box.style.display = "block";
-  box.innerHTML = html;
-}
-
-/* ---------------- Insights ---------------- */
-function renderInsights(){
-  // Mood sparkline, last 14 days
-  const days = [];
-  for(let i=13;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); days.push(d.toISOString().slice(0,10)); }
-  const w=560,h=110,pad=14;
-  const stepX = (w - pad*2)/(days.length-1);
-  const pts = days.map((dk,i)=>{
-    const v = state.moods[dk];
-    const x = pad + i*stepX;
-    const y = v===undefined ? null : pad + (100-v)/100*(h-pad*2);
-    return {x,y,v,dk};
-  });
-  const known = pts.filter(p=>p.y!==null);
-  let polyline = "";
-  let segStart=null;
-  known.forEach((p,i)=>{ polyline += (i===0?"M":"L") + p.x.toFixed(1) + "," + p.y.toFixed(1) + " "; });
-  const dots = known.map(p=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="var(--rose)"><title>${fmtDate(p.dk)}: ${moodLabel(p.v)}</title></circle>`).join("");
-  const svg = known.length ? `
-    <svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" role="img" aria-label="Mood over last 14 days">
-      <line x1="${pad}" y1="${h/2}" x2="${w-pad}" y2="${h/2}" stroke="currentColor" stroke-opacity="0.12" stroke-dasharray="4 4"/>
-      <path d="${polyline}" fill="none" stroke="var(--rose)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      ${dots}
-    </svg>` : `<div class="empty-state">No moods logged in the last 14 days yet.</div>`;
-  document.getElementById("moodSparkline").innerHTML = svg;
-
-  // Habit consistency
-  document.getElementById("habitHeat").innerHTML = state.habits.length ? state.habits.map(h=>{
-    const rate = habitCompletionRate30(h);
-    return `<div class="heat-row">
-      <div class="heat-label">${esc(h.name)}</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:${rate}%;background:${h.color};"></div></div>
-      <div style="width:44px;text-align:right;font-size:12px;color:var(--plum-soft);">${rate}%</div>
-    </div>`;
-  }).join("") : `<div class="empty-state">Add a habit to see consistency here.</div>`;
-
-  // Journal stats
-  const totalWords = state.journal.reduce((sum,e)=> sum + (e.html||"").replace(/<[^>]+>/g," ").trim().split(/\s+/).filter(Boolean).length, 0);
-  document.getElementById("journalInsightStats").innerHTML = `
-    ${statTile(state.journal.length, "Total entries")}
-    ${statTile(totalWords, "Words written")}
-    ${statTile(longestJournalStreakEver(), "Longest streak ever")}
-  `;
-
-  // People stats
-  const avgCloseness = state.people.length ? Math.round(state.people.reduce((s,p)=>s+p.closeness,0)/state.people.length) : 0;
-  const tk = todayKey();
-  const overdueCount = state.people.filter(p=>{
-    if(!p.lastContact) return true;
-    return daysBetween(p.lastContact, tk) >= (p.contactCadenceDays||14);
-  }).length;
-  document.getElementById("peopleInsightStats").innerHTML = `
-    ${statTile(state.people.length, "People tracked")}
-    ${statTile(avgCloseness, "Avg closeness")}
-    ${statTile(overdueCount, "Due for a check-in")}
-  `;
+  box.className = "day-detail"; box.style.display = "block"; box.innerHTML = html;
+  refreshRearrangeBounds();
 }
 
 /* ---------------- Settings / backup ---------------- */
 function exportBackup(){
   const blob = new Blob([JSON.stringify(state,null,2)], {type:"application/json"});
   const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "kindred_backup_" + todayKey() + ".json";
-  a.click();
+  a.href = URL.createObjectURL(blob); a.download = "kindred_backup_" + todayKey() + ".json"; a.click();
   URL.revokeObjectURL(a.href);
 }
 document.getElementById("restoreFile").addEventListener("change", async (e)=>{
@@ -1680,82 +1387,55 @@ document.getElementById("restoreFile").addEventListener("change", async (e)=>{
   reader.onload = async (ev)=>{
     try{
       const parsed = JSON.parse(ev.target.result);
-      if(!isValidStateShape(parsed)){
-        await showAlert("That file doesn't look like a Kindred backup.");
-        return;
-      }
+      if(!isValidStateShape(parsed)){ await showAlert("That file doesn't look like a Kindred backup."); return; }
       const ok = await showConfirm("This replaces everything currently in the app with the backup's data. Continue?");
       if(!ok) return;
       parsed.journal.forEach(entry=>{ if(entry.html) entry.html = sanitizeHtml(entry.html); });
-      state = parsed;
-      migrateState();
-      await saveState();
-      showToast("Backup restored.");
-      refreshAll();
-    }catch(err){
-      await showAlert("Couldn't read that file — is it a Kindred backup .json?");
-    }
+      state = parsed; migrateState(); await saveState();
+      showToast("Backup restored."); refreshAll();
+    }catch(err){ await showAlert("Couldn't read that file — is it a Kindred backup .json?"); }
   };
-  reader.readAsText(file);
-  e.target.value = "";
+  reader.readAsText(file); e.target.value = "";
 });
 async function resetAll(){
   const ok = await showConfirm("This clears everything saved in this app. Export a backup first if you want to keep it. Continue?");
   if(!ok) return;
   state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-  await saveState();
-  refreshAll();
-  showToast("All data cleared.");
+  await saveState(); refreshAll(); showToast("All data cleared.");
 }
-function updateStorageIndicator(){
-  const pill = document.getElementById("storagePill");
-  const text = document.getElementById("storagePillText");
-  const banner = document.getElementById("storageBanner");
-  if(!pill || !text || !banner) return;
-  pill.className = "storage-pill " + storageMode;
-  banner.classList.remove("show");
-  if(storageMode === "artifact"){
-    text.textContent = "Saving to your Claude account (syncs across sessions)";
-  } else if(storageMode === "local"){
-    text.textContent = "Saving to this browser only (won't follow you to another device or browser)";
-  } else {
-    text.textContent = "Not saving anywhere right now — memory only";
-    banner.classList.add("show");
-  }
+function updateFooterStatus(){
+  const dot = document.getElementById("footerDot"), text = document.getElementById("footerText");
+  if(!dot || !text) return;
+  dot.className = "footer-dot " + storageMode;
+  if(storageMode==="artifact") text.textContent = "Kindred · saved to your account";
+  else if(storageMode==="local") text.textContent = "Kindred · saved to this browser";
+  else text.textContent = "Kindred · not saving (memory only)";
 }
 function updateStorageStats(){
   const bytes = new Blob([JSON.stringify(state)]).size;
   const kb = (bytes/1024).toFixed(1);
   const nearLimit = bytes > 4*1024*1024;
-  document.getElementById("storageStats").textContent =
-    `Saved to your account's private storage — not shared with anyone. Currently using about ${kb} KB.` +
-    (nearLimit ? " You're approaching the storage limit; consider exporting a backup and trimming older photos in journal entries." : "");
+  let where = storageMode==="artifact" ? "your Claude account (private, syncs across sessions)" : storageMode==="local" ? "this browser only" : "nowhere — memory only, will be lost on refresh";
+  document.getElementById("storageStats").textContent = `Saved to ${where}. Currently using about ${kb} KB.` + (nearLimit ? " You're approaching the storage limit — consider exporting a backup and trimming older journal photos." : "");
 }
 
 /* ---------------- Init ---------------- */
 function refreshAll(){
   renderHero();
-  document.getElementById("quoteModeSelect").value = state.settings.quoteMode || "daily";
-  fillQuoteCategorySelect();
-  document.getElementById("themeSelect").value = state.settings.theme || "light";
-  document.body.setAttribute("data-theme", state.settings.theme || "light");
-  document.getElementById("themeToggle").textContent = (state.settings.theme==="dark") ? "☀️" : "🌙";
+  applyWallpaper();
   document.getElementById("journalDate").value = todayKey();
   renderToday();
   renderJournalList();
   renderHabits();
   renderPeople();
   renderCalendar();
-  updateStorageIndicator();
+  renderWallpaperGrid();
+  updateFooterStatus();
   updateStorageStats();
 }
 async function init(){
-  try{
-    state = await loadState();
-  }catch(e){
-    state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-    showToast("Starting fresh — couldn't load previous data.", true);
-  }
+  try{ state = await loadState(); }
+  catch(e){ state = JSON.parse(JSON.stringify(DEFAULT_STATE)); showToast("Starting fresh — couldn't load previous data.", true); }
   migrateState();
   initQuill();
   refreshAll();
