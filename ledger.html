@@ -196,7 +196,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 .table-scroll .ledger-table{border-radius:0;box-shadow:none;}
 
 /* Toasts (styled like small stamped ledger notes) */
-.toast-container{position:fixed;bottom:22px;right:22px;z-index:400;display:flex;flex-direction:column;gap:10px;max-width:340px;pointer-events:none;}
+.toast-container{position:fixed;bottom:22px;right:22px;z-index:1050;display:flex;flex-direction:column;gap:10px;max-width:340px;pointer-events:none;}
 .toast{pointer-events:auto;display:flex;align-items:flex-start;gap:10px;background:var(--card);border:1px solid var(--border);border-left:3px solid var(--ink);border-radius:8px;box-shadow:0 8px 22px rgba(var(--shadow-rgb),0.18);padding:12px 10px 12px 14px;opacity:0;transform:translateY(12px) scale(0.97);transition:opacity .28s cubic-bezier(.2,.8,.2,1), transform .28s cubic-bezier(.2,.8,.2,1);}
 .toast.show{opacity:1;transform:translateY(0) scale(1);}
 .toast.hide{opacity:0;transform:translateY(8px) scale(0.97);}
@@ -215,7 +215,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 @media(max-width:600px){.toast-container{left:14px;right:14px;bottom:14px;max-width:none;}}
 
 /* Modal */
-.modal-overlay{position:fixed;inset:0;background:rgba(var(--overlay-rgb),0.5);display:none;align-items:center;justify-content:center;z-index:500;padding:20px;}
+.modal-overlay{position:fixed;inset:0;background:rgba(var(--overlay-rgb),0.5);display:none;align-items:center;justify-content:center;z-index:1100;padding:20px;}
 .modal-overlay.show{display:flex;}
 .modal-card{background:var(--card);border-radius:12px;padding:26px;max-width:420px;width:100%;box-shadow:0 24px 64px rgba(var(--overlay-rgb),0.35);animation:modalIn .22s cubic-bezier(.2,.8,.2,1);}
 .modal-card h3{font-size:18px;margin-bottom:2px;}
@@ -271,6 +271,18 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
   *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
 }
 
+/* Privacy toggle */
+.privacy-toggle{position:fixed;top:16px;right:16px;z-index:450;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);transition:all .15s ease;}
+.privacy-toggle:hover{color:var(--ink);box-shadow:var(--shadow-lift);transform:translateY(-1px);}
+@media(max-width:900px){.privacy-toggle{top:auto;bottom:16px;right:14px;}}
+
+/* Unlock overlay */
+.unlock-overlay{position:fixed;inset:0;background:linear-gradient(165deg,var(--sidebar-from) 0%,var(--sidebar-to) 100%);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;}
+.unlock-overlay.show{display:flex;}
+.unlock-card{background:var(--card);border-radius:14px;padding:32px;max-width:380px;width:100%;box-shadow:0 24px 64px rgba(var(--overlay-rgb),0.4);}
+.unlock-card h2{font-size:20px;}
+.unlock-card input[type="password"]{width:100%;}
+
 /* Theme picker */
 .theme-card{border:2px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;background:var(--card);transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;}
 .theme-card:hover{transform:translateY(-1px);box-shadow:var(--shadow);}
@@ -301,6 +313,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 </style>
 </head>
 <body>
+<button id="privacyToggle" class="privacy-toggle" onclick="togglePrivacy()" title="Hide values (for public spaces)" aria-label="Hide values"></button>
 <div class="app">
   <div class="sidebar">
     <div class="brand"><h1>Ledger</h1><span>Personal Finance</span></div>
@@ -724,6 +737,11 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
       </div>
 
       <div class="panel">
+        <h3>Security</h3>
+        <div id="securityPanelBody"></div>
+      </div>
+
+      <div class="panel">
         <h3>Theme</h3>
         <p class="helper-text" style="margin-bottom:12px;">Pick a color theme for the whole app.</p>
         <div id="themePicker" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;"></div>
@@ -756,6 +774,21 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 <div class="toast-container" id="toastContainer"></div>
 <div class="modal-overlay" id="modalOverlay"></div>
 <div id="printReport" class="print-only"></div>
+<div id="unlockOverlay" class="unlock-overlay">
+  <div class="unlock-card">
+    <h2>🔒 Ledger is locked</h2>
+    <p class="helper-text" style="margin:8px 0 16px;">Enter your passphrase to unlock your data. It never leaves this browser.</p>
+    <input type="password" id="unlockPassphrase" placeholder="Passphrase" onkeydown="if(event.key==='Enter')attemptUnlock()">
+    <p id="unlockHint" class="helper-text" style="display:none;margin-top:8px;font-style:italic;"></p>
+    <button class="btn" style="width:100%;margin-top:10px;" onclick="attemptUnlock()">Unlock</button>
+    <p id="unlockError" class="helper-text" style="color:var(--brick);display:none;margin-top:10px;"></p>
+    <div style="display:flex;justify-content:space-between;margin-top:18px;flex-wrap:wrap;gap:8px;">
+      <button class="btn outline small" onclick="showForgotPassphrase()">Forgot passphrase?</button>
+      <button class="btn outline small" onclick="document.getElementById('restoreFileUnlock').click()">Restore a backup instead</button>
+      <input type="file" id="restoreFileUnlock" accept=".json" style="display:none">
+    </div>
+  </div>
+</div>
 
 <script>
 /* ---------------- State ---------------- */
@@ -866,7 +899,53 @@ function safeChart(canvasId, config){
 
 let memoryFallback = null;
 const STORAGE_KEY = "ledger_finance_tracker_v1";
+const META_KEY = "ledger_finance_tracker_v1_meta";
+let encryptionKey = null; // in-memory only CryptoKey, never persisted anywhere
 
+function getMeta(){
+  try{
+    const raw = localStorage.getItem(META_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return {encrypted:false};
+}
+function setMeta(meta){
+  try{ localStorage.setItem(META_KEY, JSON.stringify(meta)); }catch(e){}
+}
+function bytesToBase64(bytes){
+  let binary = "";
+  bytes.forEach(b=>{ binary += String.fromCharCode(b); });
+  return btoa(binary);
+}
+function base64ToBytes(b64){
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for(let i=0;i<binary.length;i++) bytes[i] = binary.charCodeAt(i);
+  return bytes;
+}
+const PBKDF2_ITERATIONS = 250000;
+async function deriveKey(passphrase, saltB64, iterations){
+  const salt = base64ToBytes(saltB64);
+  const keyMaterial = await crypto.subtle.importKey("raw", new TextEncoder().encode(passphrase), "PBKDF2", false, ["deriveKey"]);
+  return crypto.subtle.deriveKey(
+    {name:"PBKDF2", salt, iterations: iterations||PBKDF2_ITERATIONS, hash:"SHA-256"},
+    keyMaterial,
+    {name:"AES-GCM", length:256},
+    false,
+    ["encrypt","decrypt"]
+  );
+}
+async function encryptString(plaintext, key){
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ciphertext = await crypto.subtle.encrypt({name:"AES-GCM", iv}, key, new TextEncoder().encode(plaintext));
+  return {iv: bytesToBase64(iv), data: bytesToBase64(new Uint8Array(ciphertext))};
+}
+async function decryptString(payload, key){
+  const iv = base64ToBytes(payload.iv);
+  const data = base64ToBytes(payload.data);
+  const plainBuf = await crypto.subtle.decrypt({name:"AES-GCM", iv}, key, data);
+  return new TextDecoder().decode(plainBuf);
+}
 function loadState(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -875,17 +954,20 @@ function loadState(){
   if(memoryFallback) return memoryFallback;
   return JSON.parse(JSON.stringify(DEFAULT_STATE));
 }
-function saveState(){
+async function saveState(){
   try{
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if(encryptionKey){
+      const payload = await encryptString(JSON.stringify(state), encryptionKey);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } else {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
   }catch(e){
     memoryFallback = state;
     console.warn("Saved to in-memory fallback only (won't persist after reload)", e);
   }
 }
-let state = loadState();
-migrateState();
-applyThemeVars(state.theme);
+let state = null;
 function migrateState(){
   let changed = false;
   if(!THEMES[state.theme]){ state.theme = "sepia"; changed = true; }
@@ -1775,6 +1857,7 @@ function renderSettings(){
   renderBudgetSettings();
   renderReportSelectors();
   renderThemePicker();
+  renderSecurityPanel();
 }
 function renderReportSelectors(){
   const yearSel = document.getElementById("reportYear");
@@ -1880,10 +1963,20 @@ function wireRestoreInput(inputId){
   document.getElementById(inputId).addEventListener("change", e=>{
     const file = e.target.files[0]; if(!file) return;
     const reader = new FileReader();
-    reader.onload = ev=>{
+    reader.onload = async ev=>{
       try{
         const parsed = JSON.parse(ev.target.result);
-        state = parsed; migrateState(); saveState();
+        state = parsed;
+        migrateState();
+        if(!encryptionKey){
+          // Restoring while not unlocked (e.g. from the "forgot passphrase" escape hatch on
+          // the lock screen) always results in plaintext storage, so meta must reflect that -
+          // otherwise the app would think it's still encrypted but find plain JSON on next load.
+          setMeta({encrypted:false});
+        }
+        await saveState();
+        applyThemeVars(state.theme);
+        document.getElementById("unlockOverlay").classList.remove("show");
         showToast("Backup restored.", {type:'success'});
         refreshAll();
       }catch(err){ showToast("Couldn't read that file — is it a Ledger backup .json?", {type:'error'}); }
@@ -1894,6 +1987,7 @@ function wireRestoreInput(inputId){
 }
 wireRestoreInput("restoreFile");
 wireRestoreInput("restoreFileSettings");
+wireRestoreInput("restoreFileUnlock");
 function exportCsv(){
   const header = "Date,Type,Category,Description,Amount,Payment\n";
   const rows = state.transactions.map(t=>[t.date,t.type,t.category,'"'+(t.description||"").replace(/"/g,'""')+'"',t.amount,t.payment].join(",")).join("\n");
@@ -1907,11 +2001,13 @@ function exportCsv(){
 function resetAll(){
   showConfirmModal({
     title: "Reset all data?",
-    message: "This clears everything in this browser — transactions, recurring items, investments, and credit card data. Export a backup first if you want to keep it. This can't be undone.",
+    message: "This clears everything in this browser — transactions, recurring items, investments, and credit card data — and removes any encryption passphrase. Export a backup first if you want to keep it. This can't be undone.",
     danger: true, confirmLabel: "Reset everything",
-    onConfirm: ()=>{
+    onConfirm: async ()=>{
       state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-      saveState(); refreshAll();
+      encryptionKey = null;
+      setMeta({encrypted:false});
+      await saveState(); refreshAll();
       showToast("All data reset.", {type:'info'});
     }
   });
@@ -2802,14 +2898,31 @@ function kpiCard(label,value,stripe,sub,rawNum){
     : '';
   return `<div class="kpi-card" style="--stripe:${stripe}"><div class="kpi-label">${label}</div><div class="kpi-value mono" id="${kid}"${animAttrs}>${animAttrs?'':value}</div>${sub?`<div class="kpi-sub">${sub}</div>`:""}</div>`;
 }
+const PRIVACY_KEY = "ledger_privacy_mode";
+let privacyMode = false;
+try{ privacyMode = localStorage.getItem(PRIVACY_KEY) === "1"; }catch(e){}
+const kpiOriginalText = new WeakMap();
 function animateKpiValues(containerId){
   const container = document.getElementById(containerId);
   if(!container) return;
-  container.querySelectorAll('.kpi-value[data-animate-to]').forEach(el=>{
+  container.querySelectorAll('.kpi-value').forEach(el=>{
+    if(privacyMode){
+      if(!kpiOriginalText.has(el) && !el.hasAttribute('data-animate-to')){
+        kpiOriginalText.set(el, el.textContent);
+      }
+      el.textContent = "••••";
+      return;
+    }
+    if(kpiOriginalText.has(el)){
+      el.textContent = kpiOriginalText.get(el);
+      kpiOriginalText.delete(el);
+      return;
+    }
+    if(!el.hasAttribute('data-animate-to')) return; // static, non-masked text - nothing to do
     const target = parseFloat(el.getAttribute('data-animate-to'));
     if(isNaN(target)){ return; }
     const isPercent = el.getAttribute('data-animate-fmt') === 'percent';
-    const duration = 1500;
+    const duration = 650;
     const start = (typeof performance!=="undefined"&&performance.now) ? performance.now() : Date.now();
     function frame(now){
       const elapsed = now - start;
@@ -2822,12 +2935,42 @@ function animateKpiValues(containerId){
     }
     requestAnimationFrame(frame);
   });
+  container.querySelectorAll('.kpi-sub').forEach(el=>{
+    if(privacyMode){
+      if(!kpiOriginalText.has(el)) kpiOriginalText.set(el, el.textContent);
+      el.textContent = "••••";
+    } else if(kpiOriginalText.has(el)){
+      el.textContent = kpiOriginalText.get(el);
+      kpiOriginalText.delete(el);
+    }
+  });
+}
+function togglePrivacy(){
+  privacyMode = !privacyMode;
+  try{ localStorage.setItem(PRIVACY_KEY, privacyMode?"1":"0"); }catch(e){}
+  updatePrivacyButton();
+  // Re-run the masking/animation pass on whatever KPI elements already exist in the DOM.
+  // Deliberately does NOT call renderDashboard()/renderCreditCardPage() here - those create
+  // charts, and re-creating charts on a page that isn't currently visible is exactly the bug
+  // that broke "Add card" earlier. Toggling privacy should only ever touch text.
+  animateKpiValues("kpiRow");
+  animateKpiValues("ccKpiRow");
+}
+function updatePrivacyButton(){
+  const btn = document.getElementById("privacyToggle");
+  if(!btn) return;
+  btn.setAttribute("aria-label", privacyMode ? "Show values" : "Hide values");
+  btn.title = privacyMode ? "Show values" : "Hide values (for public spaces)";
+  btn.innerHTML = privacyMode
+    ? '<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M2.5 10s2.8-5.5 7.5-5.5S17.5 10 17.5 10s-2.8 5.5-7.5 5.5S2.5 10 2.5 10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M3 3l14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="10" cy="10" r="2.3" stroke="currentColor" stroke-width="1.6"/></svg>'
+    : '<svg viewBox="0 0 20 20" fill="none" width="18" height="18"><path d="M2.5 10s2.8-5.5 7.5-5.5S17.5 10 17.5 10s-2.8 5.5-7.5 5.5S2.5 10 2.5 10Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="10" cy="10" r="2.3" stroke="currentColor" stroke-width="1.6"/></svg>';
 }
 
 /* ---------------- Init ---------------- */
 function refreshAll(){
   document.getElementById("txDate").valueAsDate = new Date();
   document.getElementById("ccQuickDate").valueAsDate = new Date();
+  updatePrivacyButton();
   populateCategoryOptions();
   renderDashboard();
   renderTransactionsPage();
@@ -2835,7 +2978,191 @@ function refreshAll(){
   renderInvestmentsTable();
   renderSettings();
 }
-refreshAll();
+
+/* ---------------- Boot / unlock flow ---------------- */
+async function bootApp(){
+  const meta = getMeta();
+  if(!meta.encrypted){
+    state = loadState();
+    migrateState();
+    applyThemeVars(state.theme);
+    refreshAll();
+    return;
+  }
+  const hintEl = document.getElementById("unlockHint");
+  if(meta.hint){ hintEl.textContent = "Hint: " + meta.hint; hintEl.style.display = "block"; }
+  else { hintEl.style.display = "none"; }
+  document.getElementById("unlockOverlay").classList.add("show");
+  document.getElementById("unlockPassphrase").focus();
+}
+async function attemptUnlock(){
+  const meta = getMeta();
+  const pass = document.getElementById("unlockPassphrase").value;
+  const errEl = document.getElementById("unlockError");
+  errEl.style.display = "none";
+  if(!pass){ errEl.textContent = "Enter your passphrase."; errEl.style.display = "block"; return; }
+  try{
+    const key = await deriveKey(pass, meta.salt, meta.iterations);
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const payload = raw ? JSON.parse(raw) : null;
+    if(!payload || !payload.iv){ throw new Error("No encrypted data found."); }
+    const plaintext = await decryptString(payload, key);
+    state = JSON.parse(plaintext);
+    encryptionKey = key;
+    migrateState();
+    applyThemeVars(state.theme);
+    document.getElementById("unlockOverlay").classList.remove("show");
+    document.getElementById("unlockPassphrase").value = "";
+    refreshAll();
+    showToast("Unlocked.", {type:'success'});
+  }catch(e){
+    errEl.textContent = "That passphrase didn't work. Try again.";
+    errEl.style.display = "block";
+  }
+}
+function showForgotPassphrase(){
+  showConfirmModal({
+    title: "Forgot your passphrase?",
+    message: "There's no way to recover encrypted data without the passphrase — that's how real encryption works, there's no backdoor. Your options: keep trying, restore an old unencrypted backup if you have one (use the button below), or reset and start completely fresh, which permanently erases the encrypted data on this device.",
+    danger: true, confirmLabel: "Erase and start fresh", cancelLabel: "Cancel",
+    onConfirm: ()=>{
+      try{ localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(META_KEY); }catch(e){}
+      state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+      encryptionKey = null;
+      document.getElementById("unlockOverlay").classList.remove("show");
+      migrateState();
+      applyThemeVars(state.theme);
+      refreshAll();
+      showToast("Data reset. Starting fresh.", {type:'info'});
+    }
+  });
+}
+async function enableEncryption(){
+  const p1 = document.getElementById("secNewPass").value;
+  const p2 = document.getElementById("secNewPassConfirm").value;
+  const hint = document.getElementById("secHint").value.trim();
+  if(!p1 || p1.length < 6){ showToast("Choose a passphrase of at least 6 characters.", {type:'error'}); return; }
+  if(p1 !== p2){ showToast("Passphrases don't match.", {type:'error'}); return; }
+  if(hint && hint.toLowerCase().includes(p1.toLowerCase())){ showToast("Your hint shouldn't contain the passphrase itself.", {type:'error'}); return; }
+  if(typeof crypto === "undefined" || !crypto.subtle){ showToast("This browser doesn't support encryption in this context.", {type:'error'}); return; }
+  exportBackup();
+  showToast("Downloaded an unencrypted backup first, just in case — encrypting now.", {type:'info'});
+  const salt = bytesToBase64(crypto.getRandomValues(new Uint8Array(16)));
+  const key = await deriveKey(p1, salt, PBKDF2_ITERATIONS);
+  encryptionKey = key;
+  setMeta({encrypted:true, salt, iterations: PBKDF2_ITERATIONS, hint: hint||null});
+  await saveState();
+  document.getElementById("secNewPass").value = ""; document.getElementById("secNewPassConfirm").value = ""; document.getElementById("secHint").value = "";
+  renderSecurityPanel();
+  showToast("Encryption enabled. You'll need your passphrase next time you open this file.", {type:'success'});
+}
+async function changePassphrase(){
+  const current = document.getElementById("secCurrentPass").value;
+  const p1 = document.getElementById("secNewPass2").value;
+  const p2 = document.getElementById("secNewPass2Confirm").value;
+  const hint = document.getElementById("secHint2").value.trim();
+  const meta = getMeta();
+  if(!current){ showToast("Enter your current passphrase.", {type:'error'}); return; }
+  try{
+    const checkKey = await deriveKey(current, meta.salt, meta.iterations);
+    const raw = localStorage.getItem(STORAGE_KEY);
+    await decryptString(JSON.parse(raw), checkKey); // throws if wrong
+  }catch(e){ showToast("Current passphrase is incorrect.", {type:'error'}); return; }
+  if(!p1 || p1.length < 6){ showToast("New passphrase must be at least 6 characters.", {type:'error'}); return; }
+  if(p1 !== p2){ showToast("New passphrases don't match.", {type:'error'}); return; }
+  if(hint && hint.toLowerCase().includes(p1.toLowerCase())){ showToast("Your hint shouldn't contain the passphrase itself.", {type:'error'}); return; }
+  const salt = bytesToBase64(crypto.getRandomValues(new Uint8Array(16)));
+  const key = await deriveKey(p1, salt, PBKDF2_ITERATIONS);
+  encryptionKey = key;
+  setMeta({encrypted:true, salt, iterations: PBKDF2_ITERATIONS, hint: hint||null});
+  await saveState();
+  document.getElementById("secCurrentPass").value = ""; document.getElementById("secNewPass2").value = ""; document.getElementById("secNewPass2Confirm").value = ""; document.getElementById("secHint2").value = "";
+  renderSecurityPanel();
+  showToast("Passphrase changed.", {type:'success'});
+}
+async function updateHintOnly(){
+  const current = document.getElementById("secHintPass").value;
+  const newHint = document.getElementById("secHintOnly").value.trim();
+  const meta = getMeta();
+  if(!current){ showToast("Enter your current passphrase to update the hint.", {type:'error'}); return; }
+  try{
+    const checkKey = await deriveKey(current, meta.salt, meta.iterations);
+    const raw = localStorage.getItem(STORAGE_KEY);
+    await decryptString(JSON.parse(raw), checkKey);
+  }catch(e){ showToast("Passphrase is incorrect.", {type:'error'}); return; }
+  if(newHint){
+    // re-derive with the SAME salt/key material just to check the hint doesn't leak the passphrase
+    if(newHint.toLowerCase().includes(current.toLowerCase())){ showToast("Your hint shouldn't contain the passphrase itself.", {type:'error'}); return; }
+  }
+  setMeta({...meta, hint: newHint||null});
+  document.getElementById("secHintPass").value = "";
+  renderSecurityPanel();
+  showToast("Hint updated.", {type:'success'});
+}
+async function disableEncryption(){
+  const current = document.getElementById("secRemovePass").value;
+  const meta = getMeta();
+  if(!current){ showToast("Enter your current passphrase to remove encryption.", {type:'error'}); return; }
+  try{
+    const checkKey = await deriveKey(current, meta.salt, meta.iterations);
+    const raw = localStorage.getItem(STORAGE_KEY);
+    await decryptString(JSON.parse(raw), checkKey); // throws if wrong
+  }catch(e){ showToast("Passphrase is incorrect.", {type:'error'}); return; }
+  encryptionKey = null;
+  setMeta({encrypted:false});
+  await saveState();
+  document.getElementById("secRemovePass").value = "";
+  renderSecurityPanel();
+  showToast("Encryption removed. Data is stored as plain text again.", {type:'info'});
+}
+function renderSecurityPanel(){
+  const el = document.getElementById("securityPanelBody");
+  if(!el) return;
+  const meta = getMeta();
+  const cryptoOk = typeof crypto !== "undefined" && !!crypto.subtle;
+  if(!cryptoOk){
+    el.innerHTML = `<p class="helper-text" style="color:var(--brick);">This browser doesn't support the Web Crypto API in this context, so encryption isn't available here.</p>`;
+    return;
+  }
+  if(meta.encrypted){
+    el.innerHTML = `
+      <p class="helper-text" style="margin-bottom:12px;"><span class="stamp income">Encrypted</span> Your data is encrypted at rest with a passphrase. You'll need it every time you reload this page.${meta.hint?` Current hint: <i>"${meta.hint}"</i>.`:' No hint set.'}</p>
+      <div class="form-grid" style="margin-bottom:16px;">
+        <div class="field"><label>Current passphrase</label><input type="password" id="secCurrentPass"></div>
+        <div class="field"><label>New passphrase</label><input type="password" id="secNewPass2"></div>
+        <div class="field"><label>Confirm new</label><input type="password" id="secNewPass2Confirm"></div>
+        <div class="field"><label>New hint <span style="font-weight:400;text-transform:none;">(optional)</span></label><input type="text" id="secHint2" placeholder="Shown on the lock screen"></div>
+        <div class="field"><button class="btn outline" onclick="changePassphrase()">Change passphrase</button></div>
+      </div>
+      <hr class="divider">
+      <p class="helper-text" style="margin-bottom:10px;">Just want to update the hint, without changing your passphrase?</p>
+      <div class="form-grid" style="grid-template-columns:1fr 1fr auto;margin-bottom:16px;">
+        <div class="field"><label>Current passphrase</label><input type="password" id="secHintPass"></div>
+        <div class="field"><label>New hint</label><input type="text" id="secHintOnly" value="${meta.hint?meta.hint.replace(/"/g,'&quot;'):''}" placeholder="Shown on the lock screen"></div>
+        <div class="field"><button class="btn outline" onclick="updateHintOnly()">Update hint</button></div>
+      </div>
+      <hr class="divider">
+      <p class="helper-text" style="margin-bottom:10px;">Remove encryption and go back to plain storage:</p>
+      <div class="form-grid" style="grid-template-columns:2fr auto;">
+        <div class="field"><label>Current passphrase</label><input type="password" id="secRemovePass"></div>
+        <div class="field"><button class="btn danger" onclick="disableEncryption()">Remove encryption</button></div>
+      </div>
+    `;
+  } else {
+    el.innerHTML = `
+      <p class="helper-text" style="margin-bottom:12px;"><span class="stamp expense">Not encrypted</span> Your data is currently stored as plain text in this browser. Anyone with access to this browser/device could read it via developer tools. Locking it with a passphrase encrypts it at rest.</p>
+      <p class="helper-text" style="margin-bottom:12px;">This protects against casual local snooping on a shared device — it isn't protection against malware or someone who already knows your passphrase. <b>If you forget your passphrase, this data cannot be recovered — there's no backdoor.</b> We'll download an unencrypted backup automatically right before locking, just in case.</p>
+      <div class="form-grid">
+        <div class="field"><label>Choose a passphrase</label><input type="password" id="secNewPass"></div>
+        <div class="field"><label>Confirm passphrase</label><input type="password" id="secNewPassConfirm"></div>
+        <div class="field"><label>Hint <span style="font-weight:400;text-transform:none;">(optional)</span></label><input type="text" id="secHint" placeholder="Shown every time you unlock"></div>
+        <div class="field"><button class="btn" onclick="enableEncryption()">🔒 Lock with a passphrase</button></div>
+      </div>
+      <p class="helper-text" style="margin-top:8px;">Don't put your actual passphrase in the hint — it's stored as plain text and shown before you unlock.</p>
+    `;
+  }
+}
+bootApp();
 </script>
 </body>
 </html>
