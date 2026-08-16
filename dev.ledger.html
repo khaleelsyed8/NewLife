@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ledger — Personal Finance Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="icon" type="image/x-icon" href="logo.ico">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%233B2A1E'/%3E%3Ctext x='50' y='69' font-family='Georgia,serif' font-weight='600' font-size='58' fill='%23F7F1E3' text-anchor='middle'%3EL%3C/text%3E%3C/svg%3E">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -28,11 +28,13 @@
   --sidebar-to:#2E2015;
   --shadow-rgb:59,42,30;
   --overlay-rgb:35,24,16;
-  --shadow: 0 1px 2px rgba(var(--shadow-rgb),0.06), 0 4px 14px rgba(var(--shadow-rgb),0.05);
-  --shadow-lift: 0 8px 24px rgba(var(--shadow-rgb),0.14);
-  --radius: 10px;
+  --shadow: 0 2px 6px rgba(var(--shadow-rgb),0.05), 0 10px 26px rgba(var(--shadow-rgb),0.06);
+  --shadow-lift: 0 16px 36px rgba(var(--shadow-rgb),0.16);
+  --radius: 16px;
+  --ease: cubic-bezier(.2,.8,.2,1);
+  --ease-spring: cubic-bezier(.34,1.56,.64,1);
 }
-*{box-sizing:border-box;}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html{scroll-behavior:smooth;}
 body{margin:0;font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);}
 .mono{font-family:'IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;}
@@ -62,8 +64,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink-soft
 .nav-item.active{background:rgba(237,231,214,0.09);color:#EDE7D6;border-left-color:var(--gold);}
 .nav-icon{width:16px;height:16px;flex-shrink:0;opacity:0.8;transition:opacity .18s ease;}
 .nav-item:hover .nav-icon,.nav-item.active .nav-icon{opacity:1;}
-.nav-scroll{display:flex;flex-direction:column;}
-.nav-island{display:none;}
 .sidebar-foot{margin-top:auto;padding:18px 24px 0 24px;border-top:1px solid rgba(237,231,214,0.15);}
 .sidebar-foot button{width:100%;margin-bottom:8px;background:transparent;border:1px solid rgba(237,231,214,0.25);color:#CBC3A8;border-radius:7px;padding:8px 10px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s ease;}
 .sidebar-foot button:hover{color:#EDE7D6;border-color:#EDE7D6;}
@@ -79,7 +79,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink-soft
 .page-head h2{font-size:26px;}
 .page-head p{margin:4px 0 0 0;color:var(--ink-soft);font-size:13px;}
 
-.year-select{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:7px 10px;padding-right:28px;border-radius:7px;border:1px solid var(--border);background-color:var(--card);color:var(--ink);}
+.year-select{font-family:'IBM Plex Mono',monospace;font-size:13px;padding:7px 10px;padding-right:28px;border-radius:10px;border:1px solid var(--border);background-color:var(--card);color:var(--ink);}
 .dash-selects{display:flex;gap:8px;align-items:center;}
 
 /* KPI cards */
@@ -111,12 +111,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink-soft
 .stamp{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;border:1px solid currentColor;letter-spacing:0.3px;}
 .stamp.income{color:var(--green);background:var(--green-soft);}
 .stamp.expense{color:var(--brick);background:var(--brick-soft);}
-.chip-x{cursor:pointer;margin-left:5px;opacity:0.65;transition:opacity .15s ease;}
+.chip-x{cursor:pointer;margin-left:5px;opacity:0.65;transition:opacity .15s ease, transform .15s var(--ease-spring);display:inline-block;}
 .chip-x:hover{opacity:1;}
+.chip-x:active{transform:scale(0.8);}
 
 /* Toolbar */
 .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
-select,input,textarea{font-family:'Inter',sans-serif;font-size:13px;padding:8px 10px;border-radius:7px;border:1px solid var(--border);background:#fff;color:var(--ink);transition:border-color .15s ease, box-shadow .15s ease;}
+select,input,textarea{font-family:'Inter',sans-serif;font-size:13px;padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--ink);transition:border-color .15s var(--ease), box-shadow .15s var(--ease);}
 select{
   appearance:none;-webkit-appearance:none;-moz-appearance:none;
   padding-right:30px;cursor:pointer;
@@ -126,12 +127,12 @@ select{
 select:hover{border-color:var(--ink-soft);}
 select::-ms-expand{display:none;}
 input[type="number"]{font-family:'IBM Plex Mono',monospace;}
-.btn{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:#EDE7D6;cursor:pointer;transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;}
+.btn{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:12px;border:1px solid var(--ink);background:var(--ink);color:#EDE7D6;cursor:pointer;transition:transform .15s var(--ease-spring), box-shadow .15s var(--ease), opacity .15s var(--ease);}
 .btn:hover{opacity:0.94;transform:translateY(-1px);box-shadow:0 6px 14px rgba(var(--shadow-rgb),0.18);}
-.btn:active{transform:translateY(0);box-shadow:none;}
+.btn:active{transform:translateY(0) scale(0.96);box-shadow:none;transition-duration:.08s;}
 .btn.outline{background:transparent;color:var(--ink);border:1px solid var(--border);}
 .btn.outline:hover{border-color:var(--ink);box-shadow:0 4px 10px rgba(var(--shadow-rgb),0.08);}
-.btn.small{padding:5px 10px;font-size:12px;}
+.btn.small{padding:5px 10px;font-size:12px;border-radius:9px;}
 .btn.danger{background:var(--brick);border-color:var(--brick);}
 
 /* Table (ledger rule lines) */
@@ -146,6 +147,7 @@ input[type="number"]{font-family:'IBM Plex Mono',monospace;}
 .row-actions{display:flex;gap:6px;}
 .icon-btn{background:none;border:none;cursor:pointer;color:var(--ink-soft);font-size:14px;transition:color .15s ease, transform .15s ease;}
 .icon-btn:hover{color:var(--brick);transform:scale(1.1);}
+.icon-btn:active{transform:scale(0.85);}
 
 /* Form panel */
 .panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:20px;}
@@ -161,9 +163,10 @@ input[type="number"]{font-family:'IBM Plex Mono',monospace;}
 .badge-count{background:var(--gold-soft);color:var(--gold);font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:auto;}
 
 .tabs-inline{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
-.tab-btn{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:#fff;font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:all .15s ease;}
+.tab-btn{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:#fff;font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:background-color .15s var(--ease),color .15s var(--ease),border-color .15s var(--ease),transform .15s var(--ease-spring);}
 .tab-btn.active{background:var(--ink);color:#EDE7D6;border-color:var(--ink);}
 .tab-btn:hover:not(.active){border-color:var(--ink-soft);}
+.tab-btn:active{transform:scale(0.94);}
 
 .helper-text{font-size:12px;color:var(--ink-soft);line-height:1.5;}
 .divider{border:none;border-top:1px dashed var(--paper-line);margin:18px 0;}
@@ -221,7 +224,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 .toast-action{background:none;border:none;color:var(--ink);font-weight:700;font-size:12px;cursor:pointer;text-decoration:underline;padding:2px 0 0 0;font-family:'Inter',sans-serif;flex-shrink:0;white-space:nowrap;}
 .toast-close{background:none;border:none;color:var(--ink-soft);cursor:pointer;font-size:13px;padding:0 0 0 2px;flex-shrink:0;line-height:1;}
 .toast-close:hover{color:var(--brick);}
-@media(max-width:600px){.toast-container{left:14px;right:14px;bottom:14px;max-width:none;}}
+@media(max-width:600px){.toast-container{left:14px;right:14px;bottom:calc(78px + env(safe-area-inset-bottom,0px));max-width:none;}}
 
 /* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(var(--overlay-rgb),0.5);display:none;align-items:center;justify-content:center;z-index:1100;padding:20px;}
@@ -233,20 +236,19 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
 @media(max-width:900px){
   .app{flex-direction:column;}
-  .sidebar{position:sticky;top:0;z-index:20;width:100%;height:auto;max-height:none;overflow:visible;flex-direction:row;align-items:center;padding:10px 0;background:var(--paper);border-bottom:1px solid var(--border);box-shadow:0 2px 10px rgba(var(--shadow-rgb),0.10);}
+  .sidebar{position:fixed;top:auto;bottom:0;left:0;right:0;z-index:50;width:100%;height:auto;max-height:none;overflow:visible;flex-direction:row;align-items:stretch;justify-content:space-around;padding:4px 2px calc(4px + env(safe-area-inset-bottom,0px)) 2px;background:var(--paper);background:color-mix(in srgb, var(--paper) 86%, transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:none;border-top:1px solid var(--border);box-shadow:0 -6px 24px rgba(var(--shadow-rgb),0.10);}
   .brand{display:none;}
   .sidebar-foot{display:none;}
-  .nav-scroll{position:relative;z-index:2;display:flex;flex-direction:row;align-items:center;gap:4px;overflow-x:auto;overflow-y:visible;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:6px 16px;width:100%;}
-  .nav-scroll::-webkit-scrollbar{display:none;}
-  .nav-island{display:block;position:absolute;top:50%;left:0;height:40px;width:0;transform:translate(0px,-50%);background:linear-gradient(165deg,var(--sidebar-from) 0%,var(--sidebar-to) 100%);border-radius:999px;box-shadow:0 4px 14px rgba(var(--shadow-rgb),0.25);transition:transform .16s ease-out,width .16s ease-out;z-index:1;pointer-events:none;}
-  .nav-item{padding:9px 14px;border-radius:999px;font-size:12.5px;font-weight:600;white-space:nowrap;border:none;flex-shrink:0;gap:6px;color:var(--ink-soft);opacity:0.55;scroll-snap-align:center;transition:color .18s ease,opacity .18s ease;}
-  .nav-item .nav-icon{opacity:0.75;}
-  .nav-item:hover{color:var(--ink-soft);background:transparent;}
-  .nav-item.active{background:transparent;color:var(--ink-soft);}
-  .nav-item.in-island{color:#EDE7D6;opacity:1;}
-  .nav-item.in-island .nav-icon{opacity:1;}
+  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:6px 2px;border-radius:12px;font-size:9px;font-weight:600;letter-spacing:0.1px;white-space:nowrap;border:none;color:var(--ink-soft);opacity:0.6;transition:color .18s var(--ease),opacity .18s var(--ease),transform .15s var(--ease-spring);}
+  .nav-item span{display:none;}
+  .nav-item::after{content:attr(data-short);}
+  .nav-item .nav-icon{width:19px;height:19px;opacity:0.8;transition:transform .3s var(--ease-spring);}
+  .nav-item:active{transform:scale(0.88);}
+  .nav-item.active{color:var(--ink);opacity:1;background:transparent;}
+  .nav-item.active .nav-icon{opacity:1;animation:tabIconPop .38s var(--ease-spring);}
+  @keyframes tabIconPop{0%{transform:scale(1);}45%{transform:scale(1.24);}100%{transform:scale(1);}}
   .grid-2{grid-template-columns:1fr;gap:12px;}
-  .main{padding:14px 12px;}
+  .main{padding:14px 12px calc(92px + env(safe-area-inset-bottom,0px)) 12px;}
   .page-head{align-items:flex-start;margin-bottom:16px;}
   .page-head h2{font-size:19px;}
   .page-head p{display:none;}
@@ -272,7 +274,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
   .tab-btn{padding:6px 11px;font-size:11px;}
 }
 @media(max-width:520px){
-  .main{padding:12px 10px;}
+  .main{padding:12px 10px 55px 10px;}
   .form-grid{grid-template-columns:1fr;gap:8px;}
   .kpi-row{grid-template-columns:repeat(2,1fr);}
   .chart-wrap{height:180px;}
@@ -290,7 +292,6 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 /* Privacy toggle */
 .privacy-toggle{position:fixed;top:16px;right:16px;z-index:450;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:var(--card);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);transition:all .15s ease;}
 .privacy-toggle:hover{color:var(--ink);box-shadow:var(--shadow-lift);transform:translateY(-1px);}
-@media(max-width:900px){.privacy-toggle{top:auto;bottom:16px;right:14px;}}
 
 /* Unlock overlay */
 .unlock-overlay{position:fixed;inset:0;background:linear-gradient(165deg,var(--sidebar-from) 0%,var(--sidebar-to) 100%);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;}
@@ -302,6 +303,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 /* Theme picker */
 .theme-card{border:2px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;background:var(--card);transition:border-color .15s ease, transform .15s ease, box-shadow .15s ease;}
 .theme-card:hover{transform:translateY(-1px);box-shadow:var(--shadow);}
+.theme-card:active{transform:scale(0.97);}
 .theme-card.active{border-color:var(--gold);box-shadow:0 0 0 2px rgba(var(--shadow-rgb),0.12);}
 .theme-card-swatches{display:flex;gap:5px;margin-bottom:8px;}
 .theme-card-swatches span{width:18px;height:18px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,0.06);}
@@ -333,16 +335,13 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 <div class="app">
   <div class="sidebar">
     <div class="brand"><h1>Ledger</h1><span>Personal Finance</span></div>
-    <div class="nav-island" id="navIsland" aria-hidden="true"></div>
-    <div class="nav-scroll" id="navScroll">
-    <div class="nav-item active" data-page="dashboard"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M4 14V8M10 14V4M16 14v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Dashboard</span></div>
-    <div class="nav-item" data-page="transactions"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M4 5h12M4 10h12M4 15h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Transactions</span></div>
-    <div class="nav-item" data-page="import"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M10 3v8m0-8 3.2 3.2M10 3 6.8 6.2M4 13v2.2c0 .4.4.8.9.8h10.2c.5 0 .9-.4.9-.8V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Import Statement</span></div>
-    <div class="nav-item" data-page="creditcard"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="1.6" stroke="currentColor" stroke-width="1.6"/><path d="M3 8.6h14" stroke="currentColor" stroke-width="1.6"/></svg><span>Credit Card</span></div>
-    <div class="nav-item" data-page="recurring"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M15.5 8A5.5 5.5 0 0 0 5.6 6.2M4.5 12a5.5 5.5 0 0 0 9.9 1.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M5.6 3.4v2.8H8.4M14.4 16.6v-2.8H11.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Recurring</span></div>
-    <div class="nav-item" data-page="investments"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3.5 14 8 8.5l3 2.5 5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.5 8.6h3.5V12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Investments</span></div>
-    <div class="nav-item" data-page="settings"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.6"/><path d="M10 3.5v1.7M10 14.8v1.7M16.5 10h-1.7M5.2 10H3.5M14.6 5.4l-1.2 1.2M6.6 13.4l-1.2 1.2M14.6 14.6l-1.2-1.2M6.6 6.6 5.4 5.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Settings</span></div>
-    </div>
+    <div class="nav-item active" data-page="dashboard" data-short="Home"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M4 14V8M10 14V4M16 14v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Dashboard</span></div>
+    <div class="nav-item" data-page="transactions" data-short="Entries"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M4 5h12M4 10h12M4 15h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Transactions</span></div>
+    <div class="nav-item" data-page="import" data-short="Import"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M10 3v8m0-8 3.2 3.2M10 3 6.8 6.2M4 13v2.2c0 .4.4.8.9.8h10.2c.5 0 .9-.4.9-.8V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Import Statement</span></div>
+    <div class="nav-item" data-page="creditcard" data-short="Card"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="1.6" stroke="currentColor" stroke-width="1.6"/><path d="M3 8.6h14" stroke="currentColor" stroke-width="1.6"/></svg><span>Credit Card</span></div>
+    <div class="nav-item" data-page="recurring" data-short="Repeat"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M15.5 8A5.5 5.5 0 0 0 5.6 6.2M4.5 12a5.5 5.5 0 0 0 9.9 1.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M5.6 3.4v2.8H8.4M14.4 16.6v-2.8H11.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Recurring</span></div>
+    <div class="nav-item" data-page="investments" data-short="Invest"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3.5 14 8 8.5l3 2.5 5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.5 8.6h3.5V12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Investments</span></div>
+    <div class="nav-item" data-page="settings" data-short="Settings"><svg xmlns="http://www.w3.org/2000/svg" fill="none" class="bi bi-gear" viewBox="0 0 20 20" id="Gear--Streamline-Bootstrap" height="16" width="16" stroke="currentColor" stroke-width="1"><path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0 -6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1 -4.492 0" stroke-width="1"></path><path d="M9.796 1.343c-0.527 -1.79 -3.065 -1.79 -3.592 0l-0.094 0.319a0.873 0.873 0 0 1 -1.255 0.52l-0.292 -0.16c-1.64 -0.892 -3.433 0.902 -2.54 2.541l0.159 0.292a0.873 0.873 0 0 1 -0.52 1.255l-0.319 0.094c-1.79 0.527 -1.79 3.065 0 3.592l0.319 0.094a0.873 0.873 0 0 1 0.52 1.255l-0.16 0.292c-0.892 1.64 0.901 3.434 2.541 2.54l0.292 -0.159a0.873 0.873 0 0 1 1.255 0.52l0.094 0.319c0.527 1.79 3.065 1.79 3.592 0l0.094 -0.319a0.873 0.873 0 0 1 1.255 -0.52l0.292 0.16c1.64 0.893 3.434 -0.902 2.54 -2.541l-0.159 -0.292a0.873 0.873 0 0 1 0.52 -1.255l0.319 -0.094c1.79 -0.527 1.79 -3.065 0 -3.592l-0.319 -0.094a0.873 0.873 0 0 1 -0.52 -1.255l0.16 -0.292c0.893 -1.64 -0.902 -3.433 -2.541 -2.54l-0.292 0.159a0.873 0.873 0 0 1 -1.255 -0.52zm-2.633 0.283c0.246 -0.835 1.428 -0.835 1.674 0l0.094 0.319a1.873 1.873 0 0 0 2.693 1.115l0.291 -0.16c0.764 -0.415 1.6 0.42 1.184 1.185l-0.159 0.292a1.873 1.873 0 0 0 1.116 2.692l0.318 0.094c0.835 0.246 0.835 1.428 0 1.674l-0.319 0.094a1.873 1.873 0 0 0 -1.115 2.693l0.16 0.291c0.415 0.764 -0.42 1.6 -1.185 1.184l-0.291 -0.159a1.873 1.873 0 0 0 -2.693 1.116l-0.094 0.318c-0.246 0.835 -1.428 0.835 -1.674 0l-0.094 -0.319a1.873 1.873 0 0 0 -2.692 -1.115l-0.292 0.16c-0.764 0.415 -1.6 -0.42 -1.184 -1.185l0.159 -0.291A1.873 1.873 0 0 0 1.945 8.93l-0.319 -0.094c-0.835 -0.246 -0.835 -1.428 0 -1.674l0.319 -0.094A1.873 1.873 0 0 0 3.06 4.377l-0.16 -0.292c-0.415 -0.764 0.42 -1.6 1.185 -1.184l0.292 0.159a1.873 1.873 0 0 0 2.692 -1.115z" stroke-width="1"></path></svg><span>Settings</span></div>
     <div class="sidebar-foot">
       <button onclick="exportBackup()">⭳ Export backup</button>
       <button onclick="document.getElementById('restoreFile').click()">⭱ Restore backup</button>
@@ -1277,115 +1276,9 @@ function activatePage(item){
   if(item.dataset.page==="investments") renderInvestmentsTable();
   if(item.dataset.page==="settings") renderSettings();
 }
-
-// ---- Mobile "dynamic island" nav ----
-// Layout model: .nav-scroll is a horizontally scrollable strip of plain nav-items
-// (constant size, never resized) that scrolls PAST a decorative pill (.nav-island)
-// which is a sibling positioned absolutely relative to .sidebar, so it never moves
-// with the scroll. Every frame during scroll we measure which item's center is
-// closest to the strip's center and morph the pill (width + translateX) to exactly
-// match that item's own rect, and toggle .in-island for the cream-on-dark text
-// treatment. Real (pixel, not %) padding is added on each end of the strip so the
-// first/last items can also reach true center - percentage padding can't be used
-// here since the strip's own width equals its padding basis, which would collapse
-// its content box to zero.
-function isMobileNav(){ return window.matchMedia('(max-width:900px)').matches; }
-
-function centerNavItem(item, smooth){
-  if(!item) return;
-  item.scrollIntoView({behavior: smooth ? 'smooth' : 'auto', inline:'center', block:'nearest'});
-}
-
-function updateScrollEdgePadding(){
-  const scrollEl = document.getElementById('navScroll');
-  if(!scrollEl) return;
-  const items = scrollEl.querySelectorAll('.nav-item');
-  if(!items.length) return;
-  const containerWidth = scrollEl.clientWidth;
-  if(!containerWidth) return;
-  const firstW = items[0].getBoundingClientRect().width;
-  const lastW = items[items.length-1].getBoundingClientRect().width;
-  const padLeft = Math.max(8, Math.round(containerWidth/2 - firstW/2));
-  const padRight = Math.max(8, Math.round(containerWidth/2 - lastW/2));
-  scrollEl.style.paddingLeft = padLeft + 'px';
-  scrollEl.style.paddingRight = padRight + 'px';
-}
-
-function updateIslandPosition(){
-  if(!isMobileNav()) return null;
-  const scrollEl = document.getElementById('navScroll');
-  const islandEl = document.getElementById('navIsland');
-  const sidebarEl = document.querySelector('.sidebar');
-  if(!scrollEl || !islandEl || !sidebarEl) return null;
-  const items = Array.from(scrollEl.querySelectorAll('.nav-item'));
-  if(!items.length) return null;
-  const scrollRect = scrollEl.getBoundingClientRect();
-  const viewCenter = scrollRect.left + scrollRect.width/2;
-  let closest = items[0], bestDist = Infinity;
-  items.forEach(it=>{
-    const r = it.getBoundingClientRect();
-    const d = Math.abs((r.left + r.width/2) - viewCenter);
-    if(d < bestDist){ bestDist = d; closest = it; }
-  });
-  const sidebarRect = sidebarEl.getBoundingClientRect();
-  const itemRect = closest.getBoundingClientRect();
-  const padX = 6;
-  const left = (itemRect.left - sidebarRect.left) - padX;
-  const width = itemRect.width + padX*2;
-  islandEl.style.width = width + 'px';
-  islandEl.style.transform = 'translate(' + left + 'px, -50%)';
-  items.forEach(it => it.classList.toggle('in-island', it === closest));
-  return closest;
-}
-
-let islandUpdateQueued = false;
-function queueIslandUpdate(){
-  if(islandUpdateQueued) return;
-  islandUpdateQueued = true;
-  requestAnimationFrame(()=>{ islandUpdateQueued = false; updateIslandPosition(); });
-}
-
-function layoutMobileNav(){
-  if(!isMobileNav()) return;
-  updateScrollEdgePadding();
-  const activeItem = document.querySelector('.nav-item.active');
-  if(activeItem) centerNavItem(activeItem, false);
-  updateIslandPosition();
-}
-
-let navSettleTimer = null;
-function initMobileNavScroll(){
-  const scrollEl = document.getElementById('navScroll');
-  if(!scrollEl) return;
-  scrollEl.addEventListener('scroll', ()=>{
-    queueIslandUpdate();
-    clearTimeout(navSettleTimer);
-    navSettleTimer = setTimeout(()=>{
-      const centered = updateIslandPosition();
-      if(centered && !centered.classList.contains('active')) activatePage(centered);
-    }, 130);
-  }, {passive:true});
-}
-
 document.querySelectorAll(".nav-item").forEach(item=>{
-  item.addEventListener("click", ()=>{
-    activatePage(item);
-    if(isMobileNav()){
-      centerNavItem(item, true);
-      updateIslandPosition();
-    }
-  });
+  item.addEventListener("click", ()=>{ activatePage(item); });
 });
-initMobileNavScroll();
-
-let navResizeRAF = null;
-window.addEventListener('resize', ()=>{
-  if(navResizeRAF) cancelAnimationFrame(navResizeRAF);
-  navResizeRAF = requestAnimationFrame(()=>{ layoutMobileNav(); });
-});
-if(document.fonts && document.fonts.ready){
-  document.fonts.ready.then(()=>{ layoutMobileNav(); });
-}
 
 /* ---------------- Categories helpers ---------------- */
 function allExpenseCats(){ return state.categories.Expense; }
@@ -2171,6 +2064,7 @@ function generateReport(){
       <div class="report-kpi"><div class="lbl">Current value</div><div class="val">${fmt(invValue)}</div></div>
       <div class="report-kpi"><div class="lbl">Gain/loss</div><div class="val">${fmt(invValue-invInvested)}</div></div>
     </div>
+    <footer><p>This is a system generated report. No signature required.</p></footer>
   </div>`;
 
   document.getElementById("printReport").innerHTML = html;
@@ -3272,7 +3166,6 @@ function refreshAll(){
   renderRecurringTable();
   renderInvestmentsTable();
   renderSettings();
-  layoutMobileNav();
 }
 
 /* ---------------- Boot / unlock flow ---------------- */
