@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ledger — Personal Finance Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" type="image/x-icon" href="logo.ico">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -61,6 +62,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink-soft
 .nav-item.active{background:rgba(237,231,214,0.09);color:#EDE7D6;border-left-color:var(--gold);}
 .nav-icon{width:16px;height:16px;flex-shrink:0;opacity:0.8;transition:opacity .18s ease;}
 .nav-item:hover .nav-icon,.nav-item.active .nav-icon{opacity:1;}
+.nav-scroll{display:flex;flex-direction:column;}
+.nav-island{display:none;}
 .sidebar-foot{margin-top:auto;padding:18px 24px 0 24px;border-top:1px solid rgba(237,231,214,0.15);}
 .sidebar-foot button{width:100%;margin-bottom:8px;background:transparent;border:1px solid rgba(237,231,214,0.25);color:#CBC3A8;border-radius:7px;padding:8px 10px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s ease;}
 .sidebar-foot button:hover{color:#EDE7D6;border-color:#EDE7D6;}
@@ -90,6 +93,12 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink-soft
 .kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--ink-soft);font-weight:600;}
 .kpi-value{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:600;margin-top:6px;color:var(--ink);}
 .kpi-sub{font-size:11px;color:var(--ink-soft);margin-top:3px;}
+.kpi-trend{font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;white-space:nowrap;display:inline-block;}
+.kpi-trend-good{color:var(--green);background:var(--green-soft);}
+.kpi-trend-bad{color:var(--brick);background:var(--brick-soft);}
+.kpi-trend-flat{color:var(--ink-soft);background:var(--paper-line);}
+.insight-row{display:flex;gap:9px;align-items:flex-start;padding:6px 0;font-size:13px;line-height:1.5;}
+.insight-dot{width:7px;height:7px;border-radius:50%;margin-top:6px;flex-shrink:0;}
 
 /* Cards / charts grid */
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
@@ -224,11 +233,18 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
 @media(max-width:900px){
   .app{flex-direction:column;}
-  .sidebar{position:sticky;top:0;z-index:20;width:100%;height:auto;max-height:none;overflow-y:visible;flex-direction:row;overflow-x:auto;padding:8px 10px;box-shadow:0 2px 10px rgba(var(--shadow-rgb),0.15);}
+  .sidebar{position:sticky;top:0;z-index:20;width:100%;height:auto;max-height:none;overflow:visible;flex-direction:row;align-items:center;padding:10px 0;background:var(--paper);border-bottom:1px solid var(--border);box-shadow:0 2px 10px rgba(var(--shadow-rgb),0.10);}
   .brand{display:none;}
   .sidebar-foot{display:none;}
-  .nav-item{padding:8px 12px;font-size:12.5px;white-space:nowrap;border-left:none;border-bottom:3px solid transparent;flex-shrink:0;gap:6px;}
-  .nav-item.active{border-left-color:transparent;border-bottom-color:var(--gold);}
+  .nav-scroll{position:relative;z-index:2;display:flex;flex-direction:row;align-items:center;gap:4px;overflow-x:auto;overflow-y:visible;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:6px 16px;width:100%;}
+  .nav-scroll::-webkit-scrollbar{display:none;}
+  .nav-island{display:block;position:absolute;top:50%;left:0;height:40px;width:0;transform:translate(0px,-50%);background:linear-gradient(165deg,var(--sidebar-from) 0%,var(--sidebar-to) 100%);border-radius:999px;box-shadow:0 4px 14px rgba(var(--shadow-rgb),0.25);transition:transform .16s ease-out,width .16s ease-out;z-index:1;pointer-events:none;}
+  .nav-item{padding:9px 14px;border-radius:999px;font-size:12.5px;font-weight:600;white-space:nowrap;border:none;flex-shrink:0;gap:6px;color:var(--ink-soft);opacity:0.55;scroll-snap-align:center;transition:color .18s ease,opacity .18s ease;}
+  .nav-item .nav-icon{opacity:0.75;}
+  .nav-item:hover{color:var(--ink-soft);background:transparent;}
+  .nav-item.active{background:transparent;color:var(--ink-soft);}
+  .nav-item.in-island{color:#EDE7D6;opacity:1;}
+  .nav-item.in-island .nav-icon{opacity:1;}
   .grid-2{grid-template-columns:1fr;gap:12px;}
   .main{padding:14px 12px;}
   .page-head{align-items:flex-start;margin-bottom:16px;}
@@ -317,6 +333,8 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 <div class="app">
   <div class="sidebar">
     <div class="brand"><h1>Ledger</h1><span>Personal Finance</span></div>
+    <div class="nav-island" id="navIsland" aria-hidden="true"></div>
+    <div class="nav-scroll" id="navScroll">
     <div class="nav-item active" data-page="dashboard"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M4 14V8M10 14V4M16 14v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Dashboard</span></div>
     <div class="nav-item" data-page="transactions"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M4 5h12M4 10h12M4 15h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Transactions</span></div>
     <div class="nav-item" data-page="import"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M10 3v8m0-8 3.2 3.2M10 3 6.8 6.2M4 13v2.2c0 .4.4.8.9.8h10.2c.5 0 .9-.4.9-.8V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Import Statement</span></div>
@@ -324,6 +342,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
     <div class="nav-item" data-page="recurring"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M15.5 8A5.5 5.5 0 0 0 5.6 6.2M4.5 12a5.5 5.5 0 0 0 9.9 1.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M5.6 3.4v2.8H8.4M14.4 16.6v-2.8H11.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Recurring</span></div>
     <div class="nav-item" data-page="investments"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3.5 14 8 8.5l3 2.5 5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.5 8.6h3.5V12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Investments</span></div>
     <div class="nav-item" data-page="settings"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="2.6" stroke="currentColor" stroke-width="1.6"/><path d="M10 3.5v1.7M10 14.8v1.7M16.5 10h-1.7M5.2 10H3.5M14.6 5.4l-1.2 1.2M6.6 13.4l-1.2 1.2M14.6 14.6l-1.2-1.2M6.6 6.6 5.4 5.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Settings</span></div>
+    </div>
     <div class="sidebar-foot">
       <button onclick="exportBackup()">⭳ Export backup</button>
       <button onclick="document.getElementById('restoreFile').click()">⭱ Restore backup</button>
@@ -343,6 +362,10 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
         </div>
       </div>
       <div class="kpi-row" id="kpiRow"></div>
+      <div class="chart-card" id="insightsCard" style="display:none;margin-bottom:18px;">
+        <h3>Insights</h3>
+        <div id="insightsBody" style="margin-top:4px;"></div>
+      </div>
       <div class="chart-card" id="upcomingBillsCard" style="display:none;margin-bottom:18px;">
         <h3>Bills coming up</h3>
         <div id="upcomingBillsBody" style="margin-top:6px;"></div>
@@ -424,7 +447,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
       <div class="page-head"><div><h2>Transactions</h2><p>Every entry, income and expense, in one ledger.</p></div></div>
 
       <div class="panel">
-        <h3>Quick add</h3>
+        <h3>Quick add <span class="helper-text" style="font-weight:400;text-transform:none;">— press N from anywhere to jump here</span></h3>
         <div class="form-grid">
           <div class="field"><label>Date</label><input type="date" id="txDate"></div>
           <div class="field"><label>Type</label><select id="txType" onchange="populateCategoryOptions()"><option>Expense</option><option>Income</option></select></div>
@@ -832,6 +855,15 @@ const uid = () => Math.random().toString(36).slice(2,10);
 function monthKey(dateStr){ const d=new Date(dateStr); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"); }
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const EMPTY_ICON = '<svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="3" width="12" height="14" rx="1.2"/><path d="M7 7h6M7 10h6M7 13h3.5"/></svg>';
+const CATEGORY_ICONS = {
+  "Housing/Rent":"🏠", "Utilities":"💡", "Groceries":"🛒", "Transportation":"🚗", "Dining Out":"🍽️",
+  "Entertainment":"🎬", "Healthcare":"💊", "Insurance":"🛡️", "Shopping":"🛍️", "Education":"🎓",
+  "Subscriptions":"🔁", "Travel":"✈️", "EMI/Loan":"🏦", "Personal Care":"💇", "Credit Card Bill Payment":"💳",
+  "Investment Purchase (Stocks/MF/etc.)":"📈", "Lent to Someone":"🤝", "Miscellaneous":"📦",
+  "Salary":"💼", "Freelance":"💻", "Business":"🏢", "Interest":"🏦", "Dividend":"📊",
+  "Rental Income":"🔑", "Gift":"🎁", "Reimbursement/Refund":"↩️", "Other Income":"💰"
+};
+function categoryIcon(cat){ return CATEGORY_ICONS[cat] || "🏷️"; }
 
 /* ---------------- Themes ---------------- */
 const THEMES = {
@@ -1233,20 +1265,127 @@ function readTabularFile(file, onDone){
 }
 
 /* ---------------- Nav ---------------- */
+function activatePage(item){
+  document.querySelectorAll(".nav-item").forEach(i=>i.classList.remove("active"));
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  item.classList.add("active");
+  document.getElementById("page-"+item.dataset.page).classList.add("active");
+  if(item.dataset.page==="dashboard") renderDashboard();
+  if(item.dataset.page==="transactions") renderTransactionsPage();
+  if(item.dataset.page==="creditcard") renderCreditCardPage();
+  if(item.dataset.page==="recurring") renderRecurringTable();
+  if(item.dataset.page==="investments") renderInvestmentsTable();
+  if(item.dataset.page==="settings") renderSettings();
+}
+
+// ---- Mobile "dynamic island" nav ----
+// Layout model: .nav-scroll is a horizontally scrollable strip of plain nav-items
+// (constant size, never resized) that scrolls PAST a decorative pill (.nav-island)
+// which is a sibling positioned absolutely relative to .sidebar, so it never moves
+// with the scroll. Every frame during scroll we measure which item's center is
+// closest to the strip's center and morph the pill (width + translateX) to exactly
+// match that item's own rect, and toggle .in-island for the cream-on-dark text
+// treatment. Real (pixel, not %) padding is added on each end of the strip so the
+// first/last items can also reach true center - percentage padding can't be used
+// here since the strip's own width equals its padding basis, which would collapse
+// its content box to zero.
+function isMobileNav(){ return window.matchMedia('(max-width:900px)').matches; }
+
+function centerNavItem(item, smooth){
+  if(!item) return;
+  item.scrollIntoView({behavior: smooth ? 'smooth' : 'auto', inline:'center', block:'nearest'});
+}
+
+function updateScrollEdgePadding(){
+  const scrollEl = document.getElementById('navScroll');
+  if(!scrollEl) return;
+  const items = scrollEl.querySelectorAll('.nav-item');
+  if(!items.length) return;
+  const containerWidth = scrollEl.clientWidth;
+  if(!containerWidth) return;
+  const firstW = items[0].getBoundingClientRect().width;
+  const lastW = items[items.length-1].getBoundingClientRect().width;
+  const padLeft = Math.max(8, Math.round(containerWidth/2 - firstW/2));
+  const padRight = Math.max(8, Math.round(containerWidth/2 - lastW/2));
+  scrollEl.style.paddingLeft = padLeft + 'px';
+  scrollEl.style.paddingRight = padRight + 'px';
+}
+
+function updateIslandPosition(){
+  if(!isMobileNav()) return null;
+  const scrollEl = document.getElementById('navScroll');
+  const islandEl = document.getElementById('navIsland');
+  const sidebarEl = document.querySelector('.sidebar');
+  if(!scrollEl || !islandEl || !sidebarEl) return null;
+  const items = Array.from(scrollEl.querySelectorAll('.nav-item'));
+  if(!items.length) return null;
+  const scrollRect = scrollEl.getBoundingClientRect();
+  const viewCenter = scrollRect.left + scrollRect.width/2;
+  let closest = items[0], bestDist = Infinity;
+  items.forEach(it=>{
+    const r = it.getBoundingClientRect();
+    const d = Math.abs((r.left + r.width/2) - viewCenter);
+    if(d < bestDist){ bestDist = d; closest = it; }
+  });
+  const sidebarRect = sidebarEl.getBoundingClientRect();
+  const itemRect = closest.getBoundingClientRect();
+  const padX = 6;
+  const left = (itemRect.left - sidebarRect.left) - padX;
+  const width = itemRect.width + padX*2;
+  islandEl.style.width = width + 'px';
+  islandEl.style.transform = 'translate(' + left + 'px, -50%)';
+  items.forEach(it => it.classList.toggle('in-island', it === closest));
+  return closest;
+}
+
+let islandUpdateQueued = false;
+function queueIslandUpdate(){
+  if(islandUpdateQueued) return;
+  islandUpdateQueued = true;
+  requestAnimationFrame(()=>{ islandUpdateQueued = false; updateIslandPosition(); });
+}
+
+function layoutMobileNav(){
+  if(!isMobileNav()) return;
+  updateScrollEdgePadding();
+  const activeItem = document.querySelector('.nav-item.active');
+  if(activeItem) centerNavItem(activeItem, false);
+  updateIslandPosition();
+}
+
+let navSettleTimer = null;
+function initMobileNavScroll(){
+  const scrollEl = document.getElementById('navScroll');
+  if(!scrollEl) return;
+  scrollEl.addEventListener('scroll', ()=>{
+    queueIslandUpdate();
+    clearTimeout(navSettleTimer);
+    navSettleTimer = setTimeout(()=>{
+      const centered = updateIslandPosition();
+      if(centered && !centered.classList.contains('active')) activatePage(centered);
+    }, 130);
+  }, {passive:true});
+}
+
 document.querySelectorAll(".nav-item").forEach(item=>{
   item.addEventListener("click", ()=>{
-    document.querySelectorAll(".nav-item").forEach(i=>i.classList.remove("active"));
-    document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
-    item.classList.add("active");
-    document.getElementById("page-"+item.dataset.page).classList.add("active");
-    if(item.dataset.page==="dashboard") renderDashboard();
-    if(item.dataset.page==="transactions") renderTransactionsPage();
-    if(item.dataset.page==="creditcard") renderCreditCardPage();
-    if(item.dataset.page==="recurring") renderRecurringTable();
-    if(item.dataset.page==="investments") renderInvestmentsTable();
-    if(item.dataset.page==="settings") renderSettings();
+    activatePage(item);
+    if(isMobileNav()){
+      centerNavItem(item, true);
+      updateIslandPosition();
+    }
   });
 });
+initMobileNavScroll();
+
+let navResizeRAF = null;
+window.addEventListener('resize', ()=>{
+  if(navResizeRAF) cancelAnimationFrame(navResizeRAF);
+  navResizeRAF = requestAnimationFrame(()=>{ layoutMobileNav(); });
+});
+if(document.fonts && document.fonts.ready){
+  document.fonts.ready.then(()=>{ layoutMobileNav(); });
+}
 
 /* ---------------- Categories helpers ---------------- */
 function allExpenseCats(){ return state.categories.Expense; }
@@ -1349,7 +1488,7 @@ function renderTransactionsTable(){
     return `<tr>
       <td class="mono">${t.date}</td>
       <td><span class="stamp ${t.type.toLowerCase()}">${t.type}</span></td>
-      <td>${t.category}</td>
+      <td>${categoryIcon(t.category)} ${t.category}</td>
       <td>${t.description||""}</td>
       <td>${t.payment||""}</td>
       <td class="mono ${t.type==="Income"?"amt-in":"amt-out"}" style="text-align:right;">${t.type==="Income"?"+":"-"}${fmt(t.amount)}</td>
@@ -1431,6 +1570,110 @@ function renderUpcomingBills(){
       <div><b>${r.name}</b> <span class="helper-text">${r.category} · ${fmt(r.amount)}</span></div>
       <div style="display:flex;align-items:center;gap:10px;">${label}<button class="btn outline small" onclick="markRecurringPaid('${r.id}')">Mark paid</button></div>
     </div>`;
+  }).join('');
+}
+
+/* ---------------- Insights ---------------- */
+function generateInsights(){
+  const insights = [];
+  if(!state.transactions.length) return insights;
+  const now = new Date();
+  const curYear = now.getFullYear(), curMonth = now.getMonth();
+  function monthTx(y,m,type){
+    return state.transactions.filter(t=>{ const d=new Date(t.date); return d.getFullYear()===y && d.getMonth()===m && (!type||t.type===type); });
+  }
+  function catTotal(y,m,cat){ return monthTx(y,m,'Expense').filter(t=>t.category===cat).reduce((s,t)=>s+t.amount,0); }
+  function shiftMonth(y,m,delta){
+    let nm=m+delta, ny=y;
+    while(nm<0){ nm+=12; ny-=1; }
+    while(nm>11){ nm-=12; ny+=1; }
+    return [ny,nm];
+  }
+
+  // 1. Category vs trailing 3-month average
+  let bestCat = null;
+  allExpenseCats().forEach(cat=>{
+    const cur = catTotal(curYear, curMonth, cat);
+    if(cur<=0) return;
+    let sum=0, count=0;
+    for(let i=1;i<=3;i++){
+      const [py,pm] = shiftMonth(curYear,curMonth,-i);
+      const v = catTotal(py,pm,cat);
+      if(v>0){ sum+=v; count++; }
+    }
+    if(count<2) return;
+    const avg = sum/count;
+    if(avg<=0) return;
+    const pct = ((cur-avg)/avg)*100;
+    if(Math.abs(pct)>=20 && (!bestCat || Math.abs(pct)>Math.abs(bestCat.pct))) bestCat = {cat, pct};
+  });
+  if(bestCat){
+    const dir = bestCat.pct>0 ? 'up' : 'down';
+    insights.push({ text:`${bestCat.cat} is ${dir} ${Math.abs(bestCat.pct).toFixed(0)}% vs your 3-month average.`, tone: bestCat.pct>0?'negative':'positive' });
+  }
+
+  // 2. Savings rate this month vs trailing 6-month average
+  const curInc = monthTx(curYear,curMonth,'Income').reduce((s,t)=>s+t.amount,0);
+  const curExp = monthTx(curYear,curMonth,'Expense').reduce((s,t)=>s+t.amount,0);
+  if(curInc>0){
+    const curRate = (curInc-curExp)/curInc*100;
+    const rates = [];
+    for(let i=1;i<=6;i++){
+      const [py,pm] = shiftMonth(curYear,curMonth,-i);
+      const inc = monthTx(py,pm,'Income').reduce((s,t)=>s+t.amount,0);
+      const exp = monthTx(py,pm,'Expense').reduce((s,t)=>s+t.amount,0);
+      if(inc>0) rates.push((inc-exp)/inc*100);
+    }
+    if(rates.length>=3){
+      const avgRate = rates.reduce((a,b)=>a+b,0)/rates.length;
+      const diff = curRate-avgRate;
+      if(Math.abs(diff)>=8){
+        insights.push({ text:`Your savings rate this month (${curRate.toFixed(0)}%) is ${diff>0?'better':'lower'} than your 6-month average (${avgRate.toFixed(0)}%).`, tone: diff>0?'positive':'negative' });
+      }
+    }
+  }
+
+  // 3. Top spending category changed month over month
+  function topCategoryFor(y,m){
+    let best=null, bestVal=0;
+    allExpenseCats().forEach(cat=>{ const v=catTotal(y,m,cat); if(v>bestVal){ bestVal=v; best=cat; } });
+    return best;
+  }
+  const [prevY,prevM] = shiftMonth(curYear,curMonth,-1);
+  const curTop = topCategoryFor(curYear,curMonth);
+  const prevTop = topCategoryFor(prevY,prevM);
+  if(curTop && prevTop && curTop!==prevTop){
+    insights.push({ text:`Your top spending category shifted from ${prevTop} to ${curTop} this month.`, tone:'neutral' });
+  }
+
+  // 4. Unusually large single expense this month
+  const curExpenses = monthTx(curYear,curMonth,'Expense');
+  if(curExpenses.length>=3){
+    const amounts = curExpenses.map(t=>t.amount).sort((a,b)=>a-b);
+    const median = amounts[Math.floor(amounts.length/2)];
+    const maxTx = curExpenses.reduce((a,b)=> b.amount>a.amount?b:a);
+    if(median>0 && maxTx.amount>=median*3 && maxTx.amount>=1000){
+      insights.push({ text:`Your largest expense this month was ${fmt(maxTx.amount)} for "${maxTx.description||maxTx.category}" — well above your typical transaction.`, tone:'neutral' });
+    }
+  }
+
+  return insights.slice(0,3);
+}
+function renderInsights(){
+  const card = document.getElementById('insightsCard');
+  const body = document.getElementById('insightsBody');
+  if(!card || !body) return;
+  if(privacyMode){
+    card.style.display = 'block';
+    body.innerHTML = `<p class="helper-text">Insights are hidden while values are hidden.</p>`;
+    return;
+  }
+  const insights = generateInsights();
+  if(!insights.length){ card.style.display='none'; return; }
+  card.style.display='block';
+  body.innerHTML = insights.map(i=>{
+    const color = i.tone==='positive' ? 'var(--green)' : (i.tone==='negative' ? 'var(--brick)' : 'var(--gold)');
+    return `<div class="insight-row"><span class="insight-dot" style="background:${color};"></span><span>${i.text}</span></div>`;
   }).join('');
 }
 
@@ -1539,7 +1782,7 @@ function renderRecurringTable(){
     else if(paidThisMonth) monthCell = `<span class="paid-badge">✓ Posted</span>`;
     else monthCell = `<button class="btn outline small" onclick="markRecurringPaid('${r.id}')">Mark paid</button>`;
     return `<tr>
-      <td>${r.name}</td><td>${r.category}</td>
+      <td>${r.name}</td><td>${categoryIcon(r.category)} ${r.category}</td>
       <td class="mono">${fmt(r.amount)}</td><td>${r.frequency}</td>
       <td class="mono">${fmt(annualCost(r))}</td>
       <td><span class="stamp ${r.status==="Active"?"income":"expense"}">${r.status}</span></td>
@@ -1852,8 +2095,8 @@ function renderSettings(){
   document.getElementById("ruleTableBody").innerHTML = state.rules.map((r)=>`
     <tr><td class="mono">${r.kw}</td><td>${r.cat}</td><td><button class="icon-btn" onclick="deleteRule('${r.id}')">✕</button></td></tr>
   `).join("") || `<tr><td colspan="3"><div class="empty-state">${EMPTY_ICON}<div>No rules yet.</div></div></td></tr>`;
-  document.getElementById("incomeCatsList").innerHTML = allIncomeCats().map(c=>`<span class="stamp income" style="margin:3px 4px 0 0;">${c} <span class="chip-x" onclick="removeCategory('Income','${c.replace(/'/g,"\\'")}')">✕</span></span>`).join("");
-  document.getElementById("expenseCatsList").innerHTML = allExpenseCats().map(c=>`<span class="stamp expense" style="margin:3px 4px 0 0;">${c} <span class="chip-x" onclick="removeCategory('Expense','${c.replace(/'/g,"\\'")}')">✕</span></span>`).join("");
+  document.getElementById("incomeCatsList").innerHTML = allIncomeCats().map(c=>`<span class="stamp income" style="margin:3px 4px 0 0;">${categoryIcon(c)} ${c} <span class="chip-x" onclick="removeCategory('Income','${c.replace(/'/g,"\\'")}')">✕</span></span>`).join("");
+  document.getElementById("expenseCatsList").innerHTML = allExpenseCats().map(c=>`<span class="stamp expense" style="margin:3px 4px 0 0;">${categoryIcon(c)} ${c} <span class="chip-x" onclick="removeCategory('Expense','${c.replace(/'/g,"\\'")}')">✕</span></span>`).join("");
   renderBudgetSettings();
   renderReportSelectors();
   renderThemePicker();
@@ -2336,7 +2579,7 @@ function renderCcTable(){
     return `<tr>
       <td class="mono">${t.date}</td>
       <td>${t.card||''}</td>
-      <td>${t.category}</td>
+      <td>${categoryIcon(t.category)} ${t.category}</td>
       <td>${t.description||''}${t.addedToLedger?' <span class="dup-flag" style="color:var(--green);">Also in ledger</span>':''}</td>
       <td class="mono amt-out" style="text-align:right;">-${fmt(t.amount)}</td>
       <td class="row-actions"><button class="icon-btn" onclick="editCcTransaction('${t.id}')" title="Edit">✎</button><button class="icon-btn" onclick="deleteCcTransaction('${t.id}')" title="Delete">✕</button></td>
@@ -2642,18 +2885,45 @@ function renderDashboard(){
   const stamp = mostRecentUpdate();
   const invLabel = "Investment value" + (stamp ? " · updated " + relativeDate(stamp) : " · no updates yet");
 
+  // Previous-period figures for trend indicators: previous calendar month when viewing a
+  // single month, previous full year when viewing a whole year - whichever matches what's
+  // actually being compared on screen.
+  function periodIncomeExpense(y, m){
+    const tx = m===null
+      ? state.transactions.filter(t=>new Date(t.date).getFullYear()===y)
+      : state.transactions.filter(t=>{ const d=new Date(t.date); return d.getFullYear()===y && d.getMonth()===m; });
+    const inc = tx.filter(t=>t.type==="Income").reduce((s,t)=>s+t.amount,0);
+    const exp = tx.filter(t=>t.type==="Expense").reduce((s,t)=>s+t.amount,0);
+    return {inc, exp};
+  }
+  let prevPeriod;
+  if(isSingleMonth){
+    let pm = mIdx-1, py = year;
+    if(pm<0){ pm=11; py=year-1; }
+    prevPeriod = periodIncomeExpense(py, pm);
+  } else {
+    prevPeriod = periodIncomeExpense(year-1, null);
+  }
+  const prevNetSavings = prevPeriod.inc - prevPeriod.exp;
+  const prevSavingsRate = prevPeriod.inc>0 ? (prevNetSavings/prevPeriod.inc*100) : null;
+  function pctTrend(current, previous){
+    if(previous===null || previous===undefined || previous===0) return null;
+    return ((current-previous)/Math.abs(previous))*100;
+  }
+
   document.getElementById("kpiRow").innerHTML = `
-    ${kpiCard(isSingleMonth?"Income ("+MONTHS[mIdx]+")":"Total income (YTD)", fmt(totalIncome), "var(--green)", null, totalIncome)}
-    ${kpiCard(isSingleMonth?"Expenses ("+MONTHS[mIdx]+")":"Total expenses (YTD)", fmt(totalExpense), "var(--brick)", null, totalExpense)}
-    ${kpiCard(isSingleMonth?"Net savings ("+MONTHS[mIdx]+")":"Net savings (YTD)", fmt(netSavings), "var(--gold)", null, netSavings)}
-    ${kpiCard("Savings rate", savingsRate.toFixed(1)+"%", "var(--ink)", null, savingsRate)}
+    ${kpiCard(isSingleMonth?"Income ("+MONTHS[mIdx]+")":"Total income (YTD)", fmt(totalIncome), "var(--green)", null, totalIncome, {pct:pctTrend(totalIncome,prevPeriod.inc), goodUp:true})}
+    ${kpiCard(isSingleMonth?"Expenses ("+MONTHS[mIdx]+")":"Total expenses (YTD)", fmt(totalExpense), "var(--brick)", null, totalExpense, {pct:pctTrend(totalExpense,prevPeriod.exp), goodUp:false})}
+    ${kpiCard(isSingleMonth?"Net savings ("+MONTHS[mIdx]+")":"Net savings (YTD)", fmt(netSavings), "var(--gold)", null, netSavings, {pct:pctTrend(netSavings,prevNetSavings), goodUp:true})}
+    ${kpiCard("Savings rate", savingsRate.toFixed(1)+"%", "var(--ink)", null, savingsRate, {pp:(prevSavingsRate===null?null:savingsRate-prevSavingsRate)})}
     ${kpiCard("Net worth (today)", fmt(netWorthToday), "var(--gold)", "Cash flow to date + investments", netWorthToday)}
     ${kpiCard(invLabel, fmt(invValue), "var(--green)", (invGain>=0?"+":"")+fmt(invGain)+" gain/loss ("+(invInvested>0?((invGain/invInvested*100).toFixed(1)):"0")+"%)", invValue)}
     ${kpiCard("Recurring expenses (annual)", fmt(recAnnual), "var(--brick)", null, recAnnual)}
     ${isSingleMonth ? kpiCard("Entries this month", scopedTx.length, "var(--ink)") : kpiCard("Avg monthly expense", fmt(avgMonthlyExpense), "var(--ink)", monthsWithData+" of 12 months have data", avgMonthlyExpense)}
-    ${kpiCard("Top expense category", topCat && topCat.v>0 ? topCat.c : "—", "var(--gold)", topCat && topCat.v>0 ? fmt(topCat.v)+(isSingleMonth?" this month":" this year") : "No expenses yet")}
+    ${kpiCard("Top expense category", topCat && topCat.v>0 ? categoryIcon(topCat.c)+" "+topCat.c : "—", "var(--gold)", topCat && topCat.v>0 ? fmt(topCat.v)+(isSingleMonth?" this month":" this year") : "No expenses yet")}
   `;
   animateKpiValues("kpiRow");
+  renderInsights();
 
   const budgetCard = document.getElementById("budgetCard");
   const budgetCats = Object.keys(state.budgets).filter(c=>state.budgets[c]>0);
@@ -2891,12 +3161,25 @@ function renderMonthlyTable(monthlyIncome, monthlyExpense, yearTx){
   updateSortArrows('monthly', ['month','income','expense','net','entries']);
 }
 function destroyChart(id){ try{ if(charts[id]) charts[id].destroy(); }catch(e){} delete charts[id]; }
-function kpiCard(label,value,stripe,sub,rawNum){
+function kpiCard(label,value,stripe,sub,rawNum,trend){
   const kid = 'kv-'+uid();
   const animAttrs = (typeof rawNum === "number" && !isNaN(rawNum))
     ? ` data-animate-to="${rawNum}" data-animate-fmt="${value.indexOf('%')>-1?'percent':'currency'}"`
     : '';
-  return `<div class="kpi-card" style="--stripe:${stripe}"><div class="kpi-label">${label}</div><div class="kpi-value mono" id="${kid}"${animAttrs}>${animAttrs?'':value}</div>${sub?`<div class="kpi-sub">${sub}</div>`:""}</div>`;
+  let trendHtml = '';
+  if(trend){
+    let n = null, goodUp = true, suffix = '%';
+    if(typeof trend.pct === "number" && isFinite(trend.pct)){ n = trend.pct; goodUp = trend.goodUp!==false; }
+    else if(typeof trend.pp === "number" && isFinite(trend.pp)){ n = trend.pp; goodUp = true; suffix = 'pp'; }
+    if(n !== null){
+      const isUp = n >= 0;
+      const isGood = goodUp ? isUp : !isUp;
+      const arrow = isUp ? '▲' : '▼';
+      const cls = n===0 ? 'kpi-trend-flat' : (isGood ? 'kpi-trend-good' : 'kpi-trend-bad');
+      trendHtml = ` <span class="kpi-trend ${cls}">${arrow}${Math.abs(n).toFixed(0)}${suffix}</span>`;
+    }
+  }
+  return `<div class="kpi-card" style="--stripe:${stripe}"><div class="kpi-label">${label}${trendHtml}</div><div class="kpi-value mono" id="${kid}"${animAttrs}>${animAttrs?'':value}</div>${sub?`<div class="kpi-sub">${sub}</div>`:""}</div>`;
 }
 const PRIVACY_KEY = "ledger_privacy_mode";
 let privacyMode = false;
@@ -2944,6 +3227,17 @@ function animateKpiValues(containerId){
       kpiOriginalText.delete(el);
     }
   });
+  container.querySelectorAll('.kpi-trend').forEach(el=>{
+    if(privacyMode){
+      if(!kpiOriginalText.has(el)){ kpiOriginalText.set(el, {text: el.textContent, cls: el.className}); }
+      el.textContent = "••";
+      el.className = "kpi-trend kpi-trend-flat";
+    } else if(kpiOriginalText.has(el)){
+      const orig = kpiOriginalText.get(el);
+      el.textContent = orig.text; el.className = orig.cls;
+      kpiOriginalText.delete(el);
+    }
+  });
 }
 function togglePrivacy(){
   privacyMode = !privacyMode;
@@ -2955,6 +3249,7 @@ function togglePrivacy(){
   // that broke "Add card" earlier. Toggling privacy should only ever touch text.
   animateKpiValues("kpiRow");
   animateKpiValues("ccKpiRow");
+  renderInsights();
 }
 function updatePrivacyButton(){
   const btn = document.getElementById("privacyToggle");
@@ -2977,6 +3272,7 @@ function refreshAll(){
   renderRecurringTable();
   renderInvestmentsTable();
   renderSettings();
+  layoutMobileNav();
 }
 
 /* ---------------- Boot / unlock flow ---------------- */
@@ -3162,6 +3458,18 @@ function renderSecurityPanel(){
     `;
   }
 }
+document.addEventListener("keydown", (e)=>{
+  if(e.key!=="n" && e.key!=="N") return;
+  if(e.metaKey || e.ctrlKey || e.altKey) return;
+  const tag = (document.activeElement && document.activeElement.tagName) || "";
+  if(["INPUT","TEXTAREA","SELECT"].includes(tag)) return;
+  if(document.getElementById("unlockOverlay").classList.contains("show")) return;
+  if(document.getElementById("modalOverlay").classList.contains("show")) return;
+  e.preventDefault();
+  const navItem = document.querySelector('.nav-item[data-page="transactions"]');
+  if(navItem) navItem.click();
+  setTimeout(()=>{ const el = document.getElementById("txDesc"); if(el) el.focus(); }, 60);
+});
 bootApp();
 </script>
 </body>
