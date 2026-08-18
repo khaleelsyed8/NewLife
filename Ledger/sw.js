@@ -1,47 +1,43 @@
 const CACHE_NAME = "ledger-v1";
 
 const APP_ASSETS = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/logo.svg"
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./logo.svg",
+  "./styles.css",
+  "./script.js"
 ];
 
-/*
- * Install
- */
 self.addEventListener("install", (event) => {
-  self.skipWaiting();
+  console.log("[SW] Installing:", CACHE_NAME);
 
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(APP_ASSETS);
     })
   );
+
+  self.skipWaiting();
 });
 
-/*
- * Activate
- */
 self.addEventListener("activate", (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      )
-    )
-  );
+  console.log("[SW] Activated:", CACHE_NAME);
 
-  self.clients.claim();
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames
+          .filter((cacheName) => cacheName !== CACHE_NAME)
+          .map((cacheName) => {
+            console.log("[SW] Deleting old cache:", cacheName);
+            return caches.delete(cacheName);
+          })
+      );
+    }).then(() => self.clients.claim())
+  );
 });
 
-/*
- * Fetch
- */
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") {
     return;
@@ -58,7 +54,7 @@ self.addEventListener("fetch", (event) => {
           if (
             networkResponse &&
             networkResponse.status === 200 &&
-            event.request.url.startsWith(self.location.origin)
+            networkResponse.type === "basic"
           ) {
             const responseClone = networkResponse.clone();
 
@@ -70,7 +66,7 @@ self.addEventListener("fetch", (event) => {
           return networkResponse;
         })
         .catch(() => {
-          return caches.match("/index.html");
+          return caches.match("./index.html");
         });
     })
   );
