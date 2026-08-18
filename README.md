@@ -8,7 +8,7 @@ A collection of sleek, modern, and lightweight web tools designed to simplify yo
 
 A sleek, modern, and lightweight personal finance management tool built to track your daily income, expenses, and overall budget in real-time. 
 
-🚀 **[View Live Demo](https://khaleelsyed8.github.io/NewLife/ledger/index.html)**
+🚀 **[View Live Demo](https://khaleelsyed8.github.io/NewLife/Ledger/index.html)**
 
 ### ✨ Features
 
