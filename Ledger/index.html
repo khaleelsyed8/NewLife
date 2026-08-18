@@ -6,6 +6,7 @@
 <title>Ledger — Personal Finance Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="icon" href="logo.svg" type="image/svg+xml">
+<link rel="manifest" href="./manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -3363,6 +3364,14 @@ document.addEventListener("keydown", (e)=>{
   if(navItem) navItem.click();
   setTimeout(()=>{ const el = document.getElementById("txDesc"); if(el) el.focus(); }, 60);
 });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js")
+      .then(() => console.log("Service Worker registered"))
+      .catch((err) => console.error("SW registration failed:", err));
+  });
+}
 bootApp();
 </script>
 </body>
