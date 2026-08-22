@@ -26,9 +26,11 @@ if (location.protocol === "http:" || location.protocol === "https:") {
 :root{
   --ink:#3B2A1E;
   --ink-soft:#6B5842;
+  --ink-contrast:#EDE7D6;
   --paper:#F7F1E3;
   --paper-line:#E8DCC4;
   --card:#FFFFFF;
+  --surface-alt:#FBF9F2;
   --green:#5C7A4A;
   --green-soft:#E9EFDF;
   --brick:#A6472C;
@@ -129,7 +131,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ink-soft
 
 /* Toolbar */
 .toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;}
-select,input,textarea{font-family:'Inter',sans-serif;font-size:13px;padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:#fff;color:var(--ink);transition:border-color .15s var(--ease), box-shadow .15s var(--ease);}
+select,input,textarea{font-family:'Inter',sans-serif;font-size:13px;padding:8px 10px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--ink);transition:border-color .15s var(--ease), box-shadow .15s var(--ease);}
 select{
   appearance:none;-webkit-appearance:none;-moz-appearance:none;
   padding-right:30px;cursor:pointer;
@@ -139,7 +141,7 @@ select{
 select:hover{border-color:var(--ink-soft);}
 select::-ms-expand{display:none;}
 input[type="number"]{font-family:'IBM Plex Mono',monospace;}
-.btn{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:12px;border:1px solid var(--ink);background:var(--ink);color:#EDE7D6;cursor:pointer;transition:transform .15s var(--ease-spring), box-shadow .15s var(--ease), opacity .15s var(--ease);}
+.btn{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;padding:9px 16px;border-radius:12px;border:1px solid var(--ink);background:var(--ink);color:var(--ink-contrast);cursor:pointer;transition:transform .15s var(--ease-spring), box-shadow .15s var(--ease), opacity .15s var(--ease);}
 .btn:hover{opacity:0.94;transform:translateY(-1px);box-shadow:0 6px 14px rgba(var(--shadow-rgb),0.18);}
 .btn:active{transform:translateY(0) scale(0.96);box-shadow:none;transition-duration:.08s;}
 .btn.outline{background:transparent;color:var(--ink);border:1px solid var(--border);}
@@ -149,11 +151,11 @@ input[type="number"]{font-family:'IBM Plex Mono',monospace;}
 
 /* Table (ledger rule lines) */
 .ledger-table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
-.ledger-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;color:var(--ink-soft);padding:10px 14px;background:#FBF9F2;border-bottom:1px solid var(--border);}
+.ledger-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;color:var(--ink-soft);padding:10px 14px;background:var(--surface-alt);border-bottom:1px solid var(--border);}
 .ledger-table td{padding:10px 14px;font-size:13px;border-bottom:1px dashed var(--paper-line);vertical-align:middle;}
 .ledger-table tr:last-child td{border-bottom:none;}
 .ledger-table tbody tr{transition:background .12s ease;}
-.ledger-table tbody tr:hover{background:#FBF9F2;}
+.ledger-table tbody tr:hover{background:var(--surface-alt);}
 .amt-in{color:var(--green);font-weight:600;}
 .amt-out{color:var(--brick);font-weight:600;}
 .row-actions{display:flex;gap:6px;}
@@ -175,8 +177,8 @@ input[type="number"]{font-family:'IBM Plex Mono',monospace;}
 .badge-count{background:var(--gold-soft);color:var(--gold);font-size:10px;font-weight:700;padding:1px 6px;border-radius:10px;margin-left:auto;}
 
 .tabs-inline{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
-.tab-btn{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:#fff;font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:background-color .15s var(--ease),color .15s var(--ease),border-color .15s var(--ease),transform .15s var(--ease-spring);}
-.tab-btn.active{background:var(--ink);color:#EDE7D6;border-color:var(--ink);}
+.tab-btn{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:var(--card);font-size:12px;font-weight:600;color:var(--ink-soft);cursor:pointer;transition:background-color .15s var(--ease),color .15s var(--ease),border-color .15s var(--ease),transform .15s var(--ease-spring);}
+.tab-btn.active{background:var(--ink);color:var(--ink-contrast);border-color:var(--ink);}
 .tab-btn:hover:not(.active){border-color:var(--ink-soft);}
 .tab-btn:active{transform:scale(0.94);}
 
@@ -195,7 +197,7 @@ input[type="number"]{font-family:'IBM Plex Mono',monospace;}
 /* Inline edit */
 .edit-input{width:100%;font-size:12px;padding:5px 6px;}
 select.edit-input{padding-right:22px;background-size:12px;background-position:right 6px center;}
-.edit-row td{padding:6px 10px;background:#FBF9F2;}
+.edit-row td{padding:6px 10px;background:var(--surface-alt);}
 .edit-actions{display:flex;gap:5px;}
 
 /* Duplicate import flag */
@@ -321,6 +323,10 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 .theme-card-swatches span{width:18px;height:18px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,0.06);}
 .theme-card-name{font-size:12.5px;font-weight:600;color:var(--ink);}
 .theme-card-desc{font-size:10.5px;color:var(--ink-soft);margin-top:2px;}
+.dark-toggle{position:relative;width:44px;height:24px;border-radius:20px;border:1px solid var(--border);background:var(--surface-alt);cursor:pointer;padding:0;transition:background-color .2s ease;}
+.dark-toggle.on{background:var(--ink);border-color:var(--ink);}
+.dark-toggle-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--card);transition:transform .2s cubic-bezier(.2,.8,.2,1);box-shadow:0 1px 3px rgba(var(--shadow-rgb),0.3);}
+.dark-toggle.on .dark-toggle-knob{transform:translateX(20px);}
 
 /* Print report */
 .print-only{display:none;}
@@ -365,7 +371,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
     <!-- DASHBOARD -->
     <div class="page active" id="page-dashboard">
       <div class="page-head">
-        <div><h2>Dashboard</h2><p id="dashSubtitle">Your financial position at a glance.</p></div>
+        <div><h2>Dashboard</h2><p id="dashSubtitle"></p></div>
         <div class="dash-selects">
           <select class="year-select" id="dashYear"></select>
           <select class="year-select" id="dashMonth"></select>
@@ -466,7 +472,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
     <!-- TRANSACTIONS -->
     <div class="page" id="page-transactions">
-      <div class="page-head"><div><h2>Transactions</h2><p>Every entry, income and expense, in one ledger.</p></div></div>
+      <div class="page-head"><div><h2>Transactions</h2></div></div>
 
       <div class="panel">
         <h3>Quick add <span class="helper-text" style="font-weight:400;text-transform:none;">— press N from anywhere to jump here</span></h3>
@@ -546,7 +552,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
     <!-- CREDIT CARD -->
     <div class="page" id="page-creditcard">
-      <div class="page-head"><div><h2>Credit Card</h2><p>See where your card spending actually goes — tracked separately so it never double-counts your bill payment.</p></div></div>
+      <div class="page-head"><div><h2>Credit Card</h2><p>Tracked separately — won't double-count your bill payment.</p></div></div>
 
       <div class="panel">
         <h3>Your cards</h3>
@@ -559,7 +565,6 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
       <div class="panel">
         <h3>Quick add</h3>
-        <p class="helper-text" style="margin-bottom:10px;">Log a one-off card purchase right away, without waiting for the next statement.</p>
         <div class="form-grid">
           <div class="field"><label>Card</label><select id="ccQuickCard"></select></div>
           <div class="field"><label>Date</label><input type="date" id="ccQuickDate"></div>
@@ -575,7 +580,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
       <div class="panel">
         <h3>Import a statement</h3>
-        <p class="helper-text">Upload the itemized statement for one card — we'll auto-categorize each purchase and chart where it went. Payments and refunds are skipped; this is about spend, not balance.</p>
+        <p class="helper-text">Auto-categorizes each purchase. Payments/refunds are skipped.</p>
         <div class="form-grid" style="margin:12px 0;">
           <div class="field"><label>Which card is this for?</label><select id="ccCardSelect"></select></div>
           <div class="field"><label>Upload file (.csv, .xlsx, .xls)</label><input type="file" id="ccFile" accept=".csv,.xlsx,.xls"></div>
@@ -642,7 +647,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
     <!-- RECURRING -->
     <div class="page" id="page-recurring">
-      <div class="page-head"><div><h2>Recurring expenses</h2><p>Subscriptions, EMIs and bills that repeat.</p></div></div>
+      <div class="page-head"><div><h2>Recurring expenses</h2></div></div>
       <div class="panel">
         <h3>Add recurring item</h3>
         <div class="form-grid">
@@ -673,7 +678,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
     <!-- INVESTMENTS -->
     <div class="page" id="page-investments">
-      <div class="page-head"><div><h2>Investments</h2><p>Stocks, MTF, mutual funds and more. Update current price anytime to refresh gain/loss.</p></div></div>
+      <div class="page-head"><div><h2>Investments</h2><p>Update price to refresh gain/loss.</p></div></div>
       <div class="panel">
         <h3>Add holding</h3>
         <div class="form-grid">
@@ -684,11 +689,11 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
           <div class="field"><label>Current price (₹)</label><input type="number" id="invCurrent"></div>
           <div class="field"><button class="btn" onclick="addInvestment()">+ Add</button></div>
         </div>
-        <p class="helper-text" style="margin-top:10px;">Prices aren't pulled automatically — update "current price" as needed, or use "Update prices only" below to refresh many at once.</p>
+        <p class="helper-text" style="margin-top:10px;">Prices update manually — edit one, or bulk-update below.</p>
       </div>
       <div class="panel">
         <h3>Import holdings from broker/MF statement</h3>
-        <p class="helper-text">Export your holdings from Zerodha, Groww, Upstox, etc. and drop the file here — no manual typing needed.</p>
+        <p class="helper-text">Import from Zerodha, Groww, Upstox, etc.</p>
         <div class="form-grid" style="margin:10px 0;">
           <div class="field"><label>Upload file (.csv, .xlsx, .xls)</label><input type="file" id="invCsvFile" accept=".csv,.xlsx,.xls"></div>
         </div>
@@ -746,7 +751,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
     <!-- SETTINGS -->
     <div class="page" id="page-settings">
-      <div class="page-head"><div><h2>Settings</h2><p>Customize categories and auto-categorization rules.</p></div></div>
+      <div class="page-head"><div><h2>Settings</h2></div></div>
 
       <div class="panel">
         <h3>Auto-categorization rules <span class="helper-text">(used when importing a statement or credit card bill)</span></h3>
@@ -776,7 +781,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
       <div class="panel">
         <h3>Monthly budgets <span class="helper-text">(per expense category, applied every month)</span></h3>
-        <p class="helper-text" style="margin-bottom:12px;">Set a ₹ limit per category. Leave at 0 to skip — only budgeted categories show on the dashboard.</p>
+        <p class="helper-text" style="margin-bottom:12px;">0 = no budget for that category.</p>
         <div class="table-scroll"><table class="ledger-table">
           <thead><tr><th>Category</th><th style="width:180px;">Monthly budget (₹)</th></tr></thead>
           <tbody id="budgetTableBody"></tbody>
@@ -847,6 +852,7 @@ const DEFAULT_STATE = {
   ccTransactions: [],
   goals: [],
   theme: "sepia",
+  darkMode: false,
   categories: {
     Income: ["Salary","Freelance","Business","Interest","Dividend","Rental Income","Gift","Reimbursement/Refund","Other Income"],
     Expense: ["Housing/Rent","Utilities","Groceries","Transportation","Dining Out","Entertainment","Healthcare","Insurance","Shopping","Education","Subscriptions","Travel","EMI/Loan","Personal Care","Credit Card Bill Payment","Investment Purchase (Stocks/MF/etc.)","Lent to Someone","Miscellaneous"]
@@ -938,21 +944,40 @@ function categoryIcon(cat){ return CATEGORY_ICONS[cat] || "🏷️"; }
 
 /* ---------------- Themes ---------------- */
 const THEMES = {
-  sepia: { label:"Sepia ledger", desc:"Warm, vintage", ink:"#3B2A1E", inkSoft:"#6B5842", paper:"#F7F1E3", paperLine:"#E8DCC4", green:"#5C7A4A", greenSoft:"#E9EFDF", brick:"#A6472C", brickSoft:"#F5E4DA", gold:"#B8863A", goldSoft:"#F6EAD1", border:"#DDD0B0", sidebarFrom:"#4A3626", sidebarTo:"#2E2015", shadowRgb:"59,42,30", overlayRgb:"35,24,16", inkRgb:"59,42,30", goldRgb:"184,134,58",
+  sepia: { label:"Sepia ledger", desc:"Warm, vintage", ink:"#3B2A1E", inkSoft:"#6B5842", inkContrast:"#EDE7D6", paper:"#F7F1E3", paperLine:"#E8DCC4", card:"#FFFFFF", surfaceAlt:"#FBF9F2", green:"#5C7A4A", greenSoft:"#E9EFDF", brick:"#A6472C", brickSoft:"#F5E4DA", gold:"#B8863A", goldSoft:"#F6EAD1", border:"#DDD0B0", sidebarFrom:"#4A3626", sidebarTo:"#2E2015", shadowRgb:"59,42,30", overlayRgb:"35,24,16",
     chartPalette:["#5C7A4A","#A6472C","#B8863A","#6B5842","#8FA377","#C97B52","#D9B87C","#7A8F6E","#B08F5E","#4E6B42","#9C6B4E","#8A9C5E","#A67A5E","#5E7A6B","#8C7A4E"] },
-  navy: { label:"Classic navy", desc:"The original", ink:"#1B2A4A", inkSoft:"#3C4B6B", paper:"#F5F2EA", paperLine:"#E3DDC9", green:"#1F6F5C", greenSoft:"#E4EFEC", brick:"#B34434", brickSoft:"#F6E7E3", gold:"#C08A2E", goldSoft:"#F5ECD9", border:"#D8D2BE", sidebarFrom:"#1E2E50", sidebarTo:"#16233D", shadowRgb:"27,42,74", overlayRgb:"20,30,55", inkRgb:"27,42,74", goldRgb:"192,138,46",
+  sepia_dark: { label:"Sepia ledger", desc:"Warm, vintage", ink:"#EDE3D0", inkSoft:"#B8A98C", inkContrast:"#221B12", paper:"#221B12", paperLine:"#3A3020", card:"#2B2217", surfaceAlt:"#332A1B", green:"#7FA35F", greenSoft:"#28331F", brick:"#D97B54", brickSoft:"#3A2018", gold:"#D9A94E", goldSoft:"#3A2E14", border:"#4A3E28", sidebarFrom:"#2E2015", sidebarTo:"#1A120B", shadowRgb:"0,0,0", overlayRgb:"0,0,0",
+    chartPalette:["#7FA35F","#D97B54","#D9A94E","#B8A98C","#9FC088","#E09B78","#E8C98A","#9BAF8E","#C4A87E","#6E9160","#B8896E","#A8BE82","#C79E7E","#7E9691","#AC9C6E"] },
+
+  navy: { label:"Classic navy", desc:"The original", ink:"#1B2A4A", inkSoft:"#3C4B6B", inkContrast:"#EDE7D6", paper:"#F5F2EA", paperLine:"#E3DDC9", card:"#FFFFFF", surfaceAlt:"#FBF9F2", green:"#1F6F5C", greenSoft:"#E4EFEC", brick:"#B34434", brickSoft:"#F6E7E3", gold:"#C08A2E", goldSoft:"#F5ECD9", border:"#D8D2BE", sidebarFrom:"#1E2E50", sidebarTo:"#16233D", shadowRgb:"27,42,74", overlayRgb:"20,30,55",
     chartPalette:["#1F6F5C","#B34434","#C08A2E","#3C4B6B","#7A9E7E","#9C5A46","#D9BE86","#5B7A8C","#A8846B","#4E6E5D","#8C5B6B","#6B7A4E","#7A5B8C","#4E5B7A","#8C7A5B"] },
-  slate: { label:"Modern slate", desc:"Cool, crisp", ink:"#16232E", inkSoft:"#45607A", paper:"#F4F6F7", paperLine:"#E3E8EA", green:"#14877D", greenSoft:"#DCEEEC", brick:"#D65F4C", brickSoft:"#FBE7E2", gold:"#E3A23A", goldSoft:"#FBF0DC", border:"#D5DBDD", sidebarFrom:"#223341", sidebarTo:"#16232E", shadowRgb:"22,35,46", overlayRgb:"14,22,29", inkRgb:"22,35,46", goldRgb:"227,162,58",
+  navy_dark: { label:"Classic navy", desc:"The original", ink:"#E7ECF2", inkSoft:"#9CAEC4", inkContrast:"#131C2E", paper:"#131C2E", paperLine:"#22304A", card:"#182438", surfaceAlt:"#1D2B45", green:"#3FA88F", greenSoft:"#1A2E2A", brick:"#E0725C", brickSoft:"#3A2018", gold:"#E0A94E", goldSoft:"#3A2E14", border:"#2A3A54", sidebarFrom:"#16233D", sidebarTo:"#0E1626", shadowRgb:"0,0,0", overlayRgb:"0,0,0",
+    chartPalette:["#3FA88F","#E0725C","#E0A94E","#9CAEC4","#7ABDA8","#C9836E","#EBC787","#7E9BAE","#B99783","#519E86","#A16E7E","#7E9767","#8E6EA1","#5E7EA1","#9EA1B9"] },
+
+  slate: { label:"Modern slate", desc:"Cool, crisp", ink:"#16232E", inkSoft:"#45607A", inkContrast:"#EDE7D6", paper:"#F4F6F7", paperLine:"#E3E8EA", card:"#FFFFFF", surfaceAlt:"#FBF9F2", green:"#14877D", greenSoft:"#DCEEEC", brick:"#D65F4C", brickSoft:"#FBE7E2", gold:"#E3A23A", goldSoft:"#FBF0DC", border:"#D5DBDD", sidebarFrom:"#223341", sidebarTo:"#16232E", shadowRgb:"22,35,46", overlayRgb:"14,22,29",
     chartPalette:["#14877D","#D65F4C","#E3A23A","#45607A","#6FA89E","#C97A5E","#EFC77A","#7A97A8","#B4826E","#2E6B62","#A8624E","#8AA097","#A67E5E","#5E7A97","#8C9CA8"] },
-  jewel: { label:"Jewel tone", desc:"Rich, premium", ink:"#241934", inkSoft:"#5C3A5E", paper:"#F6EFE6", paperLine:"#E8DACB", green:"#1F6B4E", greenSoft:"#DFEFE7", brick:"#8C2F39", brickSoft:"#F2DEE0", gold:"#C79A3E", goldSoft:"#F4E9D1", border:"#DCC9AE", sidebarFrom:"#362448", sidebarTo:"#241934", shadowRgb:"36,25,52", overlayRgb:"24,17,34", inkRgb:"36,25,52", goldRgb:"199,154,62",
-    chartPalette:["#1F6B4E","#8C2F39","#C79A3E","#5C3A5E","#3E7A63","#A85A63","#D9B97C","#7A5E7C","#A87E5E","#2E5643","#7C4E56","#6E8F7C","#8C6E4E","#4E3E5E","#9C8E6E"] }
+  slate_dark: { label:"Modern slate", desc:"Cool, crisp", ink:"#E5EBEE", inkSoft:"#94A7B4", inkContrast:"#151E26", paper:"#151E26", paperLine:"#26333D", card:"#1B2731", surfaceAlt:"#202E38", green:"#2FB3A6", greenSoft:"#173330", brick:"#EB8265", brickSoft:"#3A2018", gold:"#F0B85A", goldSoft:"#3A2E14", border:"#2E3E4A", sidebarFrom:"#16232E", sidebarTo:"#0E161C", shadowRgb:"0,0,0", overlayRgb:"0,0,0",
+    chartPalette:["#2FB3A6","#EB8265","#F0B85A","#94A7B4","#6DC0B4","#D99178","#F5CD86","#87A6B6","#C08F79","#26887E","#B87462","#9BB4A5","#B99172","#6E8CA1","#A9BAC4"] },
+
+  jewel: { label:"Jewel tone", desc:"Rich, premium", ink:"#241934", inkSoft:"#5C3A5E", inkContrast:"#EDE7D6", paper:"#F6EFE6", paperLine:"#E8DACB", card:"#FFFFFF", surfaceAlt:"#FBF9F2", green:"#1F6B4E", greenSoft:"#DFEFE7", brick:"#8C2F39", brickSoft:"#F2DEE0", gold:"#C79A3E", goldSoft:"#F4E9D1", border:"#DCC9AE", sidebarFrom:"#362448", sidebarTo:"#241934", shadowRgb:"36,25,52", overlayRgb:"24,17,34",
+    chartPalette:["#1F6B4E","#8C2F39","#C79A3E","#5C3A5E","#3E7A63","#A85A63","#D9B97C","#7A5E7C","#A87E5E","#2E5643","#7C4E56","#6E8F7C","#8C6E4E","#4E3E5E","#9C8E6E"] },
+  jewel_dark: { label:"Jewel tone", desc:"Rich, premium", ink:"#EDE4F2", inkSoft:"#AC96BE", inkContrast:"#1C1428", paper:"#1C1428", paperLine:"#302246", card:"#231A31", surfaceAlt:"#291F39", green:"#3E9C74", greenSoft:"#1A2E22", brick:"#C15A63", brickSoft:"#3A1E20", gold:"#DDB25E", goldSoft:"#3A2E14", border:"#3A2A50", sidebarFrom:"#241934", sidebarTo:"#160F20", shadowRgb:"0,0,0", overlayRgb:"0,0,0",
+    chartPalette:["#3E9C74","#C15A63","#DDB25E","#AC96BE","#6EAE8E","#C97E85","#E6C687","#96829E","#B99680","#2E8266","#A16B71","#849E82","#A17E82","#6E7E96","#B0A4B9"] }
 };
-function theme(){ return THEMES[state.theme] || THEMES.sepia; }
-function applyThemeVars(name){
-  const t = THEMES[name] || THEMES.sepia;
+// The base theme (sepia/navy/slate/jewel) and the light/dark toggle are stored
+// separately in state; this resolves them to the actual THEMES key to look up.
+function activeThemeKey(){
+  const base = state.theme || 'sepia';
+  const key = state.darkMode ? base + '_dark' : base;
+  return THEMES[key] ? key : base;
+}
+function theme(){ return THEMES[activeThemeKey()] || THEMES.sepia; }
+function applyThemeVars(key){
+  const t = THEMES[key] || THEMES.sepia;
   const root = document.documentElement.style;
-  root.setProperty('--ink', t.ink); root.setProperty('--ink-soft', t.inkSoft);
+  root.setProperty('--ink', t.ink); root.setProperty('--ink-soft', t.inkSoft); root.setProperty('--ink-contrast', t.inkContrast);
   root.setProperty('--paper', t.paper); root.setProperty('--paper-line', t.paperLine);
+  root.setProperty('--card', t.card); root.setProperty('--surface-alt', t.surfaceAlt);
   root.setProperty('--green', t.green); root.setProperty('--green-soft', t.greenSoft);
   root.setProperty('--brick', t.brick); root.setProperty('--brick-soft', t.brickSoft);
   root.setProperty('--gold', t.gold); root.setProperty('--gold-soft', t.goldSoft);
@@ -962,8 +987,16 @@ function applyThemeVars(name){
 }
 function applyTheme(name){
   if(!THEMES[name]) return;
-  applyThemeVars(name);
   state.theme = name;
+  applyThemeVars(activeThemeKey());
+  saveState();
+  renderThemePicker();
+  if(document.getElementById('page-dashboard')) renderDashboard();
+  if(document.getElementById('page-creditcard') && document.getElementById('page-creditcard').classList.contains('active')) renderCreditCardPage();
+}
+function toggleDarkMode(){
+  state.darkMode = !state.darkMode;
+  applyThemeVars(activeThemeKey());
   saveState();
   renderThemePicker();
   if(document.getElementById('page-dashboard')) renderDashboard();
@@ -973,7 +1006,15 @@ function renderThemePicker(){
   const el = document.getElementById('themePicker');
   if(!el) return;
   const current = state.theme || 'sepia';
-  el.innerHTML = Object.entries(THEMES).map(([key,t])=>`
+  const dark = !!state.darkMode;
+  const toggleHtml = `
+    <div class="dark-toggle-row" style="grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;padding:4px 2px 12px;">
+      <span style="font-size:13px;font-weight:600;">${dark?'🌙':'☀️'} Dark mode</span>
+      <button class="dark-toggle ${dark?'on':''}" onclick="toggleDarkMode()" role="switch" aria-checked="${dark}"><span class="dark-toggle-knob"></span></button>
+    </div>`;
+  el.innerHTML = toggleHtml + Object.keys(THEMES).filter(k=>!k.endsWith('_dark')).map(key=>{
+    const t = THEMES[dark ? key+'_dark' : key];
+    return `
     <div class="theme-card ${key===current?'active':''}" onclick="applyTheme('${key}')">
       <div class="theme-card-swatches">
         <span style="background:${t.ink}"></span><span style="background:${t.green}"></span><span style="background:${t.brick}"></span><span style="background:${t.gold}"></span>
@@ -981,7 +1022,7 @@ function renderThemePicker(){
       <div class="theme-card-name">${t.label}</div>
       <div class="theme-card-desc">${t.desc}</div>
     </div>
-  `).join('');
+  `;}).join('');
 }
 // Wraps every `new Chart(...)` call. A canvas that's inside a hidden (display:none) page,
 // or a Chart.js library that failed to load from the CDN, can throw when Chart.js tries to
@@ -1145,7 +1186,8 @@ async function saveState(){
 let state = null;
 function migrateState(){
   let changed = false;
-  if(!THEMES[state.theme]){ state.theme = "sepia"; changed = true; }
+  if(!THEMES[state.theme] || state.theme.endsWith("_dark")){ state.theme = "sepia"; changed = true; }
+  if(typeof state.darkMode !== "boolean"){ state.darkMode = false; changed = true; }
   if(!state.categories) state.categories = {Income:[],Expense:[]};
   ["Income","Expense"].forEach(type=>{
     if(!Array.isArray(state.categories[type])) state.categories[type] = [];
@@ -1617,6 +1659,44 @@ function activatePage(item){
 document.querySelectorAll(".nav-item").forEach(item=>{
   item.addEventListener("click", ()=>{ activatePage(item); });
 });
+
+/* ---------------- Swipe-to-navigate (touch only) ----------------
+   Swiping left/right anywhere in the main content area moves to the
+   next/previous page in nav order, matching how most mobile apps handle
+   tab navigation. Ignored when: the gesture is more vertical than
+   horizontal (so normal scrolling isn't hijacked), it started inside a
+   horizontally-scrollable table (so scrolling a wide table isn't
+   mistaken for a page swipe), or a modal/overlay is open. */
+(function setupSwipeNav(){
+  const mainEl = document.querySelector(".main");
+  if(!mainEl) return;
+  let startX = 0, startY = 0, startedInHScroll = false, tracking = false;
+
+  mainEl.addEventListener("touchstart", (e)=>{
+    if(document.getElementById("modalOverlay").classList.contains("show")) return;
+    if(document.getElementById("unlockOverlay").classList.contains("show")) return;
+    const touch = e.touches[0];
+    startX = touch.clientX; startY = touch.clientY;
+    startedInHScroll = !!touch.target.closest(".table-scroll, .import-preview-table, select, input, textarea");
+    tracking = true;
+  }, {passive:true});
+
+  mainEl.addEventListener("touchend", (e)=>{
+    if(!tracking) return;
+    tracking = false;
+    if(startedInHScroll) return;
+    const touch = e.changedTouches[0];
+    const dx = touch.clientX - startX, dy = touch.clientY - startY;
+    const SWIPE_MIN_DISTANCE = 60, SWIPE_MAX_OFF_AXIS = 60;
+    if(Math.abs(dx) < SWIPE_MIN_DISTANCE || Math.abs(dy) > SWIPE_MAX_OFF_AXIS) return;
+    const items = [...document.querySelectorAll(".nav-item")];
+    const currentIdx = items.findIndex(i=>i.classList.contains("active"));
+    if(currentIdx === -1) return;
+    const nextIdx = dx < 0 ? currentIdx + 1 : currentIdx - 1; // swipe left -> next page, swipe right -> previous
+    if(nextIdx < 0 || nextIdx >= items.length) return;
+    activatePage(items[nextIdx]);
+  }, {passive:true});
+})();
 
 /* ---------------- Categories helpers ---------------- */
 function allExpenseCats(){ return state.categories.Expense; }
@@ -2482,7 +2562,7 @@ function wireRestoreInput(inputId){
           setMeta({encrypted:false});
         }
         await saveState();
-        applyThemeVars(state.theme);
+        applyThemeVars(activeThemeKey());
         document.getElementById("unlockOverlay").classList.remove("show");
         showToast("Backup restored.", {type:'success'});
         refreshAll();
@@ -3179,8 +3259,8 @@ function renderDashboard(){
   const scopedTxExploded = isSingleMonth ? yearTxExploded.filter(t=> new Date(t.date).getMonth()===mIdx) : yearTxExploded;
 
   document.getElementById("dashSubtitle").textContent = isSingleMonth
-    ? `Your financial position for ${MONTHS[mIdx]} ${year}.`
-    : "Your financial position at a glance.";
+    ? `${MONTHS[mIdx]} ${year}`
+    : `${year} · All months`;
 
   const totalIncome = isSingleMonth ? monthlyIncome[mIdx] : monthlyIncome.reduce((a,b)=>a+b,0);
   const totalExpense = isSingleMonth ? monthlyExpense[mIdx] : monthlyExpense.reduce((a,b)=>a+b,0);
@@ -3598,7 +3678,7 @@ async function bootApp(){
   if(!meta.encrypted){
     state = await loadState();
     migrateState();
-    applyThemeVars(state.theme);
+    applyThemeVars(activeThemeKey());
     refreshAll();
     return;
   }
@@ -3622,7 +3702,7 @@ async function attemptUnlock(){
     state = JSON.parse(plaintext);
     encryptionKey = key;
     migrateState();
-    applyThemeVars(state.theme);
+    applyThemeVars(activeThemeKey());
     document.getElementById("unlockOverlay").classList.remove("show");
     document.getElementById("unlockPassphrase").value = "";
     refreshAll();
@@ -3644,7 +3724,7 @@ function showForgotPassphrase(){
       cachedMeta = {encrypted:false};
       document.getElementById("unlockOverlay").classList.remove("show");
       migrateState();
-      applyThemeVars(state.theme);
+      applyThemeVars(activeThemeKey());
       refreshAll();
       showToast("Data reset. Starting fresh.", {type:'info'});
     }
