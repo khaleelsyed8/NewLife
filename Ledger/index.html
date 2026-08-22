@@ -380,7 +380,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
       <div class="chart-card" id="onboardingBanner" style="display:none;margin-bottom:18px;text-align:center;padding:44px 24px;">
         <div style="font-size:38px;margin-bottom:10px;">👋</div>
         <h3 style="margin-bottom:8px;">Welcome to Ledger</h3>
-        <p class="helper-text" style="max-width:480px;margin:0 auto 22px;">Track income and expenses, credit cards, investments, and recurring bills — everything is stored privately in this browser and nowhere else. Here's how to get started:</p>
+        <p class="helper-text" style="max-width:480px;margin:0 auto 22px;">Everything stays private in this browser.</p>
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
           <button class="btn" onclick="onboardingGoToQuickAdd()">+ Add your first transaction</button>
           <button class="btn outline" onclick="onboardingGoToImport()">📥 Import a bank statement</button>
@@ -795,13 +795,13 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
       <div class="panel">
         <h3>Theme</h3>
-        <p class="helper-text" style="margin-bottom:12px;">Pick a color theme for the whole app.</p>
+
         <div id="themePicker" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;"></div>
       </div>
 
       <div class="panel">
         <h3>Reports</h3>
-        <p class="helper-text" style="margin-bottom:12px;">Generate a clean, printable summary for a month or a full year — use your browser's print dialog to save it as a PDF.</p>
+        <p class="helper-text" style="margin-bottom:12px;">Print or save as PDF.</p>
         <div class="form-grid" style="grid-template-columns:1fr 1fr auto;">
           <div class="field"><label>Year</label><select id="reportYear"></select></div>
           <div class="field"><label>Month</label><select id="reportMonth"></select></div>
@@ -811,7 +811,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 
       <div class="panel">
         <h3>Data</h3>
-        <p class="helper-text">All data lives only in this browser's local storage for this file. Export a backup regularly, especially before clearing browser data.</p>
+        <p class="helper-text">Data stays in this browser only. Back up regularly.</p>
         <button class="btn outline" onclick="exportBackup()">⭳ Export backup (.json)</button>
         <button class="btn outline" onclick="document.getElementById('restoreFileSettings').click()">⭱ Restore backup (.json)</button>
         <input type="file" id="restoreFileSettings" accept=".json" style="display:none">
@@ -829,7 +829,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
 <div id="unlockOverlay" class="unlock-overlay">
   <div class="unlock-card">
     <h2>🔒 Ledger is locked</h2>
-    <p class="helper-text" style="margin:8px 0 16px;">Enter your passphrase to unlock your data. It never leaves this browser.</p>
+    <p class="helper-text" style="margin:8px 0 16px;">Never leaves this browser.</p>
     <input type="password" id="unlockPassphrase" placeholder="Passphrase" onkeydown="if(event.key==='Enter')attemptUnlock()">
     <p id="unlockHint" class="helper-text" style="display:none;margin-top:8px;font-style:italic;"></p>
     <button class="btn" style="width:100%;margin-top:10px;" onclick="attemptUnlock()">Unlock</button>
@@ -1585,7 +1585,7 @@ function onboardingGoToImport(){
 function loadSampleData(){
   showConfirmModal({
     title: "Try it with sample data?",
-    message: "This adds a few months of realistic example transactions, a recurring bill, an investment holding, and a credit card so you can explore the app. You can remove it any time from Settings → Reset all data.",
+    message: "Adds a few months of example transactions, a bill, an investment, and a card. Removable from Settings → Reset.",
     confirmLabel: "Add sample data", cancelLabel: "Cancel",
     onConfirm: ()=>{
       const today = new Date();
@@ -1661,30 +1661,44 @@ document.querySelectorAll(".nav-item").forEach(item=>{
 });
 
 /* ---------------- Swipe-to-navigate (touch only) ----------------
-   Swiping left/right anywhere in the main content area moves to the
-   next/previous page in nav order, matching how most mobile apps handle
-   tab navigation. Ignored when: the gesture is more vertical than
-   horizontal (so normal scrolling isn't hijacked), it started inside a
-   horizontally-scrollable table (so scrolling a wide table isn't
-   mistaken for a page swipe), or a modal/overlay is open. */
+   Swiping left/right anywhere moves to the next/previous page, same as
+   tapping a nav item — it works no matter what's underneath the finger
+   (a table, a card, a form), not just on empty space. The only time it
+   defers to the content instead: if the touch started inside a
+   horizontally-scrollable table AND that table still has room to scroll
+   further in the direction being swiped — in that case the table scrolls
+   normally, and once it hits its edge, swiping continues to work as page
+   navigation. Ignored while a modal/overlay is open. */
 (function setupSwipeNav(){
   const mainEl = document.querySelector(".main");
   if(!mainEl) return;
-  let startX = 0, startY = 0, startedInHScroll = false, tracking = false;
+  let startX = 0, startY = 0, tracking = false, scroller = null, handoff = false;
 
   mainEl.addEventListener("touchstart", (e)=>{
     if(document.getElementById("modalOverlay").classList.contains("show")) return;
     if(document.getElementById("unlockOverlay").classList.contains("show")) return;
     const touch = e.touches[0];
     startX = touch.clientX; startY = touch.clientY;
-    startedInHScroll = !!touch.target.closest(".table-scroll, .import-preview-table, select, input, textarea");
+    scroller = touch.target.closest(".table-scroll");
+    handoff = false;
     tracking = true;
+  }, {passive:true});
+
+  mainEl.addEventListener("touchmove", (e)=>{
+    if(!tracking || !scroller) return;
+    const touch = e.touches[0];
+    const dx = touch.clientX - startX;
+    const atLeftEdge = scroller.scrollLeft <= 0;
+    const atRightEdge = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 1;
+    // Swiping left with room to scroll right, or swiping right with room to scroll left:
+    // let the table keep scrolling instead of treating this as a page-nav swipe.
+    if((dx < 0 && !atRightEdge) || (dx > 0 && !atLeftEdge)) handoff = true;
   }, {passive:true});
 
   mainEl.addEventListener("touchend", (e)=>{
     if(!tracking) return;
     tracking = false;
-    if(startedInHScroll) return;
+    if(handoff) return;
     const touch = e.changedTouches[0];
     const dx = touch.clientX - startX, dy = touch.clientY - startY;
     const SWIPE_MIN_DISTANCE = 60, SWIPE_MAX_OFF_AXIS = 60;
@@ -2047,7 +2061,7 @@ function monthsUntil(dateStr){
 function renderGoals(){
   const el = document.getElementById('goalsBody');
   if(!el) return;
-  if(!state.goals.length){ el.innerHTML = `<p class="helper-text">No goals yet — add one above, like "Emergency fund" or "Trip to Goa".</p>`; return; }
+  if(!state.goals.length){ el.innerHTML = `<p class="helper-text">No goals yet.</p>`; return; }
   el.innerHTML = state.goals.map(g=>{
     const pct = Math.min(100, (g.currentAmount/g.targetAmount)*100);
     const remaining = Math.max(0, g.targetAmount - g.currentAmount);
@@ -2514,7 +2528,7 @@ function generateReport(){
       <div class="report-kpi"><div class="lbl">Current value</div><div class="val">${fmt(invValue)}</div></div>
       <div class="report-kpi"><div class="lbl">Gain/loss</div><div class="val">${fmt(invValue-invInvested)}</div></div>
     </div>
-    <footer><p>This is a system generated report. No signature required.</p></footer>
+    <footer></footer>
   </div>`;
 
   document.getElementById("printReport").innerHTML = html;
@@ -2594,7 +2608,7 @@ function exportCsv(){
 function resetAll(){
   showConfirmModal({
     title: "Reset all data?",
-    message: "This clears everything in this browser — transactions, recurring items, investments, and credit card data — and removes any encryption passphrase. Export a backup first if you want to keep it. This can't be undone.",
+    message: "Clears everything — transactions, recurring, investments, cards, and encryption. Back up first. Can't be undone.",
     danger: true, confirmLabel: "Reset everything",
     onConfirm: async ()=>{
       state = JSON.parse(JSON.stringify(DEFAULT_STATE));
@@ -2903,7 +2917,7 @@ function renderCreditCardPage(){
         const total = state.ccTransactions.filter(t=>t.cardId===c.id).reduce((s,t)=>s+t.amount,0);
         return `<span class="stamp expense" style="margin:3px 6px 6px 0;">${escapeHtml(c.name)} · ${fmt(total)} <span class="chip-x" onclick="deleteCreditCard('${c.id}')">✕</span></span>`;
       }).join('')
-    : `<p class="helper-text">No cards yet — add one above before importing a statement.</p>`;
+    : `<p class="helper-text">No cards yet.</p>`;
 
   fillSelect(document.getElementById("ccCardSelect"), state.creditCards.map(c=>c.name || "Unnamed card"));
   fillSelect(document.getElementById("ccQuickCard"), state.creditCards.map(c=>c.name || "Unnamed card"));
@@ -3715,7 +3729,7 @@ async function attemptUnlock(){
 function showForgotPassphrase(){
   showConfirmModal({
     title: "Forgot your passphrase?",
-    message: "There's no way to recover encrypted data without the passphrase — that's how real encryption works, there's no backdoor. Your options: keep trying, restore an old unencrypted backup if you have one (use the button below), or reset and start completely fresh, which permanently erases the encrypted data on this device.",
+    message: "No way to recover data without the passphrase — no backdoor. Options: keep trying, restore an old unencrypted backup below, or reset to erase the encrypted data.",
     danger: true, confirmLabel: "Erase and start fresh", cancelLabel: "Cancel",
     onConfirm: async ()=>{
       try{ await idbDelete(STORAGE_KEY); await idbDelete(META_KEY); }catch(e){}
@@ -3814,7 +3828,7 @@ function renderSecurityPanel(){
   const meta = getMeta();
   const cryptoOk = typeof crypto !== "undefined" && !!crypto.subtle;
   if(!cryptoOk){
-    el.innerHTML = `<p class="helper-text" style="color:var(--brick);">This browser doesn't support the Web Crypto API in this context, so encryption isn't available here.</p>`;
+    el.innerHTML = `<p class="helper-text" style="color:var(--brick);">Encryption isn't available in this browser.</p>`;
     return;
   }
   if(meta.encrypted){
@@ -3828,14 +3842,14 @@ function renderSecurityPanel(){
         <div class="field"><button class="btn outline" onclick="changePassphrase()">Change passphrase</button></div>
       </div>
       <hr class="divider">
-      <p class="helper-text" style="margin-bottom:10px;">Just want to update the hint, without changing your passphrase?</p>
+      <p class="helper-text" style="margin-bottom:10px;">Update hint only:</p>
       <div class="form-grid" style="grid-template-columns:1fr 1fr auto;margin-bottom:16px;">
         <div class="field"><label>Current passphrase</label><input type="password" id="secHintPass"></div>
         <div class="field"><label>New hint</label><input type="text" id="secHintOnly" value="${meta.hint?meta.hint.replace(/"/g,'&quot;'):''}" placeholder="Shown on the lock screen"></div>
         <div class="field"><button class="btn outline" onclick="updateHintOnly()">Update hint</button></div>
       </div>
       <hr class="divider">
-      <p class="helper-text" style="margin-bottom:10px;">Remove encryption and go back to plain storage:</p>
+      <p class="helper-text" style="margin-bottom:10px;">Remove encryption:</p>
       <div class="form-grid" style="grid-template-columns:2fr auto;">
         <div class="field"><label>Current passphrase</label><input type="password" id="secRemovePass"></div>
         <div class="field"><button class="btn danger" onclick="disableEncryption()">Remove encryption</button></div>
@@ -3844,14 +3858,14 @@ function renderSecurityPanel(){
   } else {
     el.innerHTML = `
       <p class="helper-text" style="margin-bottom:12px;"><span class="stamp expense">Not encrypted</span> Your data is currently stored as plain text in this browser. Anyone with access to this browser/device could read it via developer tools. Locking it with a passphrase encrypts it at rest.</p>
-      <p class="helper-text" style="margin-bottom:12px;">This protects against casual local snooping on a shared device — it isn't protection against malware or someone who already knows your passphrase. <b>If you forget your passphrase, this data cannot be recovered — there's no backdoor.</b> We'll download an unencrypted backup automatically right before locking, just in case.</p>
+      <p class="helper-text" style="margin-bottom:12px;">Protects against casual snooping only, not malware. <b>If you forget your passphrase, this data cannot be recovered.</b> An unencrypted backup downloads automatically first.</p>
       <div class="form-grid">
         <div class="field"><label>Choose a passphrase</label><input type="password" id="secNewPass"></div>
         <div class="field"><label>Confirm passphrase</label><input type="password" id="secNewPassConfirm"></div>
         <div class="field"><label>Hint <span style="font-weight:400;text-transform:none;">(optional)</span></label><input type="text" id="secHint" placeholder="Shown every time you unlock"></div>
         <div class="field"><button class="btn" onclick="enableEncryption()">🔒 Lock with a passphrase</button></div>
       </div>
-      <p class="helper-text" style="margin-top:8px;">Don't put your actual passphrase in the hint — it's stored as plain text and shown before you unlock.</p>
+      <p class="helper-text" style="margin-top:8px;">Hint is stored in plain text — don't reuse your passphrase in it.</p>
     `;
   }
 }
