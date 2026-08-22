@@ -69,11 +69,6 @@ body{
   box-shadow:var(--shadow);
 }
 
-/* Hero */
-.hero{border-radius:var(--r-lg);padding:38px 36px;text-align:center;margin-bottom:18px;}
-.hero .eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--rose-dark);font-weight:600;}
-.hero blockquote{font-family:'Lora',serif;font-style:italic;font-weight:400;font-size:clamp(19px,3vw,28px);line-height:1.5;color:var(--text);margin:14px auto 8px;max-width:720px;}
-.hero .quote-cat{font-size:12px;color:var(--text-soft);text-transform:capitalize;margin-bottom:16px;}
 .hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
 
 /* Buttons */
@@ -91,18 +86,26 @@ body{
 .btn.active{background:var(--rose);color:#241420;border-color:var(--rose);}
 .icon-btn{width:38px;height:38px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;padding:0;font-size:15px;}
 
-/* Pill navbar */
+body.story-open .navbar-wrap,
+body.story-open .footer-wrap,
+body.story-open .mobile-topbar{pointer-events:none;}
+.mobile-topbar{display:none;}
+
+
+/* Pill navbar (desktop: floating top pill · mobile: fixed bottom instagram-style bar) */
 .navbar-wrap{position:fixed;top:16px;left:0;right:0;z-index:40;display:flex;justify-content:center;padding:0 12px;}
 .navbar{display:flex;align-items:center;gap:4px;padding:8px;border-radius:var(--r-pill);max-width:100%;overflow-x:auto;}
 .navbar::-webkit-scrollbar{display:none;}
 .nav-brand{font-family:'Lora',serif;font-weight:600;font-size:14px;padding:0 12px 0 8px;white-space:nowrap;color:var(--rose-dark);}
-.tab-btn{font-family:'Quicksand',sans-serif;font-weight:600;font-size:12.5px;padding:9px 15px;border-radius:var(--r-pill);
+.tab-btn{display:flex;align-items:center;gap:6px;font-family:'Quicksand',sans-serif;font-weight:600;font-size:12.5px;padding:9px 15px;border-radius:var(--r-pill);
   border:none;background:transparent;color:var(--text-soft);cursor:pointer;white-space:nowrap;}
+.tab-btn .tab-icon{width:16px;height:16px;display:inline-flex;flex-shrink:0;}
+.tab-btn .tab-icon svg{width:100%;height:100%;}
 .tab-btn.active{background:var(--rose);color:#241420;}
 .tab-btn:focus-visible{outline:2px solid var(--rose-dark);outline-offset:2px;}
 .nav-divider{width:1px;height:22px;background:var(--glass-border);margin:0 4px;flex-shrink:0;}
 
-/* Pill footer */
+/* Pill footer (desktop only) */
 .footer-wrap{position:fixed;bottom:16px;left:0;right:0;z-index:30;display:flex;justify-content:center;pointer-events:none;padding:0 12px;}
 .footer-pill{display:flex;align-items:center;gap:10px;padding:8px 18px;border-radius:var(--r-pill);font-size:11.5px;color:var(--text-soft);pointer-events:auto;}
 .footer-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
@@ -110,24 +113,56 @@ body{
 .footer-dot.local{background:var(--gold);}
 .footer-dot.memory{background:var(--rose-dark);}
 
-/* Rearrange floating cluster */
-.rearrange-cluster{position:fixed;bottom:16px;right:16px;z-index:35;display:flex;gap:8px;}
-@media(max-width:600px){.rearrange-cluster{bottom:78px;right:10px;}}
+/* ---------------- Stories ---------------- */
+.stories-section{margin-bottom:22px;}
+.stories-row{display:flex;gap:16px;overflow-x:auto;padding:6px 2px 10px;scrollbar-width:none;}
+.stories-row::-webkit-scrollbar{display:none;}
+.story-item{display:flex;flex-direction:column;align-items:center;gap:7px;flex-shrink:0;width:66px;cursor:pointer;background:none;border:none;padding:0;font-family:'Quicksand',sans-serif;}
+.story-ring{width:60px;height:60px;border-radius:50%;padding:2.5px;display:flex;align-items:center;justify-content:center;
+  background:conic-gradient(from 180deg,var(--rose),var(--gold),var(--blue),var(--rose));transition:transform .12s ease;}
+.story-item:hover .story-ring{transform:scale(1.05);}
+.story-ring.viewed{background:var(--track);}
+.story-ring-inner{width:100%;height:100%;border-radius:50%;background:#241a29;display:flex;align-items:center;justify-content:center;font-size:22px;border:2px solid var(--ink);}
+.story-item .story-label{font-size:10.5px;color:var(--text-soft);text-transform:capitalize;white-space:nowrap;max-width:66px;overflow:hidden;text-overflow:ellipsis;}
+.story-item.story-today .story-ring{background:linear-gradient(135deg,var(--rose),var(--gold));}
+
+/* Story viewer (full-screen) */
+.story-viewer{position:fixed;inset:0;z-index:600;display:none;align-items:center;justify-content:center;background:rgba(8,6,10,0.88);backdrop-filter:blur(6px);}
+.story-viewer.open{display:flex;}
+.story-viewer-inner{position:relative;width:100%;max-width:420px;height:min(88vh,760px);border-radius:26px;overflow:hidden;
+  display:flex;flex-direction:column;background:linear-gradient(160deg,#251a2c,#150f19 75%);padding:14px 20px 26px;}
+.story-progress{display:flex;gap:5px;}
+.story-progress-seg{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,0.22);overflow:hidden;}
+.story-progress-fill{height:100%;width:0%;background:var(--text);border-radius:2px;}
+.story-progress-fill.done{width:100%;}
+.story-progress-fill.active{animation:storyfill linear forwards;animation-duration:var(--story-duration,4.5s);}
+.story-progress-fill.paused{animation-play-state:paused;}
+@keyframes storyfill{from{width:0%;}to{width:100%;}}
+.story-head{display:flex;align-items:center;gap:10px;padding:12px 0 6px;}
+.story-head-avatar{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:15px;}
+.story-head-label{font-weight:600;font-size:13px;text-transform:capitalize;}
+.story-head-spacer{flex:1;}
+.story-close{background:none;border:none;color:var(--text);font-size:16px;cursor:pointer;padding:6px;line-height:1;}
+.story-body{flex:1;display:flex;align-items:center;justify-content:center;padding:10px 6px;position:relative;z-index:2;pointer-events:none;}
+.story-quote{font-family:'Lora',serif;font-style:italic;font-weight:400;font-size:clamp(20px,5vw,26px);line-height:1.5;text-align:center;color:var(--text);margin:0;}
+.story-foot{display:flex;justify-content:center;gap:10px;position:relative;z-index:2;}
+.story-tapzone{position:absolute;top:60px;bottom:60px;width:32%;z-index:3;cursor:pointer;}
+.story-tap-left{left:0;}
+.story-tap-right{right:0;}
 
 /* Pages */
 .page{display:none;}
 .page.active{display:block;}
-.card{position:relative;border-radius:var(--r-md);padding:22px 24px;margin-bottom:16px;}
+.card{position:relative;border-radius:var(--r-md);padding:22px 24px;margin-bottom:16px;overflow:hidden;isolation:isolate;}
+.card::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .25s ease;z-index:-1;
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%), rgba(227,139,161,0.14), transparent 65%);}
+.card:hover::before{opacity:1;}
+.btn.primary{position:relative;overflow:hidden;isolation:isolate;}
+.btn.primary::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .2s ease;z-index:-1;
+  background:radial-gradient(60px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,0.35), transparent 70%);}
+.btn.primary:hover::before{opacity:1;}
 .card h2{font-family:'Lora',serif;font-weight:500;font-size:18px;margin:0 0 4px;}
 .card .sub{font-size:12.5px;color:var(--text-soft);margin:0 0 14px;}
-
-/* Draggable card affordance */
-.drag-handle{position:absolute;top:12px;right:12px;width:22px;height:22px;display:none;cursor:grab;color:var(--text-soft);z-index:5;touch-action:none;}
-.drag-handle::before{content:'';position:absolute;top:6px;left:6px;width:3px;height:3px;background:currentColor;border-radius:50%;
-  box-shadow:7px 0 currentColor, 0 5px currentColor, 7px 5px currentColor, 0 10px currentColor, 7px 10px currentColor;}
-.card.draggable-active{outline:1.5px dashed var(--glass-border);outline-offset:3px;}
-.card.draggable-active .drag-handle{display:block;}
-.card.dragging{cursor:grabbing;box-shadow:0 24px 60px rgba(0,0,0,0.55);z-index:50;}
 
 /* Form basics */
 label{display:block;font-size:11px;font-weight:600;color:var(--text-soft);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.4px;}
@@ -175,6 +210,10 @@ input[type=range]{width:100%;accent-color:var(--rose);}
 .ql-snow .ql-tooltip input{background:rgba(255,255,255,0.08);color:var(--text);}
 .ql-editor.ql-blank::before{color:rgba(247,241,245,0.4) !important;}
 .word-count{font-size:11px;color:var(--text-soft);text-align:right;margin-top:6px;}
+.photo-attach-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.photo-attach-hint{font-size:11px;color:var(--text-soft);}
+.photo-preview{max-width:220px;max-height:220px;border-radius:var(--r-sm);display:block;margin-top:10px;border:1px solid var(--glass-border);}
+.entry-photo{width:100%;max-height:280px;object-fit:cover;border-radius:var(--r-sm);margin:10px 0;display:block;}
 .journal-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
 .journal-toolbar input,.journal-toolbar select{width:auto;flex:1;min-width:140px;}
 .journal-entry{background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);border-radius:var(--r-sm);padding:16px 18px;margin-bottom:12px;}
@@ -220,6 +259,22 @@ input[type=range]{width:100%;accent-color:var(--rose);}
 .closeness-slider{-webkit-appearance:none;appearance:none;height:8px;border-radius:8px;background:linear-gradient(90deg,var(--blue),var(--rose));outline:none;width:100%;}
 .closeness-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--rose-dark);cursor:pointer;}
 .closeness-label{font-size:11px;text-align:center;margin-top:4px;color:var(--text-soft);}
+
+.person-timeline{margin-top:14px;padding-top:12px;border-top:1px solid var(--glass-border);}
+.timeline-title{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-soft);margin-bottom:8px;}
+.timeline-empty{font-size:11.5px;color:var(--text-soft);font-style:italic;}
+.timeline-list{display:flex;flex-direction:column;gap:8px;max-height:150px;overflow-y:auto;}
+.timeline-item{display:flex;align-items:flex-start;gap:8px;}
+.timeline-dot{width:7px;height:7px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.timeline-body{flex:1;min-width:0;}
+.timeline-date{font-size:10.5px;color:var(--text-soft);}
+.timeline-note{font-size:12px;color:var(--text);line-height:1.4;word-break:break-word;}
+.timeline-del{background:none;border:none;color:var(--text-soft);font-size:10px;cursor:pointer;padding:2px 4px;flex-shrink:0;opacity:0.5;}
+.timeline-del:hover{opacity:1;color:var(--rose-dark);}
+.checkin-row{display:flex;gap:6px;margin-top:12px;}
+.checkin-input{font-family:'Quicksand',sans-serif;font-size:12px;padding:8px 10px;border-radius:var(--r-sm);
+  border:1px solid var(--glass-border);background:rgba(255,255,255,0.06);color:var(--text);flex:1;min-width:0;}
+.checkin-input::placeholder{color:rgba(247,241,245,0.4);}
 .person-meta{font-size:11.5px;color:var(--text-soft);margin-top:10px;line-height:1.6;}
 .person-badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:12px;margin-top:6px;margin-right:4px;}
 .badge-soon{background:rgba(232,178,85,0.25);color:var(--gold);}
@@ -264,8 +319,26 @@ input[type=range]{width:100%;accent-color:var(--rose);}
 .modal p{font-size:13.5px;line-height:1.6;}
 
 @media(max-width:760px){
-  .app-shell{padding:96px 14px 150px;}
-  .hero{padding:26px 20px;}
+  .app-shell{padding:18px 14px calc(96px + env(safe-area-inset-bottom));}
+
+  /* Wordmark scrolls in-flow at the top instead of a floating pill */
+  .mobile-topbar{display:flex;align-items:center;justify-content:center;padding:14px 0 2px;}
+  .mobile-topbar .nav-brand{padding:0;font-size:16px;}
+
+  /* Instagram-style tab bar pinned to the bottom */
+  .navbar-wrap{top:auto;bottom:0;padding:0;}
+  .navbar{width:100%;max-width:none;border-radius:0;justify-content:space-around;
+    padding:8px 4px calc(8px + env(safe-area-inset-bottom));border-left:none;border-right:none;border-bottom:none;
+    background:var(--glass-strong);}
+  .navbar .nav-brand{display:none;}
+  .tab-btn{flex-direction:column;gap:3px;flex:1;padding:6px 2px;font-size:9.5px;border-radius:14px;}
+  .tab-btn .tab-icon{width:21px;height:21px;}
+  .tab-btn.active{background:transparent;color:var(--rose-dark);}
+
+  /* Storage pill tucks away — the bottom nav owns that space now */
+  .footer-wrap{display:none;}
+
+  .story-viewer-inner{max-width:100%;border-radius:0;height:100dvh;padding:calc(14px + env(safe-area-inset-top)) 16px calc(18px + env(safe-area-inset-bottom));}
 }
 </style>
 </head>
@@ -275,21 +348,30 @@ input[type=range]{width:100%;accent-color:var(--rose);}
 <div class="loading-overlay" id="loadingOverlay"><div class="loading-spin"></div><div class="loading-text">Opening Kindred…</div></div>
 <div class="toast-stack" id="toastStack"></div>
 
+<div class="mobile-topbar"><span class="nav-brand">Kindred</span></div>
+
 <div class="navbar-wrap">
   <nav class="navbar glass">
     <span class="nav-brand">Kindred</span>
-    <button class="tab-btn active" data-page="today">Today</button>
-    <button class="tab-btn" data-page="journal">Journal</button>
-    <button class="tab-btn" data-page="habits">Habits</button>
-    <button class="tab-btn" data-page="people">People</button>
-    <button class="tab-btn" data-page="calendar">Calendar</button>
-    <button class="tab-btn" data-page="settings">Settings</button>
+    <button class="tab-btn active" data-page="today">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9a1 1 0 0 0 1 1H10v-5.5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1V20h3.5a1 1 0 0 0 1-1v-9"/></svg></span><span class="tab-label">Today</span>
+    </button>
+    <button class="tab-btn" data-page="journal">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4.5C5 3.7 5.7 3 6.5 3H17a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H6.5A1.5 1.5 0 0 1 5 19.5v-15Z"/><path d="M8 8h7M8 12h7M8 16h4"/></svg></span><span class="tab-label">Journal</span>
+    </button>
+    <button class="tab-btn" data-page="habits">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="m8.5 12.3 2.4 2.4 4.6-5"/></svg></span><span class="tab-label">Habits</span>
+    </button>
+    <button class="tab-btn" data-page="people">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.7-3 2.8-4.8 5.5-4.8s4.8 1.8 5.5 4.8"/><circle cx="17" cy="8.5" r="2.4"/><path d="M15.8 14.5c2.2.4 3.7 2 4.2 4.3"/></svg></span><span class="tab-label">People</span>
+    </button>
+    <button class="tab-btn" data-page="calendar">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="14.5" rx="2"/><path d="M4 10h16M8 3v4M16 3v4"/></svg></span><span class="tab-label">Calendar</span>
+    </button>
+    <button class="tab-btn" data-page="settings">
+      <span class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.6a1.7 1.7 0 0 0 .34 1.87l.06.06a2.06 2.06 0 1 1-2.92 2.92l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.55v.17a2.06 2.06 0 1 1-4.13 0v-.09a1.7 1.7 0 0 0-1.1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2.06 2.06 0 1 1-2.92-2.92l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.55-1H4.1a2.06 2.06 0 1 1 0-4.13h.09a1.7 1.7 0 0 0 1.55-1.1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2.06 2.06 0 1 1 2.92-2.92l.06.06a1.7 1.7 0 0 0 1.87.34h.09a1.7 1.7 0 0 0 1-1.55V4.1a2.06 2.06 0 1 1 4.13 0v.09a1.7 1.7 0 0 0 1 1.55 1.7 1.7 0 0 0 1.87-.34l.06-.06a2.06 2.06 0 1 1 2.92 2.92l-.06.06a1.7 1.7 0 0 0-.34 1.87v.09a1.7 1.7 0 0 0 1.55 1H19.9a2.06 2.06 0 1 1 0 4.13h-.09a1.7 1.7 0 0 0-1.55 1Z"/></svg></span><span class="tab-label">Settings</span>
+    </button>
   </nav>
-</div>
-
-<div class="rearrange-cluster">
-  <button class="btn subtle icon-btn" id="rearrangeBtn" onclick="toggleRearrange()" title="Rearrange cards" aria-label="Toggle rearrange mode">⠿</button>
-  <button class="btn subtle small" id="resetLayoutBtn" onclick="resetLayoutForCurrentPage()" style="display:none;">↺ Reset layout</button>
 </div>
 
 <div class="footer-wrap">
@@ -299,22 +381,33 @@ input[type=range]{width:100%;accent-color:var(--rose);}
   </div>
 </div>
 
+<div class="story-viewer" id="storyViewer" aria-hidden="true">
+  <div class="story-viewer-inner glass" id="storyViewerInner">
+    <div class="story-progress" id="storyProgress"></div>
+    <div class="story-head">
+      <span class="story-head-avatar" id="storyHeadAvatar"></span>
+      <span class="story-head-label" id="storyHeadLabel"></span>
+      <span class="story-head-spacer"></span>
+      <button class="story-close" onclick="closeStory()" aria-label="Close story">✕</button>
+    </div>
+    <div class="story-tapzone story-tap-left" onclick="storyPrev()" aria-label="Previous"></div>
+    <div class="story-tapzone story-tap-right" onclick="storyNext()" aria-label="Next"></div>
+    <div class="story-body" id="storyBody">
+      <blockquote class="story-quote" id="storyQuoteText"></blockquote>
+    </div>
+    <div class="story-foot" id="storyFoot"></div>
+  </div>
+</div>
+
 <div class="app-shell">
 
-  <div class="hero glass">
-    <div class="eyebrow">Today's quote</div>
-    <blockquote id="quoteText">Loading…</blockquote>
-    <div class="quote-cat" id="quoteCat"></div>
-    <div class="hero-actions">
-      <button class="btn primary" onclick="shuffleQuote()">New quote</button>
-      <span class="btn subtle" id="heroDate" style="cursor:default;"></span>
-    </div>
+  <div class="stories-section">
+    <div class="stories-row" id="storiesRow"></div>
   </div>
 
   <!-- TODAY -->
   <div class="page active" id="page-today">
     <div class="card glass" data-card-id="mood">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2>How are you, right now?</h2>
       <p class="sub">A quick daily check-in. This is just for you.</p>
       <div class="mood-track-wrap">
@@ -325,21 +418,18 @@ input[type=range]{width:100%;accent-color:var(--rose);}
     </div>
 
     <div class="card glass" data-card-id="glance">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2>At a glance</h2>
       <p class="sub">Your quiet momentum, in numbers.</p>
       <div class="stat-row" id="todayStats"></div>
     </div>
 
     <div class="card glass" data-card-id="nudges">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2>People to reach out to</h2>
       <p class="sub">Based on each person's own check-in rhythm.</p>
       <div id="nudgeList"></div>
     </div>
 
     <div class="card glass" data-card-id="upcoming">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2>Coming up</h2>
       <p class="sub">Birthdays, anniversaries and moments worth remembering, next 30 days.</p>
       <div id="upcomingList"></div>
@@ -349,7 +439,6 @@ input[type=range]{width:100%;accent-color:var(--rose);}
   <!-- JOURNAL -->
   <div class="page" id="page-journal">
     <div class="card glass" data-card-id="write">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2 id="journalFormTitle">Write something</h2>
       <p class="sub">Whatever's true today. No one else sees this.</p>
       <div class="field"><label>Date</label><input type="date" id="journalDate" style="max-width:200px;"></div>
@@ -370,6 +459,18 @@ input[type=range]{width:100%;accent-color:var(--rose);}
           <option value="great">Great</option>
         </select>
       </div>
+      <div class="field">
+        <label>Photo (optional)</label>
+        <div class="photo-attach-row">
+          <button class="btn subtle small" type="button" onclick="document.getElementById('journalPhotoInput').click()">📷 Add photo</button>
+          <input type="file" id="journalPhotoInput" accept="image/*" style="display:none;" onchange="handleJournalPhoto(event)">
+          <span class="photo-attach-hint" id="photoAttachHint">Stored on this device, resized to save space.</span>
+        </div>
+        <div id="photoPreviewWrap" style="display:none;">
+          <img id="photoPreviewImg" class="photo-preview" alt="Attached photo preview">
+          <button class="btn subtle small" type="button" onclick="removeJournalPhoto()">Remove photo</button>
+        </div>
+      </div>
       <div class="hero-actions" style="justify-content:flex-start;">
         <button class="btn primary" onclick="saveJournalEntry()">Save entry</button>
         <button class="btn subtle" id="journalCancelBtn" style="display:none;" onclick="cancelJournalEdit()">Cancel edit</button>
@@ -377,7 +478,6 @@ input[type=range]{width:100%;accent-color:var(--rose);}
     </div>
 
     <div class="card glass" data-card-id="entries">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2>Past entries</h2>
       <p class="sub" id="journalCount"></p>
       <div class="journal-toolbar">
@@ -398,7 +498,6 @@ input[type=range]{width:100%;accent-color:var(--rose);}
   <!-- HABITS -->
   <div class="page" id="page-habits">
     <div class="card glass" data-card-id="add-habit">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2>Add a habit</h2>
       <p class="sub">Small, repeatable, kind to your future self.</p>
       <div class="form-row">
@@ -412,7 +511,6 @@ input[type=range]{width:100%;accent-color:var(--rose);}
       </div>
     </div>
     <div class="card glass" data-card-id="habit-list">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2>Your habits</h2>
       <p class="sub">Tap a day to mark it done. Last 14 days shown.</p>
       <div id="habitList"></div>
@@ -422,7 +520,6 @@ input[type=range]{width:100%;accent-color:var(--rose);}
   <!-- PEOPLE -->
   <div class="page" id="page-people">
     <div class="card glass" data-card-id="people-list">
-      <span class="drag-handle" title="Drag to move"></span>
       <div class="people-toolbar">
         <h2 style="margin:0;">Your people</h2>
         <span style="flex:1;min-width:8px;"></span>
@@ -443,7 +540,6 @@ input[type=range]{width:100%;accent-color:var(--rose);}
   <!-- CALENDAR -->
   <div class="page" id="page-calendar">
     <div class="card glass" data-card-id="cal-main">
-      <span class="drag-handle" title="Drag to move"></span>
       <div class="cal-head">
         <button class="btn subtle small" onclick="shiftMonth(-1)">← Prev</button>
         <h2 id="calTitle" style="margin:0;"></h2>
@@ -464,7 +560,6 @@ input[type=range]{width:100%;accent-color:var(--rose);}
     </div>
 
     <div class="card glass" data-card-id="cal-add-event">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2>Add a special occasion</h2>
       <p class="sub">Anything worth marking — a date, a recovery anniversary, a retirement, anything.</p>
       <div class="form-row">
@@ -480,13 +575,11 @@ input[type=range]{width:100%;accent-color:var(--rose);}
   <!-- SETTINGS -->
   <div class="page" id="page-settings">
     <div class="card glass" data-card-id="wallpaper">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2>Wallpaper</h2>
       <p class="sub">A curated set of high-res photos. Pick one, or go with the default gradient.</p>
       <div class="wallpaper-grid" id="wallpaperGrid"></div>
     </div>
     <div class="card glass" data-card-id="data">
-      <span class="drag-handle" title="Drag to move"></span>
       <h2>Your data</h2>
       <p class="sub" id="storageStats">Checking where your data is saved…</p>
       <div class="hero-actions" style="justify-content:flex-start;">
@@ -618,8 +711,8 @@ function wallpaperUrl(base, w, q){ return base + '?auto=format&fit=crop&w=' + w 
 /* ---------------- State & storage ---------------- */
 const STORAGE_KEY = "kindred-state-v2";
 const DEFAULT_STATE = {
-  people: [], journal: [], habits: [], moods: {}, events: [], layout: {},
-  settings: { quoteMode: "daily", quoteOverrideDate: null, quoteOverrideIndex: null, wallpaper: "" }
+  people: [], journal: [], habits: [], moods: {}, events: [],
+  settings: { quoteMode: "daily", quoteOverrideDate: null, quoteOverrideIndex: null, wallpaper: "", storiesViewed: { date: null, viewed: [] } }
 };
 const HABIT_COLORS = ["#E38BA1","#E8B255","#8FB6E6","#C98BD9","#7FBF8F","#F2B265"];
 
@@ -682,13 +775,14 @@ function migrateState(){
   if(!Array.isArray(state.habits)){ state.habits=[]; changed=true; }
   if(!state.moods || typeof state.moods!=="object"){ state.moods={}; changed=true; }
   if(!Array.isArray(state.events)){ state.events=[]; changed=true; }
-  if(!state.layout || typeof state.layout!=="object"){ state.layout={}; changed=true; }
   if(!state.settings){ state.settings=JSON.parse(JSON.stringify(DEFAULT_STATE.settings)); changed=true; }
   if(state.settings.wallpaper===undefined){ state.settings.wallpaper=""; changed=true; }
+  if(!state.settings.storiesViewed || typeof state.settings.storiesViewed!=="object"){ state.settings.storiesViewed={date:null,viewed:[]}; changed=true; }
   state.people.forEach(p=>{
     if(p.contactCadenceDays===undefined){ p.contactCadenceDays=14; changed=true; }
     if(!Array.isArray(p.tags)){ p.tags=[]; changed=true; }
     if(p.closeness===undefined){ p.closeness=50; changed=true; }
+    if(!Array.isArray(p.history)){ p.history=[]; changed=true; }
   });
   state.habits.forEach(h=>{
     if(h.goalPerWeek===undefined){ h.goalPerWeek=7; changed=true; }
@@ -794,142 +888,220 @@ document.querySelectorAll(".tab-btn").forEach(btn=>{
     if(btn.dataset.page==="people") renderPeople();
     if(btn.dataset.page==="calendar") renderCalendar();
     if(btn.dataset.page==="settings"){ renderWallpaperGrid(); updateStorageStats(); }
-    if(rearrangeMode) enterRearrange(btn.dataset.page);
   });
 });
 
-/* ---------------- Rearrange / free-drag cards ---------------- */
-let rearrangeMode = false;
-function currentPageKey(){ return document.querySelector(".tab-btn.active").dataset.page; }
-function toggleRearrange(){
-  rearrangeMode = !rearrangeMode;
-  document.getElementById("rearrangeBtn").classList.toggle("active", rearrangeMode);
-  document.getElementById("resetLayoutBtn").style.display = rearrangeMode ? "inline-flex" : "none";
-  if(rearrangeMode){
-    enterRearrange(currentPageKey());
-    showToast("Drag any card by its grip handle. Toggle off to lock things back in place.");
-  } else {
-    exitRearrangeAll();
-  }
-}
-function enterRearrange(pageKey){
-  const page = document.getElementById("page-"+pageKey);
-  if(!page) return;
-  page.style.position = "relative";
-  const pageRect = page.getBoundingClientRect();
-  const cards = [...page.querySelectorAll(":scope > .card[data-card-id]")];
-  let maxBottom = 0;
-  cards.forEach(card=>{
-    const cardId = card.dataset.cardId;
-    const saved = (state.layout[pageKey]||{})[cardId];
-    const rect = card.getBoundingClientRect();
-    const naturalLeft = rect.left - pageRect.left;
-    const naturalTop = rect.top - pageRect.top;
-    const left = saved ? saved.x : naturalLeft;
-    const top = saved ? saved.y : naturalTop;
-    card.style.width = rect.width + "px";
-    card.style.position = "absolute";
-    card.style.left = left + "px";
-    card.style.top = top + "px";
-    card.classList.add("draggable-active");
-    maxBottom = Math.max(maxBottom, top + rect.height);
-    attachDragHandlers(card, pageKey, cardId);
-  });
-  page.style.minHeight = (maxBottom + 40) + "px";
-}
-function exitRearrangeAll(){
-  document.querySelectorAll(".card[data-card-id]").forEach(card=>{
-    card.style.position=""; card.style.left=""; card.style.top=""; card.style.width="";
-    card.classList.remove("draggable-active","dragging");
-  });
-  document.querySelectorAll(".page").forEach(p=>{ p.style.position=""; p.style.minHeight=""; });
-}
-function refreshRearrangeBounds(){
-  if(!rearrangeMode) return;
-  const page = document.querySelector(".page.active");
-  if(!page || page.style.position!=="relative") return;
-  let maxBottom = 0;
-  page.querySelectorAll(":scope > .card[data-card-id]").forEach(c=>{
-    maxBottom = Math.max(maxBottom, (parseFloat(c.style.top)||0) + c.offsetHeight);
-  });
-  page.style.minHeight = (maxBottom + 40) + "px";
-}
-function attachDragHandlers(card, pageKey, cardId){
-  const handle = card.querySelector(".drag-handle");
-  if(!handle) return;
-  let dragging=false, startX=0, startY=0, origLeft=0, origTop=0;
-  handle.onpointerdown = (e)=>{
-    e.preventDefault();
-    dragging = true;
-    startX = e.clientX; startY = e.clientY;
-    origLeft = parseFloat(card.style.left)||0;
-    origTop = parseFloat(card.style.top)||0;
-    card.classList.add("dragging");
-    try{ handle.setPointerCapture(e.pointerId); }catch(err){}
-  };
-  handle.onpointermove = (e)=>{
-    if(!dragging) return;
-    const page = card.parentElement;
-    const dx = e.clientX-startX, dy = e.clientY-startY;
-    let newLeft = origLeft+dx, newTop = origTop+dy;
-    newLeft = Math.max(0, Math.min(newLeft, page.clientWidth - card.offsetWidth));
-    newTop = Math.max(0, newTop);
-    card.style.left = newLeft + "px";
-    card.style.top = newTop + "px";
-  };
-  const finishDrag = ()=>{
-    if(!dragging) return;
-    dragging = false;
-    card.classList.remove("dragging");
-    if(!state.layout[pageKey]) state.layout[pageKey] = {};
-    state.layout[pageKey][cardId] = { x: parseFloat(card.style.left), y: parseFloat(card.style.top) };
-    saveState();
-    refreshRearrangeBounds();
-  };
-  handle.onpointerup = finishDrag;
-  handle.onpointercancel = finishDrag;
-}
-function resetLayoutForCurrentPage(){
-  const key = currentPageKey();
-  delete state.layout[key];
-  saveState();
-  if(rearrangeMode){ exitRearrangeAll(); enterRearrange(key); }
-  showToast("Layout reset for this page.");
-}
-window.addEventListener("resize", ()=>{
-  if(!rearrangeMode) return;
-  const page = document.querySelector(".page.active");
-  if(!page) return;
-  page.querySelectorAll(":scope > .card[data-card-id]").forEach(c=>{
-    const maxLeft = Math.max(0, page.clientWidth - c.offsetWidth);
-    if(parseFloat(c.style.left) > maxLeft) c.style.left = maxLeft + "px";
-  });
-  refreshRearrangeBounds();
-});
-
-/* ---------------- Quote rotation ---------------- */
+/* ---------------- Quotes, as Stories ---------------- */
+const CATEGORY_ICON = { love:"💗", friendship:"🤝", family:"🏡", self:"🌿", gratitude:"☀️", growth:"🌱", mindfulness:"🌊", comfort:"☁️" };
+const STORY_DURATION_MS = 4500;
 function dailyQuoteIndex(dateKey, len){ let hash=0; for(let i=0;i<dateKey.length;i++){ hash=(hash*31+dateKey.charCodeAt(i))>>>0; } return hash % len; }
-function getCurrentQuoteIndex(){
+function getTodayQuoteIndex(){
   const tk = todayKey();
   if(state.settings.quoteOverrideDate===tk && state.settings.quoteOverrideIndex!=null && state.settings.quoteOverrideIndex < QUOTES.length) return state.settings.quoteOverrideIndex;
   return dailyQuoteIndex(tk, QUOTES.length);
 }
-function renderHero(){
-  const q = QUOTES[getCurrentQuoteIndex()] || QUOTES[0];
-  document.getElementById("quoteText").textContent = "\u201C" + q.t + "\u201D";
-  document.getElementById("quoteCat").textContent = q.c;
-  document.getElementById("heroDate").textContent = new Date().toLocaleDateString("en-IN",{weekday:"long",day:"numeric",month:"long"});
+function buildStoryCategories(){
+  const order = [], byCat = {};
+  QUOTES.forEach(q=>{ if(!byCat[q.c]){ byCat[q.c]=[]; order.push(q.c); } byCat[q.c].push(q); });
+  return order.map(c=>({ cat:c, items:byCat[c] }));
 }
-function shuffleQuote(){
+const STORY_CATEGORIES = buildStoryCategories();
+function ensureStoriesViewedFresh(){
   const tk = todayKey();
-  let idx; const current = getCurrentQuoteIndex();
+  if(!state.settings.storiesViewed || state.settings.storiesViewed.date!==tk){
+    state.settings.storiesViewed = { date:tk, viewed:[] };
+  }
+}
+function markStoryViewed(key){
+  ensureStoriesViewedFresh();
+  if(!state.settings.storiesViewed.viewed.includes(key)) state.settings.storiesViewed.viewed.push(key);
+  saveState();
+}
+function isStoryViewed(key){
+  ensureStoriesViewedFresh();
+  return state.settings.storiesViewed.viewed.includes(key);
+}
+function renderStoriesRow(){
+  const row = document.getElementById("storiesRow");
+  if(!row) return;
+  ensureStoriesViewedFresh();
+  let html = `<button class="story-item story-today" onclick="openTodayStory()">
+    <span class="story-ring ${isStoryViewed('today')?'viewed':''}"><span class="story-ring-inner">✧</span></span>
+    <span class="story-label">Today</span>
+  </button>`;
+  html += STORY_CATEGORIES.map((group,i)=>`
+    <button class="story-item" onclick="openCategoryStory(${i})">
+      <span class="story-ring ${isStoryViewed(group.cat)?'viewed':''}"><span class="story-ring-inner">${CATEGORY_ICON[group.cat]||'✦'}</span></span>
+      <span class="story-label">${esc(group.cat)}</span>
+    </button>`).join("");
+  row.innerHTML = html;
+}
+
+/* ---- Story viewer engine ---- */
+let storyState = null; // { mode:'today'|'category', catIndex, quoteIndex, items:[...] }
+function openTodayStory(){
+  markStoryViewed("today");
+  storyState = { mode:"today", catIndex:null, quoteIndex:0, items:[QUOTES[getTodayQuoteIndex()] || QUOTES[0]] };
+  renderStoriesRow();
+  openStoryViewer();
+}
+function openCategoryStory(catIndex){
+  const group = STORY_CATEGORIES[catIndex];
+  if(!group) return;
+  markStoryViewed(group.cat);
+  storyState = { mode:"category", catIndex, quoteIndex:0, items:group.items };
+  renderStoriesRow();
+  openStoryViewer();
+}
+function openStoryViewer(){
+  document.getElementById("storyViewer").classList.add("open");
+  document.getElementById("storyViewer").setAttribute("aria-hidden","false");
+  document.body.classList.add("story-open");
+  renderStorySlide();
+}
+function closeStory(){
+  document.getElementById("storyViewer").classList.remove("open");
+  document.getElementById("storyViewer").setAttribute("aria-hidden","true");
+  document.body.classList.remove("story-open");
+  storyState = null;
+}
+function renderStorySlide(){
+  if(!storyState) return;
+  const q = storyState.items[storyState.quoteIndex];
+  document.getElementById("storyQuoteText").textContent = "\u201C" + q.t + "\u201D";
+  document.getElementById("storyHeadLabel").textContent = storyState.mode==="today" ? "Today's reflection" : q.c;
+  document.getElementById("storyHeadAvatar").textContent = storyState.mode==="today" ? "✧" : (CATEGORY_ICON[q.c]||"✦");
+
+  const bar = document.getElementById("storyProgress");
+  bar.innerHTML = storyState.items.map((_,i)=>{
+    const state = i<storyState.quoteIndex ? "done" : (i===storyState.quoteIndex ? "active" : "");
+    return `<span class="story-progress-seg"><span class="story-progress-fill ${state}" style="--story-duration:${STORY_DURATION_MS}ms"></span></span>`;
+  }).join("");
+
+  const foot = document.getElementById("storyFoot");
+  foot.innerHTML = storyState.mode==="today"
+    ? `<button class="btn subtle small" onclick="shuffleTodayStory()">🔀 New quote</button>`
+    : "";
+
+  const fill = bar.querySelector(".story-progress-fill.active");
+  if(fill){
+    fill.addEventListener("animationend", storyAdvanceHandler, { once:true });
+  }
+}
+function storyAdvanceHandler(){ storyNext(); }
+function storyNext(){
+  if(!storyState) return;
+  if(storyState.quoteIndex < storyState.items.length-1){
+    storyState.quoteIndex++;
+    renderStorySlide();
+  } else if(storyState.mode==="category" && storyState.catIndex < STORY_CATEGORIES.length-1){
+    openCategoryStory(storyState.catIndex+1);
+  } else {
+    closeStory();
+  }
+}
+function storyPrev(){
+  if(!storyState) return;
+  if(storyState.quoteIndex > 0){
+    storyState.quoteIndex--;
+    renderStorySlide();
+  } else if(storyState.mode==="category" && storyState.catIndex > 0){
+    const prevIdx = storyState.catIndex-1;
+    const group = STORY_CATEGORIES[prevIdx];
+    storyState = { mode:"category", catIndex:prevIdx, quoteIndex:group.items.length-1, items:group.items };
+    renderStorySlide();
+  }
+}
+function shuffleTodayStory(){
+  const tk = todayKey();
+  let idx; const current = getTodayQuoteIndex();
   do{ idx = Math.floor(Math.random()*QUOTES.length); } while(idx===current && QUOTES.length>1);
   state.settings.quoteOverrideDate = tk;
   state.settings.quoteOverrideIndex = idx;
-  saveState(); renderHero();
+  saveState();
+  storyState.items = [QUOTES[idx]];
+  storyState.quoteIndex = 0;
+  renderStorySlide();
+}
+document.getElementById("storyViewerInner").addEventListener("pointerdown", ()=>{
+  document.querySelectorAll(".story-progress-fill.active").forEach(f=>f.classList.add("paused"));
+});
+["pointerup","pointerleave","pointercancel"].forEach(ev=>{
+  document.getElementById("storyViewerInner").addEventListener(ev, ()=>{
+    document.querySelectorAll(".story-progress-fill.active").forEach(f=>f.classList.remove("paused"));
+  });
+});
+document.addEventListener("keydown", (e)=>{
+  if(!storyState) return;
+  if(e.key==="Escape") closeStory();
+  if(e.key==="ArrowRight") storyNext();
+  if(e.key==="ArrowLeft") storyPrev();
+});
+
+/* ---------------- Confetti / celebration ---------------- */
+let confettiCanvas = null, confettiCtx = null, confettiParticles = [], confettiRAF = null;
+function ensureConfettiCanvas(){
+  if(confettiCanvas) return;
+  confettiCanvas = document.createElement("canvas");
+  confettiCanvas.id = "confettiCanvas";
+  confettiCanvas.style.cssText = "position:fixed;inset:0;z-index:800;pointer-events:none;";
+  document.body.appendChild(confettiCanvas);
+  confettiCtx = confettiCanvas.getContext("2d");
+  const resize = ()=>{ confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; };
+  resize(); window.addEventListener("resize", resize);
+}
+function celebrate(originEl){
+  if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  ensureConfettiCanvas();
+  const colors = ["#E38BA1","#F0AEBE","#E8B255","#8FB6E6","#C98BD9","#F7F1F5"];
+  let ox = window.innerWidth/2, oy = window.innerHeight*0.35;
+  if(originEl){ const r = originEl.getBoundingClientRect(); ox = r.left+r.width/2; oy = r.top+r.height/2; }
+  const count = 46;
+  for(let i=0;i<count;i++){
+    const angle = (Math.PI*2*i/count) + (Math.random()*0.5);
+    const speed = 3 + Math.random()*5;
+    confettiParticles.push({
+      x:ox, y:oy,
+      vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed - 2,
+      size:4+Math.random()*4, color:colors[i%colors.length],
+      rot:Math.random()*Math.PI*2, vr:(Math.random()-0.5)*0.3,
+      life:1, decay:0.012+Math.random()*0.01
+    });
+  }
+  if(!confettiRAF) confettiRAF = requestAnimationFrame(stepConfetti);
+}
+function stepConfetti(){
+  confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  confettiParticles = confettiParticles.filter(p=>p.life>0);
+  confettiParticles.forEach(p=>{
+    p.vy += 0.12; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life -= p.decay;
+    confettiCtx.save();
+    confettiCtx.globalAlpha = Math.max(p.life,0);
+    confettiCtx.translate(p.x,p.y);
+    confettiCtx.rotate(p.rot);
+    confettiCtx.fillStyle = p.color;
+    confettiCtx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.6);
+    confettiCtx.restore();
+  });
+  if(confettiParticles.length>0){
+    confettiRAF = requestAnimationFrame(stepConfetti);
+  } else {
+    confettiRAF = null;
+    confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  }
 }
 
-/* ---------------- Today page ---------------- */
+/* Ambient pointer-glow on cards & primary buttons */
+function initAmbientGlow(){
+  document.addEventListener("pointermove", (e)=>{
+    const target = e.target.closest(".card, .btn.primary, .story-item .story-ring");
+    if(!target) return;
+    const r = target.getBoundingClientRect();
+    target.style.setProperty("--mx", ((e.clientX-r.left)/r.width*100)+"%");
+    target.style.setProperty("--my", ((e.clientY-r.top)/r.height*100)+"%");
+  }, { passive:true });
+}
+
 function onMoodInput(v){ document.getElementById("moodValueLabel").textContent = moodLabel(v); }
 function saveMood(v){ state.moods[todayKey()] = +v; saveState(); renderToday(); }
 function journalStreak(){
@@ -1000,13 +1172,62 @@ function renderToday(){
       <div><div class="nudge-name">${u.title}</div><div class="nudge-meta">${fmtDate(u.date.toISOString().slice(0,10))}</div></div>
       <span class="person-badge ${u.days<=7?'badge-overdue':'badge-soon'}">${u.days===0?"Today":u.days+" days"}</span>
     </div>`).join("") : `<div class="empty-state">Nothing coming up in the next 30 days.</div>`;
-  refreshRearrangeBounds();
 }
 function statTile(num,label){ return `<div class="stat-tile"><div class="num">${num}</div><div class="lbl">${esc(label)}</div></div>`; }
-function logContactToday(id){
+function logContactToday(id, note){
   const p = state.people.find(x=>x.id===id); if(!p) return;
-  p.lastContact = todayKey(); saveState(); renderToday();
+  p.lastContact = todayKey();
+  if(!Array.isArray(p.history)) p.history = [];
+  p.history.unshift({ date: todayKey(), note: (note||"").trim() });
+  p.history = p.history.slice(0, 30);
+  saveState(); renderToday();
   if(document.getElementById("page-people").classList.contains("active")) renderPeople();
+}
+function submitCheckin(id){
+  const input = document.getElementById("checkin-"+id);
+  const note = input ? input.value.trim() : "";
+  const p = state.people.find(x=>x.id===id);
+  logContactToday(id, note || "Checked in");
+  celebrate(document.getElementById("checkin-btn-"+id));
+  showToast(p ? "Logged with "+p.name+"." : "Logged.");
+}
+function deleteHistoryEntry(personId, idx){
+  const p = state.people.find(x=>x.id===personId); if(!p) return;
+  p.history.splice(idx,1); saveState(); renderPeople();
+}
+
+/* ---------------- Journal photo attach (client-side resize, no backend) ---------------- */
+let pendingPhotoDataUrl = null;
+function handleJournalPhoto(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  if(!file.type.startsWith("image/")){ showToast("Please choose an image file.", true); return; }
+  const reader = new FileReader();
+  reader.onload = (e)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      const MAX = 1000;
+      let w = img.width, h = img.height;
+      if(w > MAX || h > MAX){ const scale = MAX / Math.max(w,h); w = Math.round(w*scale); h = Math.round(h*scale); }
+      const canvas = document.createElement("canvas");
+      canvas.width = w; canvas.height = h;
+      canvas.getContext("2d").drawImage(img, 0, 0, w, h);
+      pendingPhotoDataUrl = canvas.toDataURL("image/jpeg", 0.72);
+      document.getElementById("photoPreviewImg").src = pendingPhotoDataUrl;
+      document.getElementById("photoPreviewWrap").style.display = "block";
+      const kb = Math.round(pendingPhotoDataUrl.length * 0.75 / 1024);
+      document.getElementById("photoAttachHint").textContent = `Resized to ${w}×${h}, about ${kb} KB, stored on this device.`;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  evt.target.value = "";
+}
+function removeJournalPhoto(){
+  pendingPhotoDataUrl = null;
+  document.getElementById("photoPreviewWrap").style.display = "none";
+  document.getElementById("photoPreviewImg").src = "";
+  document.getElementById("photoAttachHint").textContent = "Stored on this device, resized to save space.";
 }
 
 /* ---------------- Journal (Quill) ---------------- */
@@ -1055,22 +1276,25 @@ async function saveJournalEntry(){
   const html = sanitizeHtml(quill.root.innerHTML);
   const mood = document.getElementById("journalMood").value;
   if(quill.getText().trim().length===0){ await showAlert("Write something first."); return; }
+  const isNew = !editingJournalId;
   if(editingJournalId){
     const e = state.journal.find(x=>x.id===editingJournalId);
-    if(e){ e.date=date; e.title=title; e.html=html; e.mood=mood; e.updatedAt=Date.now(); }
+    if(e){ e.date=date; e.title=title; e.html=html; e.mood=mood; e.updatedAt=Date.now(); e.photo=pendingPhotoDataUrl; }
     editingJournalId = null;
     document.getElementById("journalCancelBtn").style.display="none";
     document.getElementById("journalFormTitle").textContent = "Write something";
   } else {
-    state.journal.push({id:uid(), date, title, html, mood, createdAt:Date.now()});
+    state.journal.push({id:uid(), date, title, html, mood, photo:pendingPhotoDataUrl, createdAt:Date.now()});
   }
   saveState();
   document.getElementById("journalTitle").value="";
   document.getElementById("journalMood").value="";
   quill.setContents([]);
   document.getElementById("journalDate").value = todayKey();
+  removeJournalPhoto();
   renderJournalList();
   showToast("Entry saved.");
+  if(isNew) celebrate(document.querySelector('[data-page="journal"]'));
 }
 function editJournalEntry(id){
   const e = state.journal.find(x=>x.id===id); if(!e) return;
@@ -1079,6 +1303,13 @@ function editJournalEntry(id){
   document.getElementById("journalTitle").value = e.title || "";
   document.getElementById("journalMood").value = e.mood || "";
   quill.root.innerHTML = e.html;
+  if(e.photo){
+    pendingPhotoDataUrl = e.photo;
+    document.getElementById("photoPreviewImg").src = e.photo;
+    document.getElementById("photoPreviewWrap").style.display = "block";
+  } else {
+    removeJournalPhoto();
+  }
   document.getElementById("journalCancelBtn").style.display="inline-block";
   document.getElementById("journalFormTitle").textContent = "Editing entry";
   window.scrollTo({top:0,behavior:"smooth"});
@@ -1089,6 +1320,7 @@ function cancelJournalEdit(){
   document.getElementById("journalDate").value = todayKey();
   document.getElementById("journalCancelBtn").style.display="none";
   document.getElementById("journalFormTitle").textContent = "Write something";
+  removeJournalPhoto();
 }
 async function deleteJournalEntry(id){
   const ok = await showConfirm("Delete this entry? This can't be undone."); if(!ok) return;
@@ -1112,6 +1344,7 @@ function renderJournalList(){
   document.getElementById("journalList").innerHTML = rows.map(e=>`
     <div class="journal-entry">
       <div class="je-head"><span class="je-title">${esc(e.title) || "Untitled"}</span><span class="je-date">${fmtDate(e.date)}${e.mood?" · "+esc(e.mood):""}</span></div>
+      ${e.photo ? `<img class="entry-photo" src="${e.photo}" alt="Photo attached to this entry">` : ""}
       <div class="je-body" id="je-body-${e.id}">${e.html}</div>
       <div class="je-fade" id="je-fade-${e.id}"></div>
       <div class="je-actions">
@@ -1125,7 +1358,6 @@ function renderJournalList(){
     if(body && body.scrollHeight <= body.clientHeight + 4){ if(toggle) toggle.style.display = "none"; }
     else if(fade){ fade.classList.add("show"); }
   });
-  refreshRearrangeBounds();
 }
 
 /* ---------------- Habits ---------------- */
@@ -1147,13 +1379,19 @@ async function deleteHabit(id){
   const ok = await showConfirm("Delete this habit and its history?"); if(!ok) return;
   state.habits = state.habits.filter(h=>h.id!==id); saveState(); renderHabits();
 }
-function toggleHabitDay(habitId, dateKey){
+function toggleHabitDay(habitId, dateKey, evt){
   const h = state.habits.find(x=>x.id===habitId); if(!h) return;
   if(!h.log) h.log = {};
+  const wasGoalMet = habitWeekProgress(h) >= (h.goalPerWeek||7);
   h.log[dateKey] = !h.log[dateKey];
   const streak = habitCurrentStreak(h);
   if(streak > (h.bestStreak||0)) h.bestStreak = streak;
   saveState(); renderHabits();
+  if(h.log[dateKey]){
+    const nowGoalMet = habitWeekProgress(h) >= (h.goalPerWeek||7);
+    celebrate(evt && evt.target);
+    if(nowGoalMet && !wasGoalMet) setTimeout(()=>celebrate(document.querySelector('[data-page="habits"]')), 200);
+  }
 }
 function renderHabits(){
   fillHabitColorSwatches();
@@ -1167,7 +1405,7 @@ function renderHabits(){
     const grid = days.map(dk=>{
       const done = h.log && h.log[dk];
       const dayNum = new Date(dk+"T00:00:00").getDate();
-      return `<button class="day-box ${done?'done':''} ${dk===tk?'today':''}" style="${done?'background:'+h.color+';':''}" onclick="toggleHabitDay('${h.id}','${dk}')" title="${fmtDate(dk)}">${dayNum}</button>`;
+      return `<button class="day-box ${done?'done':''} ${dk===tk?'today':''}" style="${done?'background:'+h.color+';':''}" onclick="toggleHabitDay('${h.id}','${dk}', event)" title="${fmtDate(dk)}">${dayNum}</button>`;
     }).join("");
     return `<div class="habit-card">
       <div class="habit-head">
@@ -1184,7 +1422,6 @@ function renderHabits(){
       </div>
     </div>`;
   }).join("") || `<div class="empty-state">No habits yet. Add one small thing you'd like to keep doing.</div>`;
-  refreshRearrangeBounds();
 }
 
 /* ---------------- People ---------------- */
@@ -1270,14 +1507,32 @@ function renderPeople(){
       <div class="person-meta">${p.lastContact ? "Last contact: "+fmtDate(p.lastContact)+" · every "+cadence+"d" : "No contact logged yet · every "+cadence+"d"}</div>
       ${(p.tags||[]).length ? `<div>${p.tags.map(t=>`<span class="tag-chip">${esc(t)}</span>`).join("")}</div>` : ""}
       ${p.notes ? `<div class="notes-preview">${esc(p.notes)}</div>` : ""}
+
+      <div class="person-timeline">
+        ${(p.history||[]).length ? `<div class="timeline-title">Recent check-ins</div>
+          <div class="timeline-list">
+            ${(p.history||[]).slice(0,3).map((h,i)=>`
+              <div class="timeline-item">
+                <span class="timeline-dot" style="background:${p.color};"></span>
+                <div class="timeline-body">
+                  <div class="timeline-date">${fmtDate(h.date)}</div>
+                  ${h.note ? `<div class="timeline-note">${esc(h.note)}</div>` : ""}
+                </div>
+                <button class="timeline-del" onclick="deleteHistoryEntry('${p.id}',${i})" title="Delete entry" aria-label="Delete entry">✕</button>
+              </div>`).join("")}
+          </div>` : `<div class="timeline-empty">No check-ins logged yet.</div>`}
+      </div>
+
+      <div class="checkin-row">
+        <input type="text" id="checkin-${p.id}" class="checkin-input" placeholder="What did you talk about? (optional)" maxlength="140" onkeydown="if(event.key==='Enter')submitCheckin('${p.id}')">
+        <button class="btn small primary" id="checkin-btn-${p.id}" onclick="submitCheckin('${p.id}')">Log check-in</button>
+      </div>
       <div class="person-actions">
-        <button class="btn small subtle" onclick="logContactToday('${p.id}')">Mark contacted</button>
         <button class="btn small subtle" onclick="openPersonModal('${p.id}')">Edit</button>
         <button class="btn small danger" onclick="deletePerson('${p.id}')">Remove</button>
       </div>
     </div>`;
   }).join("") || `<div class="empty-state">${state.people.length ? "No one matches your filters." : "No one added yet. Start with the people closest to you."}</div>`;
-  refreshRearrangeBounds();
 }
 
 /* ---------------- Events (custom) ---------------- */
@@ -1350,7 +1605,6 @@ function renderCalendar(){
   }
   document.getElementById("calGrid").innerHTML = html;
   renderEventList();
-  refreshRearrangeBounds();
 }
 function prefillEventDate(dateKey){
   document.getElementById("eventDate").value = dateKey;
@@ -1371,7 +1625,6 @@ function showDayDetail(dateKey){
   html += `<div class="dd-item"><button class="btn small subtle" onclick="prefillEventDate('${dateKey}')">+ Add occasion on this day</button></div>`;
   const box = document.getElementById("dayDetail");
   box.className = "day-detail"; box.style.display = "block"; box.innerHTML = html;
-  refreshRearrangeBounds();
 }
 
 /* ---------------- Settings / backup ---------------- */
@@ -1421,7 +1674,7 @@ function updateStorageStats(){
 
 /* ---------------- Init ---------------- */
 function refreshAll(){
-  renderHero();
+  renderStoriesRow();
   applyWallpaper();
   document.getElementById("journalDate").value = todayKey();
   renderToday();
@@ -1438,6 +1691,7 @@ async function init(){
   catch(e){ state = JSON.parse(JSON.stringify(DEFAULT_STATE)); showToast("Starting fresh — couldn't load previous data.", true); }
   migrateState();
   initQuill();
+  initAmbientGlow();
   refreshAll();
   const overlay = document.getElementById("loadingOverlay");
   overlay.classList.add("hidden");

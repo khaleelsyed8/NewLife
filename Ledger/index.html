@@ -6,7 +6,18 @@
 <title>Ledger — Personal Finance Tracker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="icon" href="./logo.svg" type="image/svg+xml">
-<link rel="manifest" href="./manifest.json">
+<script>
+// The browser auto-fetches <link rel="manifest"> the instant it's parsed.
+// Under file:// that fetch always fails with a CORS error (browsers don't
+// support cross-origin-style requests from a "null" file origin), so the
+// tag is only added when actually served over http/https, where it works.
+if (location.protocol === "http:" || location.protocol === "https:") {
+  const manifestLink = document.createElement("link");
+  manifestLink.rel = "manifest";
+  manifestLink.href = "./manifest.json";
+  document.head.appendChild(manifestLink);
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -338,7 +349,6 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
     <div class="brand"><h1>Ledger</h1><span>Personal Finance</span></div>
     <div class="nav-item active" data-page="dashboard" data-short="Home"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M4 14V8M10 14V4M16 14v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Dashboard</span></div>
     <div class="nav-item" data-page="transactions" data-short="Entries"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M4 5h12M4 10h12M4 15h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span>Transactions</span></div>
-    <div class="nav-item" data-page="import" data-short="Import"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M10 3v8m0-8 3.2 3.2M10 3 6.8 6.2M4 13v2.2c0 .4.4.8.9.8h10.2c.5 0 .9-.4.9-.8V13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Import Statement</span></div>
     <div class="nav-item" data-page="creditcard" data-short="Card"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="1.6" stroke="currentColor" stroke-width="1.6"/><path d="M3 8.6h14" stroke="currentColor" stroke-width="1.6"/></svg><span>Credit Card</span></div>
     <div class="nav-item" data-page="recurring" data-short="Repeat"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M15.5 8A5.5 5.5 0 0 0 5.6 6.2M4.5 12a5.5 5.5 0 0 0 9.9 1.8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M5.6 3.4v2.8H8.4M14.4 16.6v-2.8H11.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Recurring</span></div>
     <div class="nav-item" data-page="investments" data-short="Invest"><svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3.5 14 8 8.5l3 2.5 5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.5 8.6h3.5V12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Investments</span></div>
@@ -361,6 +371,17 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
           <select class="year-select" id="dashMonth"></select>
         </div>
       </div>
+      <div class="chart-card" id="onboardingBanner" style="display:none;margin-bottom:18px;text-align:center;padding:44px 24px;">
+        <div style="font-size:38px;margin-bottom:10px;">👋</div>
+        <h3 style="margin-bottom:8px;">Welcome to Ledger</h3>
+        <p class="helper-text" style="max-width:480px;margin:0 auto 22px;">Track income and expenses, credit cards, investments, and recurring bills — everything is stored privately in this browser and nowhere else. Here's how to get started:</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+          <button class="btn" onclick="onboardingGoToQuickAdd()">+ Add your first transaction</button>
+          <button class="btn outline" onclick="onboardingGoToImport()">📥 Import a bank statement</button>
+          <button class="btn outline" onclick="loadSampleData()">✨ Try it with sample data</button>
+        </div>
+      </div>
+      <div id="dashboardMainContent">
       <div class="kpi-row" id="kpiRow"></div>
       <div class="chart-card" id="insightsCard" style="display:none;margin-bottom:18px;">
         <h3>Insights</h3>
@@ -440,6 +461,7 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
           <tbody id="monthTxTableBody"></tbody>
         </table></div>
       </div>
+      </div>
     </div>
 
     <!-- TRANSACTIONS -->
@@ -456,6 +478,46 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
           <div class="field"><label>Amount (₹)</label><input type="number" id="txAmount" placeholder="0"></div>
           <div class="field"><label>Payment</label><select id="txPayment"><option>UPI</option><option>Cash</option><option>Debit Card</option><option>Credit Card</option><option>Net Banking</option><option>Auto-Debit</option><option>Other</option></select></div>
           <div class="field"><button class="btn" onclick="addTransaction()">+ Add entry</button></div>
+          <div class="field"><button class="btn outline" onclick="openSplitEditorForNew()" title="Break this amount across multiple categories">🔀 Split into categories</button></div>
+        </div>
+        <div style="margin-top:14px;">
+          <button class="btn outline small" id="importToggleBtn" onclick="toggleImportSection()">📥 Import from bank/card statement</button>
+        </div>
+      </div>
+
+      <!-- IMPORT (collapsed by default — folded into Transactions so mobile has one less nav item) -->
+      <div id="importSection" style="display:none;">
+        <div class="panel">
+          <h3>Step 1 — Get your file in</h3>
+          <div class="form-grid" style="margin-bottom:10px;">
+            <div class="field"><label>Upload file (.csv, .xlsx, .xls)</label><input type="file" id="csvFile" accept=".csv,.xlsx,.xls"></div>
+          </div>
+          <p class="helper-text">or paste CSV text below (first row should be column headers)</p>
+          <textarea id="csvPaste" rows="5" style="width:100%;margin-top:8px;" placeholder="Date,Narration,Withdrawal Amt,Deposit Amt"></textarea>
+          <div style="margin-top:12px;"><button class="btn" onclick="parseCsv()">Parse file</button></div>
+        </div>
+
+        <div class="panel" id="mapPanel" style="display:none;">
+          <h3>Step 2 — Map your columns</h3>
+          <div class="tabs-inline">
+            <button class="tab-btn active" id="modeSeparateBtn" onclick="setImportMode('separate')">Separate debit/credit columns</button>
+            <button class="tab-btn" id="modeSignedBtn" onclick="setImportMode('signed')">Single signed amount column</button>
+            <button class="tab-btn" id="modeIndicatorBtn" onclick="setImportMode('indicator')">Amount + Dr/Cr column</button>
+          </div>
+          <div class="form-grid" id="mapFields"></div>
+          <div style="margin-top:14px;"><button class="btn" onclick="buildPreview()">Preview & auto-categorize →</button></div>
+        </div>
+
+        <div class="panel" id="previewPanel" style="display:none;">
+          <h3>Step 3 — Review & confirm</h3>
+          <p class="helper-text" id="previewSummary"></p>
+          <div style="max-height:360px;overflow:auto;margin-top:10px;">
+            <table class="ledger-table import-preview-table">
+              <thead><tr><th></th><th>Date</th><th>Type</th><th>Category</th><th>Description</th><th style="text-align:right;">Amount</th></tr></thead>
+              <tbody id="previewBody"></tbody>
+            </table>
+          </div>
+          <div style="margin-top:14px;"><button class="btn" onclick="confirmImport()">Import selected rows</button> <button class="btn outline" onclick="cancelImport()">Cancel</button></div>
         </div>
       </div>
 
@@ -480,44 +542,6 @@ select.edit-input{padding-right:22px;background-size:12px;background-position:ri
         </tr></thead>
         <tbody id="txTableBody"></tbody>
       </table></div>
-    </div>
-
-    <!-- IMPORT -->
-    <div class="page" id="page-import">
-      <div class="page-head"><div><h2>Import statement</h2><p>Upload a bank/card CSV or Excel export — rows are auto-categorized using your keyword rules.</p></div></div>
-
-      <div class="panel">
-        <h3>Step 1 — Get your file in</h3>
-        <div class="form-grid" style="margin-bottom:10px;">
-          <div class="field"><label>Upload file (.csv, .xlsx, .xls)</label><input type="file" id="csvFile" accept=".csv,.xlsx,.xls"></div>
-        </div>
-        <p class="helper-text">or paste CSV text below (first row should be column headers)</p>
-        <textarea id="csvPaste" rows="5" style="width:100%;margin-top:8px;" placeholder="Date,Narration,Withdrawal Amt,Deposit Amt"></textarea>
-        <div style="margin-top:12px;"><button class="btn" onclick="parseCsv()">Parse file</button></div>
-      </div>
-
-      <div class="panel" id="mapPanel" style="display:none;">
-        <h3>Step 2 — Map your columns</h3>
-        <div class="tabs-inline">
-          <button class="tab-btn active" id="modeSeparateBtn" onclick="setImportMode('separate')">Separate debit/credit columns</button>
-          <button class="tab-btn" id="modeSignedBtn" onclick="setImportMode('signed')">Single signed amount column</button>
-          <button class="tab-btn" id="modeIndicatorBtn" onclick="setImportMode('indicator')">Amount + Dr/Cr column</button>
-        </div>
-        <div class="form-grid" id="mapFields"></div>
-        <div style="margin-top:14px;"><button class="btn" onclick="buildPreview()">Preview & auto-categorize →</button></div>
-      </div>
-
-      <div class="panel" id="previewPanel" style="display:none;">
-        <h3>Step 3 — Review & confirm</h3>
-        <p class="helper-text" id="previewSummary"></p>
-        <div style="max-height:360px;overflow:auto;margin-top:10px;">
-          <table class="ledger-table import-preview-table">
-            <thead><tr><th></th><th>Date</th><th>Type</th><th>Category</th><th>Description</th><th style="text-align:right;">Amount</th></tr></thead>
-            <tbody id="previewBody"></tbody>
-          </table>
-        </div>
-        <div style="margin-top:14px;"><button class="btn" onclick="confirmImport()">Import selected rows</button> <button class="btn outline" onclick="cancelImport()">Cancel</button></div>
-      </div>
     </div>
 
     <!-- CREDIT CARD -->
@@ -852,6 +876,53 @@ const DEFAULT_STATE = {
 /* ---------------- Utils (must be defined before loadState/migrateState run, since migrateState calls uid()) ---------------- */
 const fmt = n => "₹" + Math.round(n||0).toLocaleString("en-IN");
 const uid = () => Math.random().toString(36).slice(2,10);
+// Escapes user-entered text before it's dropped into innerHTML templates.
+// Handles both text-node content (&,<,>) and quoted-attribute content ("," ').
+// Without this, descriptions/names containing & or < (e.g. real bank narrations
+// like "S&K Furnishings") render broken, and crafted input can inject HTML/script.
+function escapeHtml(str){
+  return String(str ?? "").replace(/[&<>"']/g, ch => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[ch]));
+}
+// For dynamic values embedded as a single-quoted JS string literal inside an
+// onclick="fn('...')" attribute: first escape so the JS string stays valid,
+// then HTML-escape so the value can't break out of the surrounding attribute.
+function escapeJsAttr(str){
+  return escapeHtml(String(str ?? "").replace(/\\/g,"\\\\").replace(/'/g,"\\'"));
+}
+// For any category-based aggregation (dashboard KPIs, budget-vs-actual, category
+// charts, reports, insights): a split transaction's total is divided across several
+// categories, so grouping by t.category directly would lump it all under "Split".
+// This expands each split transaction into one row per split category (amounts
+// still sum to the original total, so totals/income/expense sums are unaffected)
+// while leaving ordinary transactions untouched. Use this wherever code groups
+// transactions BY CATEGORY; keep using the original list for anything that needs
+// one row per real transaction (the ledger table, CSV export's row count, etc).
+function explodeTransactions(txns){
+  const out = [];
+  txns.forEach(t=>{
+    if(Array.isArray(t.splits) && t.splits.length){
+      t.splits.forEach(s=>{
+        out.push(Object.assign({}, t, {category: s.category, amount: s.amount, splits: undefined, isSplitPart: true, splitParentId: t.id}));
+      });
+    } else {
+      out.push(t);
+    }
+  });
+  return out;
+}
+// The CSV/Excel parsing libraries load from a CDN (see index.html <head>).
+// If the device is offline and they weren't already cached, they won't exist
+// yet. Call this before touching Papa/XLSX so we fail with a clear message
+// instead of an unhandled "Papa is not defined" crash.
+function ensureImportLibsLoaded(){
+  if(typeof Papa === 'undefined' || typeof XLSX === 'undefined'){
+    showToast("Import tools couldn't load (are you offline?). Reconnect and reload the page, then try again.", {type:'error'});
+    return false;
+  }
+  return true;
+}
 function monthKey(dateStr){ const d=new Date(dateStr); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0"); }
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const EMPTY_ICON = '<svg width="30" height="30" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="4" y="3" width="12" height="14" rx="1.2"/><path d="M7 7h6M7 10h6M7 13h3.5"/></svg>';
@@ -929,20 +1000,92 @@ function safeChart(canvasId, config){
   }
 }
 
+/* ---------------- IndexedDB storage layer ----------------
+   Replaces localStorage for actual app data (transactions, settings, etc).
+   Same idea as localStorage - 100% on-device, no server, no account, no
+   cost - just without the ~5-10MB ceiling, and without blocking the UI
+   thread on every save. localStorage is only kept for the tiny, non-
+   sensitive "privacy mode" toggle, which needs to be read synchronously
+   before the rest of the app boots. */
+const IDB_NAME = "ledger_finance_tracker_db";
+const IDB_STORE = "kv";
+let idbOpenPromise = null;
+function idbOpen(){
+  if(idbOpenPromise) return idbOpenPromise;
+  idbOpenPromise = new Promise((resolve, reject)=>{
+    if(typeof indexedDB === "undefined"){ reject(new Error("IndexedDB not available")); return; }
+    const req = indexedDB.open(IDB_NAME, 1);
+    req.onupgradeneeded = ()=>{ req.result.createObjectStore(IDB_STORE); };
+    req.onsuccess = ()=> resolve(req.result);
+    req.onerror = ()=> reject(req.error);
+  });
+  return idbOpenPromise;
+}
+async function idbGet(key){
+  const db = await idbOpen();
+  return new Promise((resolve, reject)=>{
+    const tx = db.transaction(IDB_STORE, "readonly");
+    const req = tx.objectStore(IDB_STORE).get(key);
+    req.onsuccess = ()=> resolve(req.result);
+    req.onerror = ()=> reject(req.error);
+  });
+}
+async function idbSet(key, value){
+  const db = await idbOpen();
+  return new Promise((resolve, reject)=>{
+    const tx = db.transaction(IDB_STORE, "readwrite");
+    tx.objectStore(IDB_STORE).put(value, key);
+    tx.oncomplete = ()=> resolve();
+    tx.onerror = ()=> reject(tx.error);
+  });
+}
+async function idbDelete(key){
+  const db = await idbOpen();
+  return new Promise((resolve, reject)=>{
+    const tx = db.transaction(IDB_STORE, "readwrite");
+    tx.objectStore(IDB_STORE).delete(key);
+    tx.oncomplete = ()=> resolve();
+    tx.onerror = ()=> reject(tx.error);
+  });
+}
+// One-time migration for anyone who used the app before this update: if
+// IndexedDB is empty but old localStorage data exists, copy it over once
+// and then stop touching localStorage for app data.
+async function migrateLocalStorageToIdb(){
+  try{
+    const existingMeta = await idbGet(META_KEY);
+    const existingState = await idbGet(STORAGE_KEY);
+    if(existingMeta !== undefined || existingState !== undefined) return;
+  }catch(e){ return; }
+  try{
+    const legacyMetaRaw = localStorage.getItem(META_KEY);
+    const legacyStateRaw = localStorage.getItem(STORAGE_KEY);
+    if(legacyMetaRaw) await idbSet(META_KEY, JSON.parse(legacyMetaRaw));
+    if(legacyStateRaw) await idbSet(STORAGE_KEY, JSON.parse(legacyStateRaw));
+    if(legacyMetaRaw || legacyStateRaw){
+      localStorage.removeItem(META_KEY);
+      localStorage.removeItem(STORAGE_KEY);
+      console.log("[Ledger] Migrated existing data from localStorage to IndexedDB.");
+    }
+  }catch(e){ console.warn("localStorage->IndexedDB migration skipped", e); }
+}
+
 let memoryFallback = null;
 const STORAGE_KEY = "ledger_finance_tracker_v1";
 const META_KEY = "ledger_finance_tracker_v1_meta";
 let encryptionKey = null; // in-memory only CryptoKey, never persisted anywhere
+let cachedMeta = {encrypted:false}; // in-memory cache so getMeta() can stay synchronous
 
-function getMeta(){
+function getMeta(){ return cachedMeta; }
+async function loadMeta(){
   try{
-    const raw = localStorage.getItem(META_KEY);
-    if(raw) return JSON.parse(raw);
-  }catch(e){}
-  return {encrypted:false};
+    const raw = await idbGet(META_KEY);
+    if(raw) cachedMeta = raw;
+  }catch(e){ console.warn("Could not read encryption meta from IndexedDB", e); }
 }
-function setMeta(meta){
-  try{ localStorage.setItem(META_KEY, JSON.stringify(meta)); }catch(e){}
+async function setMeta(meta){
+  cachedMeta = meta;
+  try{ await idbSet(META_KEY, meta); }catch(e){ console.warn("Could not persist encryption meta", e); }
 }
 function bytesToBase64(bytes){
   let binary = "";
@@ -978,11 +1121,11 @@ async function decryptString(payload, key){
   const plainBuf = await crypto.subtle.decrypt({name:"AES-GCM", iv}, key, data);
   return new TextDecoder().decode(plainBuf);
 }
-function loadState(){
+async function loadState(){
   try{
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if(raw) return JSON.parse(raw);
-  }catch(e){ console.warn("localStorage unavailable, using in-memory state", e); }
+    const raw = await idbGet(STORAGE_KEY);
+    if(raw) return raw;
+  }catch(e){ console.warn("IndexedDB unavailable, using in-memory state", e); }
   if(memoryFallback) return memoryFallback;
   return JSON.parse(JSON.stringify(DEFAULT_STATE));
 }
@@ -990,9 +1133,9 @@ async function saveState(){
   try{
     if(encryptionKey){
       const payload = await encryptString(JSON.stringify(state), encryptionKey);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      await idbSet(STORAGE_KEY, payload);
     } else {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      await idbSet(STORAGE_KEY, state);
     }
   }catch(e){
     memoryFallback = state;
@@ -1051,6 +1194,18 @@ function migrateState(){
     const before = state.transactions.length;
     state.transactions = state.transactions.filter(t => t && t.id && t.date && typeof t.amount === "number" && !isNaN(t.amount) && (t.type==="Income"||t.type==="Expense"));
     if(state.transactions.length !== before) changed = true;
+    // A split transaction's splits must be a non-empty array of valid {category, amount}
+    // entries that actually sum to the transaction's total. If not, drop .splits and
+    // fall back to treating it as an ordinary single-category transaction rather than
+    // risk a corrupt split silently misreporting category totals.
+    state.transactions.forEach(t=>{
+      if(t.splits !== undefined){
+        const valid = Array.isArray(t.splits) && t.splits.length
+          && t.splits.every(s => s && typeof s.category === "string" && s.category.trim() && typeof s.amount === "number" && !isNaN(s.amount) && s.amount > 0)
+          && Math.abs(t.splits.reduce((sum,s)=>sum+s.amount,0) - t.amount) < 0.01;
+        if(!valid){ delete t.splits; changed = true; }
+      }
+    });
   }
   if(Array.isArray(state.investments)){
     const before = state.investments.length;
@@ -1133,6 +1288,113 @@ function showToast(message, opts){
   toastTimers[id] = setTimeout(dismiss, opts.duration || (opts.actionLabel ? 6500 : 3200));
   return dismiss;
 }
+/* ---------------- Split transactions ----------------
+   A split transaction stores its total on t.amount (unchanged, so every place
+   that sums transactions keeps working) plus t.splits: [{category, amount}, ...]
+   whose amounts must sum to t.amount. t.category is set to the literal string
+   "Split" as a display placeholder; anything that needs real per-category
+   numbers should use explodeTransactions() instead of reading t.category. */
+let splitEditorCtx = null; // {mode:'new'|'edit', txId?, date, type, description, payment, totalAmount}
+let splitEditorRows = [];  // [{category, amount}] while the modal is open
+function openSplitEditorForNew(){
+  const date = document.getElementById("txDate").value;
+  const amount = parseFloat(document.getElementById("txAmount").value);
+  if(!date || !amount){ showToast("Enter a date and amount first, then split it.", {type:'error'}); return; }
+  openSplitEditor({
+    mode:'new', date, type: document.getElementById("txType").value,
+    description: document.getElementById("txDesc").value,
+    payment: document.getElementById("txPayment").value,
+    totalAmount: Math.abs(amount)
+  });
+}
+function openSplitEditor(ctx){
+  splitEditorCtx = ctx;
+  if(ctx.mode === 'edit'){
+    const t = state.transactions.find(x=>x.id===ctx.txId);
+    if(!t) return;
+    Object.assign(splitEditorCtx, {date:t.date, type:t.type, description:t.description, payment:t.payment, totalAmount:t.amount});
+    splitEditorRows = (Array.isArray(t.splits) && t.splits.length)
+      ? t.splits.map(s=>({category:s.category, amount:s.amount}))
+      : [{category:t.category, amount:t.amount}];
+  } else {
+    splitEditorRows = [{category:'', amount: ctx.totalAmount}, {category:'', amount:0}];
+  }
+  renderSplitEditor();
+}
+function addSplitRow(){ splitEditorRows.push({category:'', amount:0}); renderSplitEditor(); }
+function removeSplitRow(idx){ if(splitEditorRows.length<=1) return; splitEditorRows.splice(idx,1); renderSplitEditor(); }
+function updateSplitRow(idx, field, value){
+  splitEditorRows[idx][field] = field==='amount' ? (parseFloat(value)||0) : value;
+  renderSplitEditor();
+}
+function closeSplitEditor(){
+  const overlay = document.getElementById('modalOverlay');
+  overlay.classList.remove('show');
+  setTimeout(()=>{ overlay.innerHTML=''; }, 200);
+  splitEditorCtx = null; splitEditorRows = [];
+}
+function renderSplitEditor(){
+  const overlay = document.getElementById('modalOverlay');
+  const cats = splitEditorCtx.type==='Income' ? allIncomeCats() : allExpenseCats();
+  const sum = splitEditorRows.reduce((s,r)=>s+(r.amount||0),0);
+  const diff = Math.round((splitEditorCtx.totalAmount - sum)*100)/100;
+  overlay.innerHTML = `<div class="modal-card">
+    <h3>Split "${escapeHtml(splitEditorCtx.description || 'this transaction')}"</h3>
+    <p class="helper-text" style="margin:6px 0 14px;">Total to split: <b>${fmt(splitEditorCtx.totalAmount)}</b></p>
+    <div id="splitRowsContainer">
+      ${splitEditorRows.map((r,idx)=>`
+        <div class="form-grid" style="grid-template-columns:2fr 1fr auto;margin-bottom:8px;align-items:end;">
+          <div class="field"><label>Category</label><select onchange="updateSplitRow(${idx},'category',this.value)">
+            <option value="">— choose —</option>
+            ${cats.map(c=>`<option value="${escapeHtml(c)}" ${r.category===c?'selected':''}>${escapeHtml(c)}</option>`).join('')}
+          </select></div>
+          <div class="field"><label>Amount</label><input type="number" value="${r.amount||''}" placeholder="0" onchange="updateSplitRow(${idx},'amount',this.value)"></div>
+          <div class="field"><button class="icon-btn" onclick="removeSplitRow(${idx})" title="Remove row" ${splitEditorRows.length<=1?'disabled':''}>✕</button></div>
+        </div>`).join('')}
+    </div>
+    <button class="btn outline small" onclick="addSplitRow()">+ Add another category</button>
+    <p class="helper-text" style="margin:12px 0;${diff!==0?'color:var(--brick);':''}">
+      ${diff===0 ? '✓ Splits add up to the total.' : (diff>0 ? fmt(diff)+' left to allocate.' : fmt(Math.abs(diff))+' over the total.')}
+    </p>
+    <div class="modal-actions">
+      <button class="btn outline" id="modalCancelBtn">Cancel</button>
+      <button class="btn" id="modalConfirmBtn" ${diff!==0?'disabled':''}>Save split</button>
+    </div>
+  </div>`;
+  overlay.classList.add('show');
+  overlay.querySelector('#modalCancelBtn').onclick = closeSplitEditor;
+  overlay.querySelector('#modalConfirmBtn').onclick = confirmSplitEditor;
+  overlay.onclick = (e)=>{ if(e.target===overlay) closeSplitEditor(); };
+}
+function confirmSplitEditor(){
+  const missing = splitEditorRows.some(r=>!r.category || !r.amount);
+  if(missing){ showToast("Every split row needs a category and a non-zero amount.", {type:'error'}); return; }
+  const total = Math.round(splitEditorRows.reduce((s,r)=>s+r.amount,0)*100)/100;
+  const splits = splitEditorRows.map(r=>({category:r.category, amount:r.amount}));
+  const wasEdit = splitEditorCtx.mode === 'edit';
+  if(wasEdit){
+    const t = state.transactions.find(x=>x.id===splitEditorCtx.txId);
+    if(t){
+      t.category = 'Split'; t.splits = splits; t.amount = total;
+      if(t.linkedCcId){
+        const linkedCc = state.ccTransactions.find(x=>x.id===t.linkedCcId);
+        if(linkedCc) linkedCc.amount = total; // CC side has no split concept of its own - just keep the total in sync
+      }
+    }
+  } else {
+    state.transactions.push({
+      id: uid(), date: splitEditorCtx.date, type: splitEditorCtx.type,
+      category: 'Split', splits, amount: total,
+      description: splitEditorCtx.description, payment: splitEditorCtx.payment
+    });
+    document.getElementById("txDesc").value=""; document.getElementById("txAmount").value="";
+  }
+  saveState();
+  closeSplitEditor();
+  renderTransactionsPage();
+  showToast(wasEdit ? "Split updated." : "Split entry added.", {type:'success'});
+}
+
 function showConfirmModal(cfg){
   const overlay = document.getElementById('modalOverlay');
   if(!overlay) { if(cfg.onConfirm) cfg.onConfirm(); return; }
@@ -1240,6 +1502,7 @@ function parseDateSmart(raw){
 
 /* ---------------- Shared tabular file reader (CSV / XLSX / XLS) ---------------- */
 function readTabularFile(file, onDone){
+  if(!ensureImportLibsLoaded()) return;
   const name = file.name.toLowerCase();
   const reader = new FileReader();
   if(name.endsWith('.xlsx') || name.endsWith('.xls')){
@@ -1265,6 +1528,80 @@ function readTabularFile(file, onDone){
 }
 
 /* ---------------- Nav ---------------- */
+/* ---------------- Onboarding ---------------- */
+function onboardingGoToQuickAdd(){
+  document.querySelector('.nav-item[data-page="transactions"]').click();
+  setTimeout(()=>{ const el = document.getElementById("txDate"); if(el) el.focus(); }, 50);
+}
+function onboardingGoToImport(){
+  document.querySelector('.nav-item[data-page="transactions"]').click();
+  setTimeout(()=>{
+    const el = document.getElementById("importSection");
+    if(el && el.style.display === "none") toggleImportSection();
+  }, 50);
+}
+function loadSampleData(){
+  showConfirmModal({
+    title: "Try it with sample data?",
+    message: "This adds a few months of realistic example transactions, a recurring bill, an investment holding, and a credit card so you can explore the app. You can remove it any time from Settings → Reset all data.",
+    confirmLabel: "Add sample data", cancelLabel: "Cancel",
+    onConfirm: ()=>{
+      const today = new Date();
+      const iso = (monthsAgo, day) => {
+        const d = new Date(today.getFullYear(), today.getMonth()-monthsAgo, day);
+        return d.toISOString().slice(0,10);
+      };
+      const sample = [
+        {m:2,d:1,type:"Income",cat:"Salary",desc:"Monthly salary",amt:75000,pay:"Net Banking"},
+        {m:2,d:2,type:"Expense",cat:"Housing/Rent",desc:"Rent",amt:22000,pay:"Net Banking"},
+        {m:2,d:3,type:"Expense",cat:"Groceries",desc:"DMart weekly run",amt:2400,pay:"UPI"},
+        {m:2,d:5,type:"Expense",cat:"Utilities",desc:"BESCOM electricity bill",amt:1450,pay:"UPI"},
+        {m:2,d:8,type:"Expense",cat:"Dining Out",desc:"Swiggy order",amt:540,pay:"UPI"},
+        {m:2,d:12,type:"Expense",cat:"Transportation",desc:"Uber rides",amt:680,pay:"UPI"},
+        {m:2,d:18,type:"Expense",cat:"Subscriptions",desc:"Netflix",amt:499,pay:"Credit Card"},
+        {m:2,d:22,type:"Expense",cat:"Shopping",desc:"Amazon order",amt:1899,pay:"Credit Card"},
+        {m:1,d:1,type:"Income",cat:"Salary",desc:"Monthly salary",amt:75000,pay:"Net Banking"},
+        {m:1,d:2,type:"Expense",cat:"Housing/Rent",desc:"Rent",amt:22000,pay:"Net Banking"},
+        {m:1,d:4,type:"Expense",cat:"Groceries",desc:"BigBasket order",amt:3100,pay:"UPI"},
+        {m:1,d:9,type:"Income",cat:"Freelance",desc:"Freelance project payment",amt:15000,pay:"Net Banking"},
+        {m:1,d:14,type:"Expense",cat:"Entertainment",desc:"BookMyShow tickets",amt:850,pay:"Credit Card"},
+        {m:1,d:20,type:"Expense",cat:"Healthcare",desc:"Apollo Pharmacy",amt:620,pay:"UPI"},
+        {m:0,d:1,type:"Income",cat:"Salary",desc:"Monthly salary",amt:75000,pay:"Net Banking"},
+        {m:0,d:2,type:"Expense",cat:"Housing/Rent",desc:"Rent",amt:22000,pay:"Net Banking"},
+        {m:0,d:5,type:"Expense",cat:"Groceries",desc:"DMart weekly run",amt:2650,pay:"UPI"},
+        {m:0,d:11,type:"Expense",cat:"Dining Out",desc:"Zomato order",amt:410,pay:"UPI"},
+        {m:0,d:16,type:"Expense",cat:"Transportation",desc:"Petrol",amt:1200,pay:"Debit Card"},
+        {m:0,d:19,type:"Expense",cat:"Shopping",desc:"Myntra order",amt:2299,pay:"Credit Card"}
+      ];
+      sample.forEach(s=>{
+        state.transactions.push({ id: uid(), date: iso(s.m, s.d), type: s.type, category: s.cat, description: s.desc, amount: s.amt, payment: s.pay });
+      });
+      if(!state.recurring.length){
+        state.recurring.push({ id: uid(), name: "Netflix", category: "Subscriptions", amount: 499, status: "Active", lastPostedMonth: null });
+      }
+      if(!state.investments.length){
+        state.investments.push({ id: uid(), name: "Nifty 50 Index Fund", type: "Mutual Fund", qty: 120, buy: 180, current: 205 });
+      }
+      if(!state.creditCards.length){
+        const cardId = uid();
+        state.creditCards.push({ id: cardId, name: "Sample Rewards Card" });
+        state.ccTransactions.push({ id: uid(), cardId, card: "Sample Rewards Card", date: iso(0,19), description: "Myntra order", category: "Shopping", amount: 2299, addedToLedger:false, linkedTxId:null });
+      }
+      saveState();
+      refreshAll();
+      showToast("Sample data added — explore away, or clear it from Settings → Reset all data.", {type:'success'});
+    }
+  });
+}
+
+function toggleImportSection(){
+  const el = document.getElementById("importSection");
+  const btn = document.getElementById("importToggleBtn");
+  const showing = el.style.display === "none";
+  el.style.display = showing ? "block" : "none";
+  btn.textContent = showing ? "📥 Hide import" : "📥 Import from bank/card statement";
+  if(showing) el.scrollIntoView({behavior:"smooth", block:"start"});
+}
 function activatePage(item){
   document.querySelectorAll(".nav-item").forEach(i=>i.classList.remove("active"));
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
@@ -1309,7 +1646,25 @@ function addTransaction(){
   renderTransactionsPage();
   showToast("Entry added.", {type:'success'});
 }
-function deleteTransaction(id){ deleteWithUndo(state.transactions, id, renderTransactionsPage, 'Transaction'); }
+function deleteTransaction(id){
+  const idx = state.transactions.findIndex(x=>x.id===id);
+  if(idx===-1) return;
+  const removed = state.transactions.splice(idx,1)[0];
+  let removedLinkedCc = null, linkedIdx = -1;
+  if(removed.linkedCcId){
+    linkedIdx = state.ccTransactions.findIndex(x=>x.id===removed.linkedCcId);
+    if(linkedIdx!==-1) removedLinkedCc = state.ccTransactions.splice(linkedIdx,1)[0];
+  }
+  saveState(); renderTransactionsPage();
+  showToast('Transaction deleted.' + (removedLinkedCc ? ' Linked card transaction removed too.' : ''), {
+    type:'info', actionLabel:'Undo',
+    onAction:()=>{
+      state.transactions.splice(Math.min(idx, state.transactions.length), 0, removed);
+      if(removedLinkedCc) state.ccTransactions.splice(Math.min(linkedIdx, state.ccTransactions.length), 0, removedLinkedCc);
+      saveState(); renderTransactionsPage();
+    }
+  });
+}
 function clearFilters(){
   document.getElementById("filterMonth").value="";
   document.getElementById("filterCategory").value="";
@@ -1326,19 +1681,23 @@ function renderTransactionsPage(){
   const catSel = document.getElementById("filterCategory");
   const prevCat = catSel.value;
   const allCats = [...new Set(state.transactions.map(t=>t.category))];
-  catSel.innerHTML = `<option value="">All categories</option>` + allCats.map(c=>`<option value="${c}">${c}</option>`).join("");
+  catSel.innerHTML = `<option value="">All categories</option>` + allCats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
   catSel.value = allCats.includes(prevCat) ? prevCat : "";
   renderTransactionsTable();
 }
 let editingTxId = null;
-function editTransaction(id){ editingTxId = id; renderTransactionsTable(); }
+function editTransaction(id){
+  const t = state.transactions.find(x=>x.id===id);
+  if(t && Array.isArray(t.splits) && t.splits.length){ openSplitEditor({mode:'edit', txId:id}); return; }
+  editingTxId = id; renderTransactionsTable();
+}
 function cancelEditTx(){ editingTxId = null; renderTransactionsTable(); }
 function onEditTypeChange(id){
   const type = document.getElementById("edit-type-"+id).value;
   const t = state.transactions.find(x=>x.id===id);
   const cats = type==="Income" ? allIncomeCats() : allExpenseCats();
   const catSel = document.getElementById("edit-cat-"+id);
-  catSel.innerHTML = cats.map(c=>`<option value="${c}" ${t && c===t.category?"selected":""}>${c}</option>`).join("");
+  catSel.innerHTML = cats.map(c=>`<option value="${escapeHtml(c)}" ${t && c===t.category?"selected":""}>${escapeHtml(c)}</option>`).join("");
 }
 function saveEditTx(id){
   const t = state.transactions.find(x=>x.id===id);
@@ -1351,6 +1710,15 @@ function saveEditTx(id){
   const payment = document.getElementById("edit-pay-"+id).value;
   if(!date || !amount){ showToast("Date and amount are required.", {type:'error'}); return; }
   t.date=date; t.type=type; t.category=category; t.description=description; t.amount=Math.abs(amount); t.payment=payment;
+  // Keep the linked credit-card transaction (if this entry came from "also add
+  // to ledger") in sync, same as the reverse direction on the Credit Cards page.
+  if(t.linkedCcId){
+    const linkedCc = state.ccTransactions.find(x=>x.id===t.linkedCcId);
+    if(linkedCc){
+      linkedCc.date=date; linkedCc.category=category;
+      linkedCc.description=description; linkedCc.amount=Math.abs(amount);
+    }
+  }
   saveState(); editingTxId = null; renderTransactionsPage();
 }
 function renderTransactionsTable(){
@@ -1372,8 +1740,8 @@ function renderTransactionsTable(){
       return `<tr class="edit-row">
         <td><input type="date" class="edit-input" id="edit-date-${t.id}" value="${t.date}"></td>
         <td><select class="edit-input" id="edit-type-${t.id}" onchange="onEditTypeChange('${t.id}')"><option ${t.type==='Expense'?'selected':''}>Expense</option><option ${t.type==='Income'?'selected':''}>Income</option></select></td>
-        <td><select class="edit-input" id="edit-cat-${t.id}">${cats.map(c=>`<option value="${c}" ${c===t.category?"selected":""}>${c}</option>`).join("")}</select></td>
-        <td><input type="text" class="edit-input" id="edit-desc-${t.id}" value="${(t.description||"").replace(/"/g,'&quot;')}"></td>
+        <td><select class="edit-input" id="edit-cat-${t.id}">${cats.map(c=>`<option value="${escapeHtml(c)}" ${c===t.category?"selected":""}>${escapeHtml(c)}</option>`).join("")}</select></td>
+        <td><input type="text" class="edit-input" id="edit-desc-${t.id}" value="${escapeHtml(t.description||"")}"></td>
         <td><select class="edit-input" id="edit-pay-${t.id}">${["UPI","Cash","Debit Card","Credit Card","Net Banking","Auto-Debit","Imported","Other"].map(p=>`<option ${p===t.payment?"selected":""}>${p}</option>`).join("")}</select></td>
         <td><input type="number" class="edit-input" id="edit-amt-${t.id}" value="${t.amount}" style="text-align:right;"></td>
         <td class="edit-actions"><button class="icon-btn" onclick="saveEditTx('${t.id}')" title="Save">✓</button><button class="icon-btn" onclick="cancelEditTx()" title="Cancel">✕</button></td>
@@ -1382,11 +1750,11 @@ function renderTransactionsTable(){
     return `<tr>
       <td class="mono">${t.date}</td>
       <td><span class="stamp ${t.type.toLowerCase()}">${t.type}</span></td>
-      <td>${categoryIcon(t.category)} ${t.category}</td>
-      <td>${t.description||""}</td>
+      <td>${Array.isArray(t.splits)&&t.splits.length ? `<span class="stamp" style="opacity:0.85;" title="${escapeHtml(t.splits.map(s=>s.category+': '+fmt(s.amount)).join(', '))}">🔀 Split (${t.splits.length})</span>` : `${categoryIcon(t.category)} ${escapeHtml(t.category)}`}</td>
+      <td>${escapeHtml(t.description||"")}${t.linkedCcId?' <span class="dup-flag" style="color:var(--green);">From card</span>':''}</td>
       <td>${t.payment||""}</td>
       <td class="mono ${t.type==="Income"?"amt-in":"amt-out"}" style="text-align:right;">${t.type==="Income"?"+":"-"}${fmt(t.amount)}</td>
-      <td class="row-actions"><button class="icon-btn" onclick="editTransaction('${t.id}')" title="Edit">✎</button><button class="icon-btn" onclick="deleteTransaction('${t.id}')" title="Delete">✕</button></td>
+      <td class="row-actions"><button class="icon-btn" onclick="editTransaction('${t.id}')" title="Edit">✎</button><button class="icon-btn" onclick="openSplitEditor({mode:'edit', txId:'${t.id}'})" title="${Array.isArray(t.splits)&&t.splits.length?'Edit split':'Split into categories'}">🔀</button><button class="icon-btn" onclick="deleteTransaction('${t.id}')" title="Delete">✕</button></td>
     </tr>`;
   }).join("") || `<tr><td colspan="7"><div class="empty-state">${EMPTY_ICON}<div>No transactions yet. Add one above or import a statement.</div></div></td></tr>`;
   updateSortArrows('tx', ['date','type','category','description','payment','amount']);
@@ -1461,7 +1829,7 @@ function renderUpcomingBills(){
     else if(r.status==='upcoming') label = r.daysUntil===0 ? `<span class="mono" style="color:var(--gold);">Due today</span>` : `<span class="mono">Due in ${r.daysUntil} day${r.daysUntil===1?'':'s'}</span>`;
     else label = `<span class="helper-text">No due date set</span>`;
     return `<div class="budget-row" style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
-      <div><b>${r.name}</b> <span class="helper-text">${r.category} · ${fmt(r.amount)}</span></div>
+      <div><b>${escapeHtml(r.name)}</b> <span class="helper-text">${escapeHtml(r.category)} · ${fmt(r.amount)}</span></div>
       <div style="display:flex;align-items:center;gap:10px;">${label}<button class="btn outline small" onclick="markRecurringPaid('${r.id}')">Mark paid</button></div>
     </div>`;
   }).join('');
@@ -1476,7 +1844,7 @@ function generateInsights(){
   function monthTx(y,m,type){
     return state.transactions.filter(t=>{ const d=new Date(t.date); return d.getFullYear()===y && d.getMonth()===m && (!type||t.type===type); });
   }
-  function catTotal(y,m,cat){ return monthTx(y,m,'Expense').filter(t=>t.category===cat).reduce((s,t)=>s+t.amount,0); }
+  function catTotal(y,m,cat){ return explodeTransactions(monthTx(y,m,'Expense')).filter(t=>t.category===cat).reduce((s,t)=>s+t.amount,0); }
   function shiftMonth(y,m,delta){
     let nm=m+delta, ny=y;
     while(nm<0){ nm+=12; ny-=1; }
@@ -1547,7 +1915,7 @@ function generateInsights(){
     const median = amounts[Math.floor(amounts.length/2)];
     const maxTx = curExpenses.reduce((a,b)=> b.amount>a.amount?b:a);
     if(median>0 && maxTx.amount>=median*3 && maxTx.amount>=1000){
-      insights.push({ text:`Your largest expense this month was ${fmt(maxTx.amount)} for "${maxTx.description||maxTx.category}" — well above your typical transaction.`, tone:'neutral' });
+      insights.push({ text:`Your largest expense this month was ${fmt(maxTx.amount)} for "${escapeHtml(maxTx.description||maxTx.category)}" — well above your typical transaction.`, tone:'neutral' });
     }
   }
 
@@ -1611,7 +1979,7 @@ function renderGoals(){
     else hint = `${fmt(remaining)} left · about ${fmt(remaining/Math.max(mu,1))}/month to hit it by ${new Date(g.targetDate).toLocaleDateString('en-IN',{month:'short',year:'numeric'})}`;
     return `<div class="budget-row">
       <div class="budget-row-head">
-        <span><b>${g.name}</b></span>
+        <span><b>${escapeHtml(g.name)}</b></span>
         <span class="mono">${fmt(g.currentAmount)} / ${fmt(g.targetAmount)}</span>
       </div>
       <div class="budget-bar-wrap"><div class="budget-bar" style="width:${pct}%;"></div></div>
@@ -1656,10 +2024,10 @@ function renderRecurringTable(){
   });
   document.getElementById("recTableBody").innerHTML = rows.map(r=>{
     if(r.id === editingRecId){
-      const catOpts = allExpenseCats().map(c=>`<option value="${c}" ${c===r.category?'selected':''}>${c}</option>`).join('');
+      const catOpts = allExpenseCats().map(c=>`<option value="${escapeHtml(c)}" ${c===r.category?'selected':''}>${escapeHtml(c)}</option>`).join('');
       const freqOpts = ["Monthly","Quarterly","Half-Yearly","Yearly"].map(f=>`<option ${f===r.frequency?'selected':''}>${f}</option>`).join('');
       return `<tr class="edit-row">
-        <td><input type="text" class="edit-input" id="recedit-name-${r.id}" value="${(r.name||'').replace(/"/g,'&quot;')}"></td>
+        <td><input type="text" class="edit-input" id="recedit-name-${r.id}" value="${escapeHtml(r.name||'')}"></td>
         <td><select class="edit-input" id="recedit-cat-${r.id}">${catOpts}</select></td>
         <td><input type="number" class="edit-input" id="recedit-amt-${r.id}" value="${r.amount}"></td>
         <td><select class="edit-input" id="recedit-freq-${r.id}">${freqOpts}</select></td>
@@ -1676,7 +2044,7 @@ function renderRecurringTable(){
     else if(paidThisMonth) monthCell = `<span class="paid-badge">✓ Posted</span>`;
     else monthCell = `<button class="btn outline small" onclick="markRecurringPaid('${r.id}')">Mark paid</button>`;
     return `<tr>
-      <td>${r.name}</td><td>${categoryIcon(r.category)} ${r.category}</td>
+      <td>${escapeHtml(r.name)}</td><td>${categoryIcon(r.category)} ${escapeHtml(r.category)}</td>
       <td class="mono">${fmt(r.amount)}</td><td>${r.frequency}</td>
       <td class="mono">${fmt(annualCost(r))}</td>
       <td><span class="stamp ${r.status==="Active"?"income":"expense"}">${r.status}</span></td>
@@ -1718,7 +2086,7 @@ function renderInvestmentsTable(){
     const invested = i.qty*i.buy, value = i.qty*i.current, gain = value-invested;
     const gainPct = invested>0 ? (gain/invested*100) : 0;
     return `<tr>
-      <td>${i.name}</td><td>${i.type}</td><td class="mono">${i.qty}</td>
+      <td>${escapeHtml(i.name)}</td><td>${i.type}</td><td class="mono">${i.qty}</td>
       <td class="mono">${fmt(i.buy)}</td>
       <td class="mono"><input type="number" value="${i.current}" style="width:90px;" onchange="updateInvPrice('${i.id}', this.value)"></td>
       <td class="mono">${fmt(invested)}</td><td class="mono">${fmt(value)}</td>
@@ -1789,6 +2157,7 @@ function setInvImportMode(mode){
   renderInvMapFields();
 }
 function parseInvCsv(){
+  if(!ensureImportLibsLoaded()) return;
   if(invFileXlsxResult){ parsedInvCsv = invFileXlsxResult; }
   else{
     const text = document.getElementById("invCsvPaste").value.trim();
@@ -1899,7 +2268,7 @@ function renderInvPreview(){
       const changeStr = change===null ? '—' : (change>=0?'+':'')+fmt(change);
       return `<tr>
         <td><input type="checkbox" ${r.include?"checked":""} ${r.matched?"":"disabled"} onchange="invImportRows[${idx}].include=this.checked"></td>
-        <td>${r.name}</td>
+        <td>${escapeHtml(r.name)}</td>
         <td class="mono">${r.matched?fmt(r.oldPrice):'—'}</td>
         <td class="mono">${fmt(r.newPrice)}</td>
         <td class="mono ${change>0?'amt-in':(change<0?'amt-out':'')}">${changeStr}</td>
@@ -1915,7 +2284,7 @@ function renderInvPreview(){
     const totalInvested = r.qty*r.buy, totalCurrent = r.qty*r.current;
     return `<tr>
       <td><input type="checkbox" ${r.include?"checked":""} onchange="invImportRows[${idx}].include=this.checked"></td>
-      <td>${r.name}</td><td>${r.type}</td>
+      <td>${escapeHtml(r.name)}</td><td>${r.type}</td>
       <td class="mono">${r.qty}</td>
       <td class="mono">${r.buy.toFixed(2)}</td>
       <td class="mono">${r.current.toFixed(2)}</td>
@@ -1987,10 +2356,10 @@ function removeCategory(type, name){
 function renderSettings(){
   fillSelect(document.getElementById("ruleCat"), [...allIncomeCats(), ...allExpenseCats()]);
   document.getElementById("ruleTableBody").innerHTML = state.rules.map((r)=>`
-    <tr><td class="mono">${r.kw}</td><td>${r.cat}</td><td><button class="icon-btn" onclick="deleteRule('${r.id}')">✕</button></td></tr>
+    <tr><td class="mono">${escapeHtml(r.kw)}</td><td>${escapeHtml(r.cat)}</td><td><button class="icon-btn" onclick="deleteRule('${r.id}')">✕</button></td></tr>
   `).join("") || `<tr><td colspan="3"><div class="empty-state">${EMPTY_ICON}<div>No rules yet.</div></div></td></tr>`;
-  document.getElementById("incomeCatsList").innerHTML = allIncomeCats().map(c=>`<span class="stamp income" style="margin:3px 4px 0 0;">${categoryIcon(c)} ${c} <span class="chip-x" onclick="removeCategory('Income','${c.replace(/'/g,"\\'")}')">✕</span></span>`).join("");
-  document.getElementById("expenseCatsList").innerHTML = allExpenseCats().map(c=>`<span class="stamp expense" style="margin:3px 4px 0 0;">${categoryIcon(c)} ${c} <span class="chip-x" onclick="removeCategory('Expense','${c.replace(/'/g,"\\'")}')">✕</span></span>`).join("");
+  document.getElementById("incomeCatsList").innerHTML = allIncomeCats().map(c=>`<span class="stamp income" style="margin:3px 4px 0 0;">${categoryIcon(c)} ${escapeHtml(c)} <span class="chip-x" onclick="removeCategory('Income','${escapeJsAttr(c)}')">✕</span></span>`).join("");
+  document.getElementById("expenseCatsList").innerHTML = allExpenseCats().map(c=>`<span class="stamp expense" style="margin:3px 4px 0 0;">${categoryIcon(c)} ${escapeHtml(c)} <span class="chip-x" onclick="removeCategory('Expense','${escapeJsAttr(c)}')">✕</span></span>`).join("");
   renderBudgetSettings();
   renderReportSelectors();
   renderThemePicker();
@@ -2024,9 +2393,9 @@ function generateReport(){
   const net = income-expense;
   const savingsRate = income>0 ? (net/income*100) : 0;
   const expByCat = {};
-  rows.filter(t=>t.type==="Expense").forEach(t=>{ expByCat[t.category]=(expByCat[t.category]||0)+t.amount; });
+  explodeTransactions(rows.filter(t=>t.type==="Expense")).forEach(t=>{ expByCat[t.category]=(expByCat[t.category]||0)+t.amount; });
   const incByCat = {};
-  rows.filter(t=>t.type==="Income").forEach(t=>{ incByCat[t.category]=(incByCat[t.category]||0)+t.amount; });
+  explodeTransactions(rows.filter(t=>t.type==="Income")).forEach(t=>{ incByCat[t.category]=(incByCat[t.category]||0)+t.amount; });
   const budgetCats = Object.keys(state.budgets).filter(c=>state.budgets[c]>0);
   const invValue = state.investments.reduce((s,i)=>s+i.qty*i.current,0);
   const invInvested = state.investments.reduce((s,i)=>s+i.qty*i.buy,0);
@@ -2045,18 +2414,18 @@ function generateReport(){
     <div class="report-section">
       <h2>Expenses by category</h2>
       <table><thead><tr><th>Category</th><th style="text-align:right;">Amount</th><th style="text-align:right;">% of expenses</th></tr></thead><tbody>
-      ${Object.entries(expByCat).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<tr><td>${c}</td><td style="text-align:right;">${fmt(v)}</td><td style="text-align:right;">${expense>0?(v/expense*100).toFixed(1):0}%</td></tr>`).join('') || '<tr><td colspan="3">No expenses recorded.</td></tr>'}
+      ${Object.entries(expByCat).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<tr><td>${escapeHtml(c)}</td><td style="text-align:right;">${fmt(v)}</td><td style="text-align:right;">${expense>0?(v/expense*100).toFixed(1):0}%</td></tr>`).join('') || '<tr><td colspan="3">No expenses recorded.</td></tr>'}
       </tbody></table>
     </div>
     <div class="report-section">
       <h2>Income by source</h2>
       <table><thead><tr><th>Source</th><th style="text-align:right;">Amount</th></tr></thead><tbody>
-      ${Object.entries(incByCat).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<tr><td>${c}</td><td style="text-align:right;">${fmt(v)}</td></tr>`).join('') || '<tr><td colspan="2">No income recorded.</td></tr>'}
+      ${Object.entries(incByCat).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<tr><td>${escapeHtml(c)}</td><td style="text-align:right;">${fmt(v)}</td></tr>`).join('') || '<tr><td colspan="2">No income recorded.</td></tr>'}
       </tbody></table>
     </div>`;
   if(budgetCats.length){
     html += `<div class="report-section"><h2>Budget vs actual</h2><table><thead><tr><th>Category</th><th style="text-align:right;">Budget</th><th style="text-align:right;">Actual</th><th style="text-align:right;">Difference</th></tr></thead><tbody>
-    ${budgetCats.map(c=>{ const b=state.budgets[c]; const a=expByCat[c]||0; const diff=b-a; return `<tr><td>${c}</td><td style="text-align:right;">${fmt(b)}</td><td style="text-align:right;">${fmt(a)}</td><td style="text-align:right;${diff<0?'color:var(--brick);':''}">${diff>=0?'+':''}${fmt(diff)}</td></tr>`; }).join('')}
+    ${budgetCats.map(c=>{ const b=state.budgets[c]; const a=expByCat[c]||0; const diff=b-a; return `<tr><td>${escapeHtml(c)}</td><td style="text-align:right;">${fmt(b)}</td><td style="text-align:right;">${fmt(a)}</td><td style="text-align:right;${diff<0?'color:var(--brick);':''}">${diff>=0?'+':''}${fmt(diff)}</td></tr>`; }).join('')}
     </tbody></table></div>`;
   }
   html += `<div class="report-section"><h2>Investments snapshot (as of today)</h2>
@@ -2083,8 +2452,8 @@ function setBudget(cat, val){
 function renderBudgetSettings(){
   document.getElementById("budgetTableBody").innerHTML = allExpenseCats().map(c=>`
     <tr class="budget-input-row">
-      <td>${c}</td>
-      <td><input type="number" placeholder="0" value="${state.budgets[c]||''}" onchange="setBudget('${c.replace(/'/g,"\\'")}', this.value)"></td>
+      <td>${escapeHtml(c)}</td>
+      <td><input type="number" placeholder="0" value="${state.budgets[c]||''}" onchange="setBudget('${escapeJsAttr(c)}', this.value)"></td>
     </tr>`).join("");
 }
 
@@ -2128,7 +2497,13 @@ wireRestoreInput("restoreFileSettings");
 wireRestoreInput("restoreFileUnlock");
 function exportCsv(){
   const header = "Date,Type,Category,Description,Amount,Payment\n";
-  const rows = state.transactions.map(t=>[t.date,t.type,t.category,'"'+(t.description||"").replace(/"/g,'""')+'"',t.amount,t.payment].join(",")).join("\n");
+  const rows = explodeTransactions(state.transactions).map(t=>[
+    t.date, t.type,
+    '"'+(t.category||"").replace(/"/g,'""')+'"',
+    '"'+(t.description||"").replace(/"/g,'""')+(t.isSplitPart?' (split)':'')+'"',
+    t.amount,
+    t.payment
+  ].join(",")).join("\n");
   const blob = new Blob([header+rows], {type:"text/csv"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -2173,6 +2548,7 @@ document.getElementById("csvFile").addEventListener("change", e=>{
 document.getElementById("csvPaste").addEventListener("input", ()=>{ bankFileXlsxResult = null; });
 let parsedCsv = null;
 function parseCsv(){
+  if(!ensureImportLibsLoaded()) return;
   if(bankFileXlsxResult){ parsedCsv = bankFileXlsxResult; }
   else{
     const text = document.getElementById("csvPaste").value.trim();
@@ -2295,17 +2671,17 @@ function renderPreview(){
         <td><input type="checkbox" disabled title="${r.amountIssue}"></td>
         <td class="mono" style="${r.dateOk?"":"color:var(--brick);font-weight:600;"}">${r.date}</td>
         <td><span class="stamp expense">No amount</span></td>
-        <td colspan="2" style="color:var(--brick);">${r.description || '<i>(no description)</i>'} <span style="font-size:11px;opacity:0.85;">— ${r.amountIssue}</span></td>
+        <td colspan="2" style="color:var(--brick);">${r.description ? escapeHtml(r.description) : '<i>(no description)</i>'} <span style="font-size:11px;opacity:0.85;">— ${escapeHtml(r.amountIssue)}</span></td>
         <td class="mono" style="text-align:right;">—</td>
       </tr>`;
     }
-    const catOptions = (r.type==="Income"?allIncomeCats():allExpenseCats()).map(c=>`<option value="${c}" ${c===r.category?"selected":""}>${c}</option>`).join("");
+    const catOptions = (r.type==="Income"?allIncomeCats():allExpenseCats()).map(c=>`<option value="${escapeHtml(c)}" ${c===r.category?"selected":""}>${escapeHtml(c)}</option>`).join("");
     return `<tr class="${r.isDuplicate?'dup-row':''}">
       <td><input type="checkbox" ${r.include?"checked":""} onchange="importRows[${idx}].include=this.checked"></td>
       <td class="mono" style="${r.dateOk?"":"color:var(--brick);font-weight:600;"}">${r.date}${r.isDuplicate?'<span class="dup-flag">Possible duplicate</span>':''}</td>
       <td><span class="stamp ${r.type.toLowerCase()}">${r.type}</span></td>
       <td><select onchange="importRows[${idx}].category=this.value" style="${r.category?"":"border-color:var(--brick);"}"><option value="">— choose —</option>${catOptions}</select></td>
-      <td>${r.description}</td>
+      <td>${escapeHtml(r.description)}</td>
       <td class="mono" style="text-align:right;">${fmt(r.amount)}</td>
     </tr>`;
   }).join("");
@@ -2320,7 +2696,9 @@ function confirmImport(){
   saveState();
   showToast(`Imported ${toAdd.length} transactions.`, {type:'success'});
   cancelImport();
-  document.querySelector('.nav-item[data-page="transactions"]').click();
+  document.getElementById("importSection").style.display = "none";
+  document.getElementById("importToggleBtn").textContent = "📥 Import from bank/card statement";
+  renderTransactionsPage();
 }
 function cancelImport(){
   importRows = []; parsedCsv = null; bankFileXlsxResult = null;
@@ -2345,7 +2723,7 @@ function deleteCreditCard(id){
   const linkedCount = state.ccTransactions.filter(t=>t.cardId===id).length;
   if(linkedCount){
     showConfirmModal({
-      title: `Delete "${card.name}"?`,
+      title: `Delete "${escapeHtml(card.name)}"?`,
       message: `This card has ${linkedCount} tracked transaction(s). Deleting it will also delete those transactions.`,
       danger: true, confirmLabel: "Delete card & transactions",
       onConfirm: ()=>{
@@ -2382,9 +2760,38 @@ function saveEditCc(id){
   const cardObj = state.creditCards.find(c=>c.name===cardName);
   t.date=date; t.card=cardName; if(cardObj) t.cardId=cardObj.id;
   t.category=category; t.description=description; t.amount=Math.abs(amount);
+  // Keep the linked main-ledger entry (if this transaction was "also added to
+  // ledger") in sync so the two records never silently drift apart.
+  if(t.linkedTxId){
+    const linkedTx = state.transactions.find(x=>x.id===t.linkedTxId);
+    if(linkedTx){
+      linkedTx.date=date; linkedTx.category=category;
+      linkedTx.description=description; linkedTx.amount=Math.abs(amount);
+    }
+  }
   saveState(); editingCcId=null; renderCreditCardPage();
 }
-function deleteCcTransaction(id){ deleteWithUndo(state.ccTransactions, id, renderCreditCardPage, 'Card transaction'); }
+function deleteCcTransaction(id){
+  const idx = state.ccTransactions.findIndex(x=>x.id===id);
+  if(idx===-1) return;
+  const removed = state.ccTransactions.splice(idx,1)[0];
+  // If this transaction was also added to the main ledger, remove that linked
+  // entry too so deleting it here doesn't leave an orphaned duplicate expense.
+  let removedLinkedTx = null, linkedIdx = -1;
+  if(removed.linkedTxId){
+    linkedIdx = state.transactions.findIndex(x=>x.id===removed.linkedTxId);
+    if(linkedIdx!==-1) removedLinkedTx = state.transactions.splice(linkedIdx,1)[0];
+  }
+  saveState(); renderCreditCardPage();
+  showToast('Card transaction deleted.' + (removedLinkedTx ? ' Linked ledger entry removed too.' : ''), {
+    type:'info', actionLabel:'Undo',
+    onAction:()=>{
+      state.ccTransactions.splice(Math.min(idx, state.ccTransactions.length), 0, removed);
+      if(removedLinkedTx) state.transactions.splice(Math.min(linkedIdx, state.transactions.length), 0, removedLinkedTx);
+      saveState(); renderCreditCardPage();
+    }
+  });
+}
 function addCcTransaction(){
   if(!state.creditCards.length){ showToast("Add a card first so we know which one this was on.", {type:'error'}); return; }
   const cardName = document.getElementById("ccQuickCard").value;
@@ -2396,12 +2803,13 @@ function addCcTransaction(){
   if(!cardObj){ showToast("Pick which card this was on.", {type:'error'}); return; }
   if(!date || !amount){ showToast("Please enter a date and amount.", {type:'error'}); return; }
   const alsoLedger = document.getElementById("ccQuickAlsoLedger").checked;
+  const ccId = uid();
   let linkedTxId = null;
   if(alsoLedger){
     linkedTxId = uid();
-    state.transactions.push({id:linkedTxId, date, type:"Expense", category, description, amount:Math.abs(amount), payment:"Credit Card"});
+    state.transactions.push({id:linkedTxId, date, type:"Expense", category, description, amount:Math.abs(amount), payment:"Credit Card", linkedCcId: ccId});
   }
-  state.ccTransactions.push({id:uid(), cardId:cardObj.id, card:cardObj.name, date, description, category, amount:Math.abs(amount), addedToLedger:alsoLedger, linkedTxId});
+  state.ccTransactions.push({id:ccId, cardId:cardObj.id, card:cardObj.name, date, description, category, amount:Math.abs(amount), addedToLedger:alsoLedger, linkedTxId});
   saveState();
   document.getElementById("ccQuickDesc").value=""; document.getElementById("ccQuickAmount").value="";
   document.getElementById("ccQuickAlsoLedger").checked = false;
@@ -2413,7 +2821,7 @@ function renderCreditCardPage(){
   document.getElementById("ccCardChips").innerHTML = state.creditCards.length
     ? state.creditCards.map(c=>{
         const total = state.ccTransactions.filter(t=>t.cardId===c.id).reduce((s,t)=>s+t.amount,0);
-        return `<span class="stamp expense" style="margin:3px 6px 6px 0;">${c.name} · ${fmt(total)} <span class="chip-x" onclick="deleteCreditCard('${c.id}')">✕</span></span>`;
+        return `<span class="stamp expense" style="margin:3px 6px 6px 0;">${escapeHtml(c.name)} · ${fmt(total)} <span class="chip-x" onclick="deleteCreditCard('${c.id}')">✕</span></span>`;
       }).join('')
     : `<p class="helper-text">No cards yet — add one above before importing a statement.</p>`;
 
@@ -2423,7 +2831,7 @@ function renderCreditCardPage(){
 
   const cardSel = document.getElementById("ccFilterCard");
   const prevCard = cardSel.value;
-  cardSel.innerHTML = `<option value="">All cards</option>` + state.creditCards.map(c=>`<option value="${c.id}">${c.name || "Unnamed card"}</option>`).join('');
+  cardSel.innerHTML = `<option value="">All cards</option>` + state.creditCards.map(c=>`<option value="${c.id}">${escapeHtml(c.name || "Unnamed card")}</option>`).join('');
   cardSel.value = state.creditCards.some(c=>c.id===prevCard) ? prevCard : "";
 
   const monthSel = document.getElementById("ccFilterMonth");
@@ -2435,7 +2843,7 @@ function renderCreditCardPage(){
   const catSel = document.getElementById("ccFilterCategory");
   const prevCat = catSel.value;
   const cats = [...new Set(state.ccTransactions.map(t=>t.category))];
-  catSel.innerHTML = `<option value="">All categories</option>` + cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+  catSel.innerHTML = `<option value="">All categories</option>` + cats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
   catSel.value = cats.includes(prevCat) ? prevCat : "";
 
   renderCcTable();
@@ -2464,9 +2872,9 @@ function renderCcTable(){
       const cats = allExpenseCats();
       return `<tr class="edit-row">
         <td><input type="date" class="edit-input" id="ccedit-date-${t.id}" value="${t.date}"></td>
-        <td><select class="edit-input" id="ccedit-card-${t.id}">${state.creditCards.map(c=>`<option ${c.name===t.card?'selected':''}>${c.name || "Unnamed card"}</option>`).join('')}</select></td>
-        <td><select class="edit-input" id="ccedit-cat-${t.id}">${cats.map(c=>`<option value="${c}" ${c===t.category?'selected':''}>${c}</option>`).join('')}</select></td>
-        <td><input type="text" class="edit-input" id="ccedit-desc-${t.id}" value="${(t.description||"").replace(/"/g,'&quot;')}"></td>
+        <td><select class="edit-input" id="ccedit-card-${t.id}">${state.creditCards.map(c=>`<option ${c.name===t.card?'selected':''}>${escapeHtml(c.name || "Unnamed card")}</option>`).join('')}</select></td>
+        <td><select class="edit-input" id="ccedit-cat-${t.id}">${cats.map(c=>`<option value="${escapeHtml(c)}" ${c===t.category?'selected':''}>${escapeHtml(c)}</option>`).join('')}</select></td>
+        <td><input type="text" class="edit-input" id="ccedit-desc-${t.id}" value="${escapeHtml(t.description||"")}"></td>
         <td><input type="number" class="edit-input" id="ccedit-amt-${t.id}" value="${t.amount}" style="text-align:right;"></td>
         <td class="edit-actions"><button class="icon-btn" onclick="saveEditCc('${t.id}')">✓</button><button class="icon-btn" onclick="cancelEditCc()">✕</button></td>
       </tr>`;
@@ -2474,8 +2882,8 @@ function renderCcTable(){
     return `<tr>
       <td class="mono">${t.date}</td>
       <td>${t.card||''}</td>
-      <td>${categoryIcon(t.category)} ${t.category}</td>
-      <td>${t.description||''}${t.addedToLedger?' <span class="dup-flag" style="color:var(--green);">Also in ledger</span>':''}</td>
+      <td>${categoryIcon(t.category)} ${escapeHtml(t.category)}</td>
+      <td>${escapeHtml(t.description||'')}${t.addedToLedger?' <span class="dup-flag" style="color:var(--green);">Also in ledger</span>':''}</td>
       <td class="mono amt-out" style="text-align:right;">-${fmt(t.amount)}</td>
       <td class="row-actions"><button class="icon-btn" onclick="editCcTransaction('${t.id}')" title="Edit">✎</button><button class="icon-btn" onclick="deleteCcTransaction('${t.id}')" title="Delete">✕</button></td>
     </tr>`;
@@ -2552,6 +2960,7 @@ let ccImportMode = 'separate';
 let ccImportRows = [];
 function ccParseCsv(){
   if(!state.creditCards.length){ showToast("Add a card first so we know whose statement this is.", {type:'error'}); return; }
+  if(!ensureImportLibsLoaded()) return;
   if(ccFileXlsxResult){ parsedCc = ccFileXlsxResult; }
   else{
     const text = document.getElementById("ccPaste").value.trim();
@@ -2676,7 +3085,7 @@ function ccRenderPreview(){
       return `<tr style="background:var(--brick-soft);">
         <td><input type="checkbox" disabled title="No readable amount"></td>
         <td class="mono" style="${r.dateOk?'':'color:var(--brick);font-weight:600;'}">${r.date}</td>
-        <td colspan="2" style="color:var(--brick);">${r.description || '<i>(no description)</i>'} <span style="font-size:11px;opacity:0.85;">— no readable amount in this row</span></td>
+        <td colspan="2" style="color:var(--brick);">${r.description ? escapeHtml(r.description) : '<i>(no description)</i>'} <span style="font-size:11px;opacity:0.85;">— no readable amount in this row</span></td>
         <td class="mono" style="text-align:right;">—</td>
       </tr>`;
     }
@@ -2684,16 +3093,16 @@ function ccRenderPreview(){
       return `<tr style="opacity:0.55;">
         <td><input type="checkbox" disabled title="Payment or refund, not a spend"></td>
         <td class="mono">${r.date}</td>
-        <td colspan="2">${r.description || '<i>(no description)</i>'} <span style="font-size:11px;">— payment/refund, not imported</span></td>
+        <td colspan="2">${r.description ? escapeHtml(r.description) : '<i>(no description)</i>'} <span style="font-size:11px;">— payment/refund, not imported</span></td>
         <td class="mono" style="text-align:right;">—</td>
       </tr>`;
     }
-    const catOptions = allExpenseCats().map(c=>`<option value="${c}" ${c===r.category?'selected':''}>${c}</option>`).join('');
+    const catOptions = allExpenseCats().map(c=>`<option value="${escapeHtml(c)}" ${c===r.category?'selected':''}>${escapeHtml(c)}</option>`).join('');
     return `<tr class="${r.isDuplicate?'dup-row':''}">
       <td><input type="checkbox" ${r.include?'checked':''} onchange="ccImportRows[${idx}].include=this.checked"></td>
       <td class="mono" style="${r.dateOk?'':'color:var(--brick);font-weight:600;'}">${r.date}${r.isDuplicate?'<span class="dup-flag">Possible duplicate</span>':''}</td>
       <td><select onchange="ccImportRows[${idx}].category=this.value" style="${r.category?'':'border-color:var(--brick);'}"><option value="">— choose —</option>${catOptions}</select></td>
-      <td>${r.description}</td>
+      <td>${escapeHtml(r.description)}</td>
       <td class="mono" style="text-align:right;">${fmt(r.amount)}</td>
     </tr>`;
   }).join('');
@@ -2707,12 +3116,13 @@ function ccConfirmImport(){
   const alsoLedger = document.getElementById("ccAlsoLedger").checked;
   const toAdd = ccImportRows.filter(r=>r.include);
   toAdd.forEach(r=>{
+    const ccId = uid();
     let linkedTxId = null;
     if(alsoLedger){
       linkedTxId = uid();
-      state.transactions.push({id:linkedTxId, date:r.date, type:'Expense', category:r.category, description:r.description, amount:r.amount, payment:'Credit Card'});
+      state.transactions.push({id:linkedTxId, date:r.date, type:'Expense', category:r.category, description:r.description, amount:r.amount, payment:'Credit Card', linkedCcId: ccId});
     }
-    state.ccTransactions.push({id:uid(), cardId:cardObj.id, card:cardObj.name, date:r.date, description:r.description, category:r.category, amount:r.amount, addedToLedger: alsoLedger, linkedTxId});
+    state.ccTransactions.push({id:ccId, cardId:cardObj.id, card:cardObj.name, date:r.date, description:r.description, category:r.category, amount:r.amount, addedToLedger: alsoLedger, linkedTxId});
   });
   saveState();
   showToast(`Imported ${toAdd.length} card transaction(s)${alsoLedger?' and added them to your ledger':''}.`, {type:'success'});
@@ -2730,6 +3140,15 @@ function ccCancelImport(){
 /* ---------------- Dashboard ---------------- */
 let charts = {};
 function renderDashboard(){
+  const onboardingBanner = document.getElementById("onboardingBanner");
+  const dashboardMainContent = document.getElementById("dashboardMainContent");
+  if(!state.transactions.length){
+    onboardingBanner.style.display = "block";
+    dashboardMainContent.style.display = "none";
+    return;
+  }
+  onboardingBanner.style.display = "none";
+  dashboardMainContent.style.display = "block";
   const years = [...new Set(state.transactions.map(t=>new Date(t.date).getFullYear()))];
   const currentYear = new Date().getFullYear();
   if(!years.includes(currentYear)) years.push(currentYear);
@@ -2747,6 +3166,7 @@ function renderDashboard(){
   const selectedMonth = monthSel.value;
 
   const yearTx = state.transactions.filter(t=> new Date(t.date).getFullYear()===year );
+  const yearTxExploded = explodeTransactions(yearTx);
   const monthlyIncome = Array(12).fill(0), monthlyExpense = Array(12).fill(0);
   yearTx.forEach(t=>{
     const m = new Date(t.date).getMonth();
@@ -2756,6 +3176,7 @@ function renderDashboard(){
   const isSingleMonth = selectedMonth !== "";
   const mIdx = isSingleMonth ? +selectedMonth : null;
   const scopedTx = isSingleMonth ? yearTx.filter(t=> new Date(t.date).getMonth()===mIdx) : yearTx;
+  const scopedTxExploded = isSingleMonth ? yearTxExploded.filter(t=> new Date(t.date).getMonth()===mIdx) : yearTxExploded;
 
   document.getElementById("dashSubtitle").textContent = isSingleMonth
     ? `Your financial position for ${MONTHS[mIdx]} ${year}.`
@@ -2774,7 +3195,7 @@ function renderDashboard(){
 
   const monthsWithData = monthlyIncome.map((v,i)=>v>0||monthlyExpense[i]>0).filter(Boolean).length;
   const avgMonthlyExpense = monthsWithData>0 ? totalExpense/(isSingleMonth?1:monthsWithData) : 0;
-  const catTotalsForTop = allExpenseCats().map(c=>({c, v: scopedTx.filter(t=>t.type==="Expense"&&t.category===c).reduce((s,t)=>s+t.amount,0)})).sort((a,b)=>b.v-a.v);
+  const catTotalsForTop = allExpenseCats().map(c=>({c, v: scopedTxExploded.filter(t=>t.type==="Expense"&&t.category===c).reduce((s,t)=>s+t.amount,0)})).sort((a,b)=>b.v-a.v);
   const topCat = catTotalsForTop[0];
 
   const stamp = mostRecentUpdate();
@@ -2826,13 +3247,13 @@ function renderDashboard(){
     budgetCard.style.display = "block";
     document.getElementById("budgetCardTitle").textContent = "Budget vs actual — " + MONTHS[mIdx] + " " + year;
     document.getElementById("budgetCardBody").innerHTML = budgetCats.map(c=>{
-      const spent = scopedTx.filter(t=>t.type==="Expense"&&t.category===c).reduce((s,t)=>s+t.amount,0);
+      const spent = scopedTxExploded.filter(t=>t.type==="Expense"&&t.category===c).reduce((s,t)=>s+t.amount,0);
       const budget = state.budgets[c];
       const pct = Math.min(100, (spent/budget)*100);
       const over = spent > budget;
       return `<div class="budget-row">
         <div class="budget-row-head">
-          <span>${c}</span>
+          <span>${escapeHtml(c)}</span>
           <span class="mono ${over?'amt-out':''}">${fmt(spent)} / ${fmt(budget)}${over?' <b>· over by '+fmt(spent-budget)+'</b>':''}</span>
         </div>
         <div class="budget-bar-wrap"><div class="budget-bar ${over?'over':''}" style="width:${pct}%;"></div></div>
@@ -2963,7 +3384,7 @@ function renderDashboard(){
     destroyChart("chartCategoryTrend");
     const trendDatasets = topCats.map((c,idx)=>{
       const monthly = Array(12).fill(0);
-      yearTx.filter(t=>t.type==="Expense"&&t.category===c).forEach(t=>{ monthly[new Date(t.date).getMonth()]+=t.amount; });
+      yearTxExploded.filter(t=>t.type==="Expense"&&t.category===c).forEach(t=>{ monthly[new Date(t.date).getMonth()]+=t.amount; });
       return {label:c, data:monthly, borderColor:palette[idx], backgroundColor:palette[idx], tension:0.25, pointRadius:3};
     });
     charts.chartCategoryTrend = safeChart("chartCategoryTrend", {
@@ -3005,8 +3426,8 @@ function renderDashboard(){
       <tr>
         <td class="mono">${t.date}</td>
         <td><span class="stamp ${t.type.toLowerCase()}">${t.type}</span></td>
-        <td>${t.category}</td>
-        <td>${t.description||""}</td>
+        <td>${Array.isArray(t.splits)&&t.splits.length ? `🔀 Split (${t.splits.length})` : escapeHtml(t.category)}</td>
+        <td>${escapeHtml(t.description||"")}</td>
         <td>${t.payment||""}</td>
         <td class="mono ${t.type==="Income"?"amt-in":"amt-out"}" style="text-align:right;">${t.type==="Income"?"+":"-"}${fmt(t.amount)}</td>
       </tr>`).join("") || `<tr><td colspan="6"><div class="empty-state">${EMPTY_ICON}<div>No transactions this month.</div></div></td></tr>`;
@@ -3171,9 +3592,11 @@ function refreshAll(){
 
 /* ---------------- Boot / unlock flow ---------------- */
 async function bootApp(){
+  await migrateLocalStorageToIdb();
+  await loadMeta();
   const meta = getMeta();
   if(!meta.encrypted){
-    state = loadState();
+    state = await loadState();
     migrateState();
     applyThemeVars(state.theme);
     refreshAll();
@@ -3193,8 +3616,7 @@ async function attemptUnlock(){
   if(!pass){ errEl.textContent = "Enter your passphrase."; errEl.style.display = "block"; return; }
   try{
     const key = await deriveKey(pass, meta.salt, meta.iterations);
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const payload = raw ? JSON.parse(raw) : null;
+    const payload = await idbGet(STORAGE_KEY);
     if(!payload || !payload.iv){ throw new Error("No encrypted data found."); }
     const plaintext = await decryptString(payload, key);
     state = JSON.parse(plaintext);
@@ -3215,10 +3637,11 @@ function showForgotPassphrase(){
     title: "Forgot your passphrase?",
     message: "There's no way to recover encrypted data without the passphrase — that's how real encryption works, there's no backdoor. Your options: keep trying, restore an old unencrypted backup if you have one (use the button below), or reset and start completely fresh, which permanently erases the encrypted data on this device.",
     danger: true, confirmLabel: "Erase and start fresh", cancelLabel: "Cancel",
-    onConfirm: ()=>{
-      try{ localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(META_KEY); }catch(e){}
+    onConfirm: async ()=>{
+      try{ await idbDelete(STORAGE_KEY); await idbDelete(META_KEY); }catch(e){}
       state = JSON.parse(JSON.stringify(DEFAULT_STATE));
       encryptionKey = null;
+      cachedMeta = {encrypted:false};
       document.getElementById("unlockOverlay").classList.remove("show");
       migrateState();
       applyThemeVars(state.theme);
@@ -3255,8 +3678,8 @@ async function changePassphrase(){
   if(!current){ showToast("Enter your current passphrase.", {type:'error'}); return; }
   try{
     const checkKey = await deriveKey(current, meta.salt, meta.iterations);
-    const raw = localStorage.getItem(STORAGE_KEY);
-    await decryptString(JSON.parse(raw), checkKey); // throws if wrong
+    const payload = await idbGet(STORAGE_KEY);
+    await decryptString(payload, checkKey); // throws if wrong
   }catch(e){ showToast("Current passphrase is incorrect.", {type:'error'}); return; }
   if(!p1 || p1.length < 6){ showToast("New passphrase must be at least 6 characters.", {type:'error'}); return; }
   if(p1 !== p2){ showToast("New passphrases don't match.", {type:'error'}); return; }
@@ -3277,8 +3700,8 @@ async function updateHintOnly(){
   if(!current){ showToast("Enter your current passphrase to update the hint.", {type:'error'}); return; }
   try{
     const checkKey = await deriveKey(current, meta.salt, meta.iterations);
-    const raw = localStorage.getItem(STORAGE_KEY);
-    await decryptString(JSON.parse(raw), checkKey);
+    const payload = await idbGet(STORAGE_KEY);
+    await decryptString(payload, checkKey);
   }catch(e){ showToast("Passphrase is incorrect.", {type:'error'}); return; }
   if(newHint){
     // re-derive with the SAME salt/key material just to check the hint doesn't leak the passphrase
@@ -3295,8 +3718,8 @@ async function disableEncryption(){
   if(!current){ showToast("Enter your current passphrase to remove encryption.", {type:'error'}); return; }
   try{
     const checkKey = await deriveKey(current, meta.salt, meta.iterations);
-    const raw = localStorage.getItem(STORAGE_KEY);
-    await decryptString(JSON.parse(raw), checkKey); // throws if wrong
+    const payload = await idbGet(STORAGE_KEY);
+    await decryptString(payload, checkKey); // throws if wrong
   }catch(e){ showToast("Passphrase is incorrect.", {type:'error'}); return; }
   encryptionKey = null;
   setMeta({encrypted:false});
@@ -3364,13 +3787,18 @@ document.addEventListener("keydown", (e)=>{
   if(navItem) navItem.click();
   setTimeout(()=>{ const el = document.getElementById("txDesc"); if(el) el.focus(); }, 60);
 });
-if ("serviceWorker" in navigator) {
+// Service workers require a secure context (http/https); file:// origins can
+// never register one. Checking first avoids a console error every load when
+// this file is opened directly instead of served from a local/real server.
+if ("serviceWorker" in navigator && (location.protocol === "http:" || location.protocol === "https:")) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
       .register("./sw.js")
       .then(() => console.log("Service Worker registered"))
       .catch((err) => console.error("SW registration failed:", err));
   });
+} else if (location.protocol === "file:") {
+  console.info("[Ledger] Running from a local file — offline caching and install-to-home-screen need this to be served over http/https instead (e.g. `npx serve` or VS Code's Live Server). The app itself works fine either way.");
 }
 bootApp();
 </script>
